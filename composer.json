@@ -7,6 +7,9 @@
 		"laravel/framework": "4.1.*"
 	},
 	"autoload": {
+		"psr-0": {
+			"Agency": "app/"
+		},
 		"classmap": [
 			"app/commands",
 			"app/controllers",
