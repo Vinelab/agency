@@ -10,4 +10,5 @@ interface AdminAuthorizerInterface {
 
     public function initial(AuthorableInterface $admin, $najem = [], $artists = []);
     public function authorize(AuthorableInterface $admin, $najem = [], $artists = []);
+
 }
