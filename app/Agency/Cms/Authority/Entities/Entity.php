@@ -1,4 +1,4 @@
-<?php namespace Najem\Cms\Authority\Entities;
+<?php namespace Agency\Cms\Authority\Entities;
 
 use Eloquent;
 use Agency\Helper;
