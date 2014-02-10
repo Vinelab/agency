@@ -1,6 +1,6 @@
 <?php namespace Agency\Cms\Repositories\Contracts;
 
-interface ContentsRepositoryInterface {
+interface ContentRepositoryInterface {
 
 	public function create($title,$url,$parent_id);
 
