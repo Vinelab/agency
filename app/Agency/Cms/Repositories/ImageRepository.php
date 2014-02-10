@@ -1,25 +1,21 @@
-<?php namespace  ContentManagementSystem\Cms\Repositories;
+<?php namespace  Agency\Cms\Repositories;
 
-use ContentManagementSystem\Cms\Repositories\Contracts\ImagesRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\ImagesRepositoryInterface;
 
 
 use DB;
-use ContentManagementSystem\Cms\Image;
+use Agency\Cms\Image;
 
 use File;
 
 
 
-class ImageRepository implements ImagesRepositoryInterface {
+class ImageRepository extends Repository implements ImagesRepositoryInterface {
 
 	public function __construct(Image $image)
 	{
-		$this->image=$image;
+		$this->image = $this->model = $image;
 	}
-	
-	protected $rules=[
-		"url"=>"required"
-	];
 
 	public function create($url)
 	{
@@ -41,14 +37,12 @@ class ImageRepository implements ImagesRepositoryInterface {
 			$image->move('tmp/',$url);
 			array_push($images_url, $url);
 		}
-
+		
 		return $images_url;
-
 	}
 
 	public function deleteTemp($url)
 	{
-		
 	 	$file = basename($url);
 
 		$base = base_path().'/public/tmp/';
