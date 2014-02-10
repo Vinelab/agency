@@ -4,7 +4,17 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*"
+		"laravel/framework": "4.1.*",
+		"vinelab/social-auth": "3.*",
+		"jenssegers/mongodb": "dev-master",
+		"intervention/image": "dev-master",
+		"aws/aws-sdk-php": "2.*"
+	},
+	"require-dev": {
+		"phpunit/phpunit-mock-objects":"1.3.*@dev",
+		"phpunit/php-code-coverage":"1.3.*@dev",
+		"phpunit/phpunit": "3.8.*@dev",
+		"mockery/mockery": "dev-master"
 	},
 	"autoload": {
 		"psr-0": {
