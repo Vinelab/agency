@@ -1,4 +1,4 @@
-<?php namespace ContentManagementSystem\Cms\Repositories\Contracts;
+<?php namespace Agency\Cms\Repositories\Contracts;
 
 interface ImagesRepositoryInterface {
 
