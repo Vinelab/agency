@@ -11,7 +11,7 @@ class ContentRepository extends Repository implements ContentsRepositoryInterfac
 
 	public function __construct(Content $content)
 	{
-		$this->content = $this->model= $content;
+		$this->content = $this->model  = $content;
 	}
 
 	public function create($title,$alias,$parent_id)
@@ -34,7 +34,7 @@ class ContentRepository extends Repository implements ContentsRepositoryInterfac
 
 	function set($content)
 	{
-		$this->content = $content;
+		$this->content = $this->model = $content;
 	}
 
 	
