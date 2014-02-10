@@ -81,7 +81,6 @@ class PostRepository extends Repository implements PostsRepositoryInterface {
 	{
 		$posts = DB::table('posts')->whereIn('id', $ids)->get();
 		return $posts;
-
 	}
 
 }
