@@ -43,6 +43,10 @@ class InvalidPostException extends CmsException {}
 
 class InvalidImageException extends CmsException {}
 
+class InvalidContentException extends CmsException {}
+
+class InvalidVideoException extends CmsException {}
+
 class InvalidRoleException extends CmsException {}
 
 class InvalidPermissionException extends CmsException {}
