@@ -21,6 +21,8 @@ Route::get('/cms', [
         'uses' => 'Agency\Cms\Controllers\LoginController@index'
     ]);
 
+Route::get('/cms/login','Agency\Cms\Controllers\LoginController@index');
+
 Route::post('cms/login', [
         'as'   => 'cms.login.attempt',
         'uses' => 'Agency\Cms\Controllers\LoginController@login'
