@@ -83,11 +83,9 @@ class AdminController extends Controller {
      */
     public function index()
     {
-        $admin = Auth::user();
-
         $admins = $this->admins->all();
 
-        return View::make('cms.pages.administration.index', compact('admins', 'permissions'));
+        return View::make('cms.pages.administration.index', compact('admins'));
     }
 
     /**
@@ -99,13 +97,13 @@ class AdminController extends Controller {
     {
         if ($this->admin_permissions->has('create'))
         {
-            $najem_sections   = $this->getNajemSections();
+            $Agency_sections   = $this->getAgencySections();
             $artists_sections = $this->getArtistSections();
             $roles = $this->getRoles();
 
            return View::make(
                 'cms.pages.administration.create',
-                compact('roles', 'najem_sections', 'artists_sections')
+                compact('roles', 'Agency_sections', 'artists_sections')
             );
         }
 
@@ -137,12 +135,11 @@ class AdminController extends Controller {
                 }
 
                 // send registration notification
-               $this->notifier->notify($admin);
-
+                $this->notifier->notify($admin);
 
                 // grant permissions
                 $this->authorize($admin,
-                                Input::get('najem_sections'),
+                                Input::get('Agency_sections'),
                                 Input::get('artists_sections'),
                                 $is_initial = true);
 
@@ -166,19 +163,19 @@ class AdminController extends Controller {
         {
             $edit_admin = $this->admins->find($id);
             // get the default sections
-            $najem_sections   = $this->getNajemSections();
+            $Agency_sections   = $this->getAgencySections();
             $artist_sections = $this->getArtistSections();
             $roles = $this->getRoles();
             // get admin's access over the sections
-            $najem_access = Authority::access($edit_admin, $najem_sections);
+            $Agency_access = Authority::access($edit_admin, $Agency_sections);
             // $artist_access = Authority::access($edit_admin, $artist_sections);
 
-            $edit_admin_najem_roles = [];
+            $edit_admin_Agency_roles = [];
             // $edit_admin_artist_roles = [];
 
-            foreach ($najem_access->resources as $resource)
+            foreach ($Agency_access->resources as $resource)
             {
-                $edit_admin_najem_roles[$resource->identifier()] = $resource->role->alias;
+                $edit_admin_Agency_roles[$resource->identifier()] = $resource->role->alias;
             }
 
             // foreach ($artist_access->resources as $resource)
@@ -188,10 +185,10 @@ class AdminController extends Controller {
 
             return View::make('cms.pages.administration.edit',
                                 compact('edit_admin',
-                                        'najem_sections',
+                                        'Agency_sections',
                                         'roles',
                                         // 'artist_sections',
-                                        'edit_admin_najem_roles')
+                                        'edit_admin_Agency_roles')
                             );
         }
 
@@ -213,7 +210,7 @@ class AdminController extends Controller {
                 {
                     // update admin access
                     $this->authorize($admin,
-                                    Input::get('najem_sections'),
+                                    Input::get('Agency_sections'),
                                     Input::get('artists_sections'));
 
                     return Redirect::back()->with('success', [Lang::get('success.updated')])
@@ -255,21 +252,21 @@ class AdminController extends Controller {
         throw new UnauthorizedException;
     }
 
-    protected function authorize(AuthorableInterface $admin, $najem, $artists, $is_initial = false)
+    protected function authorize(AuthorableInterface $admin, $Agency, $artists, $is_initial = false)
     {
-        $najem = Input::get('najem_sections');
+        $Agency = Input::get('Agency_sections');
         $artists = [];
         // $artists = Input::get('artist_sections');
         $method = $is_initial ? 'initial' : 'authorize';
 
-        $this->authorizer->$method($admin, array_filter($najem), array_filter($artists));
+        $this->authorizer->$method($admin, array_filter($Agency), array_filter($artists));
     }
     /**
-     * Returns the roleable Najem sections.
+     * Returns the roleable Agency sections.
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function getNajemSections()
+    public function getAgencySections()
     {
         return $this->sections->roleable();
     }
