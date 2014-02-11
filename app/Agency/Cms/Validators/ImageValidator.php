@@ -1,10 +1,11 @@
 <?php namespace Agency\Cms\Validators;
 
-use Agency\Cms\Exceptions\InvalidPostException;
+use Agency\Cms\Exceptions\InvalidImageException;
 
-class PostValidator extends Validator implements Contracts\PostValidatorInterface {
+class ImageValidator extends Validator implements Contracts\ImageValidatorInterface {
 
     protected $rules = [
+    	"url"=>"required"
     ];
 
     public function validate($attributes)
@@ -13,7 +14,7 @@ class PostValidator extends Validator implements Contracts\PostValidatorInterfac
 
         if ( ! $validation->passes())
         {
-           throw new InvalidPostException($validation->messages()->all());
+           throw new InvalidImageException($validation->messages()->all());
         }
 
         return true;

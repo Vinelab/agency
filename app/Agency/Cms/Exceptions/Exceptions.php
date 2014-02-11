@@ -41,6 +41,8 @@ class InvalidAdminException extends CmsException {}
 
 class InvalidPostException extends CmsException {}
 
+class InvalidImageException extends CmsException {}
+
 class InvalidRoleException extends CmsException {}
 
 class InvalidPermissionException extends CmsException {}
