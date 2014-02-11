@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('ibrahims-mbp.lan'),
+	'local' => array('ibrahims-mbp.lan','ibrahims-mbp.cloud5.com'),
 
 ));
 
