@@ -1,6 +1,6 @@
 <?php namespace Agency\Cms\Repositories\Contracts;
 
-interface ImagesRepositoryInterface {
+interface ImageRepositoryInterface {
 
 	public function create($url);
 

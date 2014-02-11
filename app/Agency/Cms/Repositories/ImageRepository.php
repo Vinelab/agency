@@ -1,6 +1,6 @@
 <?php namespace  Agency\Cms\Repositories;
 
-use Agency\Cms\Repositories\Contracts\ImagesRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 
 
 use DB;
@@ -10,7 +10,7 @@ use File;
 
 
 
-class ImageRepository extends Repository implements ImagesRepositoryInterface {
+class ImageRepository extends Repository implements ImageRepositoryInterface {
 
 	public function __construct(Image $image)
 	{

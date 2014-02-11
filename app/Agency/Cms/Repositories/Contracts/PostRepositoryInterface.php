@@ -1,6 +1,6 @@
 <?php  namespace Agency\Cms\Repositories\Contracts;
 
-interface PostsRepositoryInterface {
+interface PostRepositoryInterface {
 
 	public function create($title,$body,$user_id);
 

@@ -65,6 +65,18 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             'uses' => 'Agency\Cms\Controllers\DashboardController@index'
         ]);
 
+     Route::resource('/post', 'Agency\Cms\Controllers\PostController',
+            [
+                'names' => [
+                    'index'   => 'cms.post',
+                    'create'  => 'cms.post.create',
+                    'store'   => 'cms.post.store',
+                    'show'    => 'cms.post.show',
+                    'edit'    => 'cms.post.update',
+                    'destroy' => 'cms.post.destroy'
+                ]
+        ]);
+
     Route::group(['prefix' => 'configuration'], function() {
 
         Route::get('', [
@@ -108,17 +120,6 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ]
             ]);
 
-         Route::resource('/post', 'Agency\Cms\Controllers\PostController',
-            [
-                'names' => [
-                    'index'   => 'cms.post',
-                    'create'  => 'cms.post.create',
-                    'store'   => 'cms.post.store',
-                    'show'    => 'cms.post.show',
-                    'edit'    => 'cms.post.update',
-                    'destroy' => 'cms.post.destroy'
-                ]
-        ]);
     });
 
 

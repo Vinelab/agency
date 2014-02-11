@@ -1,10 +1,10 @@
 <?php  namespace Agency\Cms\Repositories;
 
-use Agency\Cms\Repositories\Contracts\VideosRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
 use DB;
 use Agency\Cms\Video;
 
-class VideoRepository extends Repository implements VideosRepositoryInterface {
+class VideoRepository extends Repository implements VideoRepositoryInterface {
 
 	public function __construct(Video $video)
 	{

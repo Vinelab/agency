@@ -1,12 +1,12 @@
 <?php  namespace Agency\Cms\Repositories;
 
-use Agency\Cms\Repositories\Contracts\PostsRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\LinkableInterface;
 use DB;
 use Agency\Cms\Post;
 use Agency\Cms\Linker;
 
-class PostRepository extends Repository implements PostsRepositoryInterface {
+class PostRepository extends Repository implements PostRepositoryInterface {
 
 
 	public function __construct(Post $post)
