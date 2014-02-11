@@ -53,7 +53,7 @@
             <div class="widget-box">
 
                 <div class="widget-header header-color-blue">
-                    <h4 class="lighter">Najem</h4>
+                    <h4 class="lighter">Stara Academy CMS</h4>
                 </div>
 
                 <div class="widget-body">
@@ -76,14 +76,14 @@
 
                             <tbody>
 
-                                @foreach ($najem_sections as $section)
+                                @foreach ($Agency_sections as $section)
 
                                 <tr>
                                     <td>{{ $section->title }}</td>
                                     <td>
-                                        <?php $selected_role = isset($edit_admin_najem_roles[$section->id]) ?
-                                                                    $edit_admin_najem_roles[$section->id] : 0; ?>
-                                        {{ Form::select("najem_sections[$section->alias]",
+                                        <?php $selected_role = isset($edit_admin_agency_roles[$section->id]) ?
+                                                                    $edit_admin_agency_roles[$section->id] : 0; ?>
+                                        {{ Form::select("Agency_sections[$section->alias]",
                                             $roles,
                                             $selected_role) }}
                                     </td>
@@ -96,21 +96,6 @@
                         </table>
 
                     </div>
-                </div>
-
-            </div>
-        </div>
-
-        {{-- Artists Access --}}
-        <div class="col-sm-6 widget-container-span">
-            <div class="widget-box transparent">
-
-                <div class="widget-header">
-                    <h4 class="lighter">Artists</h4>
-                </div>
-
-                <div class="widget-body">
-                    Artists Sections/Roles Here
                 </div>
 
             </div>

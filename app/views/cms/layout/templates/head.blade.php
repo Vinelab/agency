@@ -1,7 +1,7 @@
 <meta charset="utf-8" />
-<title>Najem Platform Management</title>
+<title>Star Academy Platform Management</title>
 
-<meta name="description" content="Najem Platform Management" />
+<meta name="description" content="Star Academy Platform Management" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!-- basic styles -->

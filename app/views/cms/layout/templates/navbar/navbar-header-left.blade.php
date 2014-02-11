@@ -2,7 +2,7 @@
 	<a href="#" class="navbar-brand">
 		<small>
 			<i class="icon-leaf"></i>
-			Najem Management
+			Star Academy CMS
 		</small>
 	</a><!-- /.brand -->
 </div><!-- /.navbar-header -->
