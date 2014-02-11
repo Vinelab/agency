@@ -1,4 +1,4 @@
-index.blade.php{{-- @author Abed Halawi <abed.halawi@vinelab.com> --}}
+{{-- @author Abed Halawi <abed.halawi@vinelab.com> --}}
 
 <!DOCTYPE html>
 <html lang="en">
