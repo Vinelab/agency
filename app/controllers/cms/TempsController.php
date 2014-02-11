@@ -4,7 +4,7 @@ use Agency\Media\Temp\Contracts\TemporaryInterface;
 
 use Input, Response;
 
-class TempsController extends BaseController {
+class TempsController extends \Controller {
 
     public function __construct(TemporaryInterface $temp)
     {
