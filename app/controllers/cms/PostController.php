@@ -3,6 +3,7 @@
 use Agency\Cms\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
+use Agency\Cms\Validators\Contracts\PostValidatorInterface;
 
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
@@ -39,7 +40,8 @@ class PostController extends Controller {
     							PostRepositoryInterface $post,
     							ImageRepositoryInterface $image,
     							ManagerInterface $manager,
-    							VideoRepositoryInterface $video)
+    							VideoRepositoryInterface $video,
+    							PostValidatorInterface $postValidator)
     {
         parent::__construct($sections);
 
@@ -48,6 +50,7 @@ class PostController extends Controller {
 		$this->manager          = $manager;
 		$this->image            = $image;
 		$this->video            = $video;
+		$this->postValidator    = $postValidator;
     }
 
 	public function index()
@@ -84,9 +87,9 @@ class PostController extends Controller {
 		{
 			$input = Input::all();
 
-			if($this->CMSValidator->validate($input,$this->post->rules()))
+			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->create($input["title"],$input["body"],Auth::user()->id);
+				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id);
 
 				if(isset($input['croped_images_array']))
 				{
@@ -134,7 +137,7 @@ class PostController extends Controller {
 				}
 				return Response::json($post);
 			} else {
-				Session::set('error',$this->CMSValidator->errors());
+				//display error
 
 			}
 

@@ -59,9 +59,30 @@ class CmsServiceProvider extends ServiceProvider {
             'Agency\Cms\Repositories\Contracts\RoleRepositoryInterface',
             'Agency\Cms\Repositories\RoleRepository');
 
+
         $this->app->bind(
             'Agency\Cms\Validators\Contracts\RoleValidatorInterface', function() {
                 return new \Agency\Cms\Validators\RoleValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind(
+            'Agency\Cms\Validators\Contracts\ContentValidatorInterface', function() {
+                return new \Agency\Cms\Validators\ContentValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind(
+            'Agency\Cms\Validators\Contracts\ImageValidatorInterface', function() {
+                return new \Agency\Cms\Validators\ImageValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind(
+            'Agency\Cms\Validators\Contracts\PostValidatorInterface', function() {
+                return new \Agency\Cms\Validators\PostValidator($this->app->make('validator'));
+            });
+
+         $this->app->bind(
+            'Agency\Cms\Validators\Contracts\VideoValidatorInterface', function() {
+                return new \Agency\Cms\Validators\VideoValidator($this->app->make('validator'));
             });
 
         $this->app->bind(

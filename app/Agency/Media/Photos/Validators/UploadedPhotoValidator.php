@@ -29,8 +29,8 @@ class UploadedPhotoValidator {
     public function validate(File $file, $meta)
     {
         $this->validateFile($file);
-
         $this->validateMeta($meta);
+
     }
 
     /**
