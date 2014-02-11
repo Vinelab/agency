@@ -107,6 +107,18 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                     'destroy' => 'cms.configuration.permissions.destroy'
                 ]
             ]);
+
+         Route::resource('/post', 'Agency\Cms\Controllers\PostController',
+            [
+                'names' => [
+                    'index'   => 'cms.post',
+                    'create'  => 'cms.post.create',
+                    'store'   => 'cms.post.store',
+                    'show'    => 'cms.post.show',
+                    'edit'    => 'cms.post.update',
+                    'destroy' => 'cms.post.destroy'
+                ]
+        ]);
     });
 
 
