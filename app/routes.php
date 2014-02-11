@@ -18,29 +18,29 @@ Route::get('/', function()
 
 Route::get('/cms', [
         'as'   => 'cms.login',
-        'uses' => 'Najem\Cms\Controllers\LoginController@index'
+        'uses' => 'Agency\Cms\Controllers\LoginController@index'
     ]);
 
 Route::post('cms/login', [
         'as'   => 'cms.login.attempt',
-        'uses' => 'Najem\Cms\Controllers\LoginController@login'
+        'uses' => 'Agency\Cms\Controllers\LoginController@login'
     ]);
 
 Route::get('cms/logout', [
         'as'   => 'cms.logout',
-        'uses' => 'Najem\Cms\Controllers\LoginController@logout'
+        'uses' => 'Agency\Cms\Controllers\LoginController@logout'
     ]);
 
 Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::get('/dashboard', [
         'as' => 'cms.dashboard',
-        'uses' => 'Najem\Cms\Controllers\DashboardController@index'
+        'uses' => 'Agency\Cms\Controllers\DashboardController@index'
     ]);
 
 
 
-    Route::resource('/administration', 'Najem\Cms\Controllers\AdminController',
+    Route::resource('/administration', 'Agency\Cms\Controllers\AdminController',
         [
             'names' => [
                 'index'   => 'cms.administration',
@@ -55,22 +55,22 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::get('/content', [
             'as' => 'cms.content',
-            'uses' => 'Najem\Cms\Controllers\DashboardController@index'
+            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
         ]);
 
     Route::get('/audience', [
             'as' => 'cms.audience',
-            'uses' => 'Najem\Cms\Controllers\DashboardController@index'
+            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
         ]);
 
     Route::group(['prefix' => 'configuration'], function() {
 
         Route::get('', [
             'as' => 'cms.configuration',
-            'uses' => 'Najem\Cms\Controllers\ConfigurationController@index'
+            'uses' => 'Agency\Cms\Controllers\ConfigurationController@index'
         ]);
 
-        Route::resource('sections', 'Najem\Cms\Controllers\SectionController',
+        Route::resource('sections', 'Agency\Cms\Controllers\SectionController',
             [
                 'names' => [
                     'index'   => 'cms.configuration.sections',
@@ -82,7 +82,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ]
             ]);
 
-        Route::resource('roles', 'Najem\Cms\Controllers\RoleController',
+        Route::resource('roles', 'Agency\Cms\Controllers\RoleController',
             [
                 'names' => [
                     'index'   => 'cms.configuration.roles',
@@ -94,7 +94,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ]
             ]);
 
-        Route::resource('permissions', 'Najem\Cms\Controllers\PermissionController',
+        Route::resource('permissions', 'Agency\Cms\Controllers\PermissionController',
             [
                 'names' => [
                     'index'   => 'cms.configuration.permissions',
