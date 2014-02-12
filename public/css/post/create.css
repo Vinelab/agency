@@ -1,0 +1,56 @@
+.image_to_crop {
+	/*width: 500px ;
+	height: 500px ;*/
+}
+
+.video-container{
+	/*background-color: blue;*/
+	width: 396px;
+	height: 111px;
+}
+
+.yt-img{
+	/*background-color: red;*/
+	width: 172px;
+	height: 111px;
+}
+
+.yt-data{
+	/*background-color: green;*/
+	width: 189px;
+	height: 111px;
+	margin-top: -111px;
+	margin-left: 172px;
+}
+
+.yt-delete{
+/*	background-color: yellow;*/
+	width: 35px;
+	height: 111px;
+	margin-left: 361px;
+	margin-top: -111px;
+}
+
+.yt-img-thumbnail{
+	width: 100%;
+	height: 100%;
+}
+
+.yt-title{
+	margin-top: 11px;
+	margin-left: 5px;
+}
+
+.yt-desc{
+	margin-top: 10px;
+	margin-left: 2px;
+}
+
+.yt-delete-btn{
+	margin-top: 42px;
+	margin-left: 4px;
+}
+
+.video_item{
+	margin-bottom: 15px;
+}

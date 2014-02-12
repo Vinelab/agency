@@ -7,7 +7,7 @@ class Temporary implements TemporaryInterface {
 
 	public function storeImage($image)
 	{
-		$url = time().".".$image->getClientOriginalName();
+		$url = md5(microtime(true).$image->getClientOriginalName());
 		$image->move('tmp/',$url);
 		return $url;
 	}

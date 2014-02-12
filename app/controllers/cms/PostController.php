@@ -111,13 +111,19 @@ class PostController extends Controller {
 
 						$aws_response = $this->manager->upload($photos,'artists/webs');
 
-						return dd($aws_response);
+						$aws_response = $aws_response->toArray();
 
+						foreach ($aws_response as $response) {
+
+							$url = $response['original']->url;
+
+							$image = $this->image->create($url);
+
+							$image->post()->create(["post_id"=>$post->id]);
+						}
 
 						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
-							$image = $this->image->create($aws_response[$i*4]->get('ObjectURL'));
 							$this->image->deleteTemp($crop_sizes[$i]->name);
-							$image->post()->create(["post_id"=>$post->id]);
 						}
 
 				 	}
