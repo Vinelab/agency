@@ -121,6 +121,10 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             ]);
 
     });
-
+    
+    Route::post("/tmp",[
+        "as" => "cms.post.tmp",
+        "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
+    ]);
 
 });
