@@ -109,8 +109,9 @@ class PostController extends Controller {
 		        			$photos->push($photo);
 						}
 
-
 						$aws_response = $this->manager->upload($photos,'artists/webs');
+
+						return dd($aws_response);
 
 
 						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
