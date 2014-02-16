@@ -55,14 +55,15 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return false;
 	}
 
-	public function unlink ( LinkableInterface $lnker )
+	public function unlink ( LinkableInterface $linker )
 	{
-		$link = Linker::where ( "post_id", "=", $this -> post -> id ) 
-				-> where ( "linkable_id", "=", $linker -> getIdentifier() ) 
-				-> where ( "linkable_type", "=", get_class ( $linker -> getInstance() ) )
+		$link = Linker::where ( "post_id", "=", $this->post->id ) 
+				-> where ( "linkable_id", "=", $linker->getIdentifier() ) 
+				-> where ( "linkable_type", "=", get_class($linker->getInstance()))
 				-> get() -> first();
 
 		$result = $link -> delete();
+		
 		return $result;
 	}
 
@@ -81,6 +82,16 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 	{
 		$posts = DB::table('posts')->whereIn('id', $ids)->get();
 		return $posts;
+	}
+
+	public function delete($id)
+	{
+		try {
+            $this->model = $this->find($id);
+            return $this->model->delete(); 
+       	} catch (Exception $e) {
+           return Response::json(['message'=>$e->getMessage()]);
+       }
 	}
 
 }
