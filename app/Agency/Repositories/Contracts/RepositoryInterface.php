@@ -13,4 +13,6 @@ interface RepositoryInterface {
 	public function fill($attributes);
 
 	public function fillAndSave($attributes);
+
+	public function delete($id);
 }
