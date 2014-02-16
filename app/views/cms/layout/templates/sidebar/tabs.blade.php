@@ -12,7 +12,10 @@
 				<ul class="submenu">
 					@foreach ($section->sections as $sub_section)
 					<li>
-						<a href={{ URL::route('cms.' . $section->alias .'.show', $sub_section->alias) }}>
+						<!-- <a href={{ URL::route('cms.' . $section->alias .'.show', $sub_section->alias) }}>
+							{{ $sub_section->title }}
+						</a> -->
+						<a href= "/cms/content/{{$sub_section->alias}}">
 							{{ $sub_section->title }}
 						</a>
 					</li>
