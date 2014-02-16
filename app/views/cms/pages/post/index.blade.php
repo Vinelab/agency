@@ -13,8 +13,15 @@
         <div class="space-4"></div>
 
         <div class="row">
+            <ul>
+                @foreach($posts as $post)
+                    <li>
+                        {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
+                        {{HTML::link(URL::route('cms.post.destroy',$post->id),"X")}}
 
-   
+                    </li>
+                @endforeach
+            </ul>
 
         </div>
 
