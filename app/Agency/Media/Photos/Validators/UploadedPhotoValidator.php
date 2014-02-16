@@ -72,10 +72,10 @@ class UploadedPhotoValidator {
     public function validateMeta($meta)
     {
         $rules = [
-            'width'       => 'required|integer|between:300,9999',
-            'height'      => 'required|integer|between:200,9999',
-            'crop_width'  => 'required|integer|between:300,9999',
-            'crop_height' => 'required|integer|between:200,9999',
+            'width'       => 'required|integer|between:0,9999',
+            'height'      => 'required|integer|between:0,9999',
+            'crop_width'  => 'required|integer|between:0,9999',
+            'crop_height' => 'required|integer|between:0,9999',
             'crop_x'      => 'required|integer|between:0,9999',
             'crop_y'      => 'required|integer|between:0,9999'
         ];
