@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration {
 			$table->integer('admin_id')->unsigned();
 			$table->integer('section_id')->unsigned();
 			$table -> foreign ('admin_id') -> references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
-			$table -> foreign ('section_id') -> references('id')->on('sections')->onDelete('cascade')->onUpdate('cascade');
+			$table -> foreign ('section_id') -> references('id')->on('cms_sections')->onDelete('cascade')->onUpdate('cascade');
 			$table -> timestamps();
 		});
 	}
