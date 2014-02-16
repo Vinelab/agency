@@ -78,8 +78,12 @@ class PostController extends Controller {
 	{
 		if($this->admin_permissions->has("create"))
 		{
+
 			$edit_post=null;
-			return View::make("cms.pages.post.create",compact("edit_post"));
+
+			$contents = $this->section->infertile();
+
+			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
 
 		throw new UnauthorizedException;
