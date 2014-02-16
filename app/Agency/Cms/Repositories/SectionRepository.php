@@ -80,4 +80,26 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
     {
         return $this->section->whereIn('alias', array_merge($this->defaults,$additional))->get();
     }
+
+
+    public function children()
+    {
+        return $this->section->sections()->get();
+    }
+
+    //Get all infertile sections
+    public function infertile()
+    {
+        $section = $this->findBy("alias","content");
+
+        $infertile = $this->section->where("is_fertile","=",false)->get();
+
+        return $infertile;
+
+    }
+
+    public function set($section)
+    {
+        $this->section = $this->model =$section;
+    }
 }
