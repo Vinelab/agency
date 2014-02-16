@@ -3,119 +3,43 @@
 
 @stop
 @section('content')
-	<div class="col-xs-12">
+	<div class="col-sm-6">
+        <div class="tabbable">
+            <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                @foreach($section_posts as $key=>$section_post)
+               
+                    <li {{$key==0?"class='active'":"class=''"}}>
+                        <a data-toggle="tab" href="#{{$section_post['sub_section']->alias}}">{{$section_post['sub_section']->title}}</a>
+                    </li>
+                @endforeach                
+            </ul>
 
-        @if ($admin_permissions->has('create'))
-        <div class="row">
-            <a href="{{ URL::route('cms.content.create') }}" class="btn btn-primary">
-                <span class="icon-plus"></span>
-                New Content
-            </a>
-        </div>
-        @endif
+            
+            <div class="tab-content">
+              
+                @foreach($section_posts as $key=>$section_post)
+                    <div id="{{$section_post['sub_section']->alias}}" class="tab-pane {{$key==0? 'active':''}}">
+                        <a class="green" class="button" href="/cms/content/post/assign?content={{$section_post['sub_section']->id}}">
+                            Add Post
+                            <i class="fa fa-plus bigger-130"></i>
+                        </a>
+                            
+                            @if(!empty($section_post['posts']))
+                                <ul>
+                                    @foreach($section_post['posts'] as $post)
+                                        <li>
+                                            {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
+                                            <a href="/cms/post/unlink/{{$post->id}}?section={{$section_post['sub_section']->id}}">Remove</a>
 
-        <?php
-            $previous="";
-            $current="";
-        ?>
-        <div class="span6">
-            <div class="dd" id="nestable">
-                <ol class="dd-list">
-                    @foreach($contents as $content )
-                        @if(isset($content["parent"]) && $content["parent"]=="home")
-                            <?php 
-                                $previous = $content["id"];
-                                $current = $content["id"];
-                            ?>
-                        @else
-                            @if(key($content)=="parent")
-                                <?php
-                                    $previous = $current;
-                                    $current = $content["id"];
-                                ?>
-                                @if($content["parent_id"]!=$previous)
-                                    </ol>
-                                    </li>
-                                    <?php
-                                        $previous = $content["parent_id"];
-                                        $current = $content["id"];
-                                    ?>
-                                @endif
-
-                                <li class="dd-item" data-id="{{$content['id']}}">
-                                    <div class="dd-handle">
-                                        {{$content["parent"]}}
-
-                                        <div class="pull-right action-buttons">
-                                            <a class="green" href="/cms/content/assign?content={{$content['id']}}">
-                                                <i class="fa fa-plus bigger-130"></i>
-                                                Add Post
-                                            </a>
-
-                                            <a class="blue" href="{{URL::Route('cms.content.edit',['id'=>$content['id']])}}">
-                                                <i class="icon-pencil bigger-130"></i>
-                                            </a>
-
-                                            <a class="red" href="{{URL::Route('cms.content.destroy',['id'=>$content['id']])}}">
-                                                <i class="icon-trash bigger-130"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                
-                                    @if($previous==$content["parent_id"])
-                                        <ol class="dd-list">
-                                    @endif
-                            @elseif(key($content)=="children")
-                                @if($content["parent_id"]==$current)
-                                    <li class="dd-item" data-id="{{$content['id']}}">
-                                        <div class="dd-handle">
-                                            {{$content["children"]}}
-                                            <div class="pull-right action-buttons">
-                                                <a class="green" href="/cms/content/assign?content={{$content['id']}}">
-                                                    <i class="fa fa-plus bigger-130"></i>
-                                                    Add Post
-                                                </a>
-
-                                                <a class="blue" href="{{URL::Route('cms.content.edit',['id'=>$content['id']])}}">
-                                                    <i class="icon-pencil bigger-130"></i>
-                                                </a>
-
-                                                <a class="red" href="{{URL::Route('cms.content.destroy',['id'=>$content['id']])}}">
-                                                    <i class="icon-trash bigger-130"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @elseif($content["parent_id"]!=$current)
-                                    </ol>
-                                    <li class="dd-item" data-id="{{$content['id']}}">
-                                        <div class="dd-handle">
-                                            {{$content["children"]}}
-                                            <div class="pull-right action-buttons">
-                                                <a class="green" href="/cms/content/assign?content={{$content['id']}}">
-                                                    <i class="fa fa-plus bigger-130"></i>
-                                                    Add Post
-                                                </a>
-
-                                                <a class="blue" href="{{URL::Route('cms.content.edit',['id'=>$content['id']])}}">
-                                                    <i class="icon-pencil bigger-130"></i>
-                                                </a>
-
-                                                <a class="red" href="{{URL::Route('cms.content.destroy',['id'=>$content['id']])}}">
-                                                    <i class="icon-trash bigger-130"></i>
-                                                </a>
-                                            </div>                                        
-                                        </div>
-                                    </li>
-                                    <?php
-                                        $previous = $current;
-                                        $current = $content["parent_id"];
-                                    ?>
-                                @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
                             @endif
-                        @endif
-                    @endforeach
-                </ol>
+                    </div>
+                @endforeach
+                
+
+
             </div>
         </div>
     </div>
@@ -123,7 +47,6 @@
 
 @section('scripts')
     @parent
-        <script src="/assets/js/jquery.nestable.min.js"></script>
         {{HTML::script("/cms/js/content/index.js")}}
 
         
