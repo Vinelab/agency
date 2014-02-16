@@ -61,6 +61,13 @@ abstract class Repository implements Contracts\RepositoryInterface {
             return $this->model;
     }
 
+
+    public function delete($id)
+    {
+        $model=$this->findBy($id);
+      return $model->delete(); 
+    }
+
     /**
      * Implementing this magic method
      * to provide the convenience of calling
@@ -86,4 +93,6 @@ abstract class Repository implements Contracts\RepositoryInterface {
                     return call_user_func_array(array($this, 'findBy'), $arguments);
             }
     }
+
+
 }
