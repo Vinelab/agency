@@ -13,4 +13,8 @@ interface SectionRepositoryInterface {
     public function roleable();
 
     public function initial($additional = []);
+
+    public function infertile();
+
+    public function set($section);
 }
