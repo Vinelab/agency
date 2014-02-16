@@ -49,7 +49,7 @@
 
 		<div class="col-sm-9">
 			<div class="clearfix">
-				<select name="section">
+				<select name="section" id="section">
 					@foreach($contents as $content)
 						<option value="{{$content->id}}" {{$updating and ($content->id==$edit_post->id)?selected:''}} >{{$content->title}}</option>
 					@endforeach

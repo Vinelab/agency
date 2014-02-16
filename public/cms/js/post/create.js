@@ -63,9 +63,11 @@ function submitForm()
 
 	var title = $("#title").val();
 	var body = $("#body").val();
+	var section = $("#section").val();
 
 	formdata.append("title",title);
 	formdata.append("body",body);
+	formdata.append("section",section);
 
 
 	videos_array=JSON.stringify(getVideosArray());
