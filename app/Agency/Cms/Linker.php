@@ -1,13 +1,13 @@
 <?php  namespace Agency\Cms; 
 
-class Image extends \Eloquent  {
+class Linker extends \Eloquent  {
 
-	protected $table = "images";
-	protected $fillable = ["url"];
+	protected $table = "linkers";
+	protected $fillable=["post_id","linkable_id","linkable_type"];
 
-	public function post()
-    {
-        return $this -> morphMany ( "Agency\Cms\Media", "media" );
-    }
-
+	
+	public function linkable()
+	{
+		return $this->morphTo();
+	}
 }
