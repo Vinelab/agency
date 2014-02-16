@@ -41,6 +41,22 @@
 
             </div>
 		</div>
+	</div>	
+
+	<div class="form-group">
+
+		{{Form::label("content","Content",["class"=>"col-sm-3 control-label no-padding-right","for"=>"content"])}}
+
+		<div class="col-sm-9">
+			<div class="clearfix">
+				<select name="section">
+					@foreach($contents as $content)
+						<option value="{{$content->id}}" {{$updating and ($content->id==$edit_post->id)?selected:''}} >{{$content->title}}</option>
+					@endforeach
+				</select>
+
+            </div>
+		</div>
 	</div>
 
 	{{--Add Images --}}
