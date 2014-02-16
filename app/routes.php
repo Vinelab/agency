@@ -33,12 +33,20 @@ Route::get('cms/logout', [
         'uses' => 'Agency\Cms\Controllers\LoginController@logout'
     ]);
 
+
 Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::get('/dashboard', [
         'as' => 'cms.dashboard',
         'uses' => 'Agency\Cms\Controllers\DashboardController@index'
     ]);
+
+
+    Route::get("/content/{slug}",[
+        'as'=>"cms.content.show",
+        'uses'=>"Agency\Cms\Controllers\ContentController@show"
+    ]);
+
 
 
 
@@ -55,10 +63,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             ]
         ]);
 
-    Route::get('/content', [
-            'as' => 'cms.content',
-            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
-        ]);
+   
 
     Route::get('/audience', [
             'as' => 'cms.audience',
@@ -73,9 +78,68 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                     'store'   => 'cms.post.store',
                     'show'    => 'cms.post.show',
                     'edit'    => 'cms.post.update',
-                    'destroy' => 'cms.post.destroy'
-                ]
+                ],
+                'except' => ['destroy']
+    ]);
+
+      Route::get("/post/delete/{id}",[
+        'as' => 'cms.post.destroy',
+        'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
+      Route::get("/post/unlink/{id}",[
+        'as' => 'cms.post.unlink',
+        'uses' => 'Agency\Cms\Controllers\PostController@unlink'
+        ]);
+
+
+    // Route::get("/content/{id}","Agency\Cms\Controllers\ContentController@show");
+    
+
+
+    
+
+     Route::resource('/content', 'Agency\Cms\Controllers\ContentController',
+            [
+                'names' => [
+                    'index'   => 'cms.content',
+                    'create'  => 'cms.content.create',
+                    'store'   => 'cms.content.store',
+                    'update'  => 'cms.content.update',
+                ],
+                'except' => ['show','destroy','edit']
+        ]);
+
+     // Route::get("/content/delete/{id}",[
+     //    'as' => 'cms.content.destroy',
+     //    'uses' => 'Agency\Cms\Controllers\ContentController@destroy'
+     //    ]);
+
+    // Route::get("/content/edit/{id}",[
+    //     'as' => 'cms.content.edit',
+    //     'uses' => 'Agency\Cms\Controllers\ContentController@edit'
+    //     ]);
+
+
+    Route::get('/content/post/assign', [
+            'as' => 'cms.content.assign',
+            'uses' => 'Agency\Cms\Controllers\ContentController@assign'
+        ]);
+
+    // Route::get('/content/{num}', [
+    //         'as' => 'cms.content.posts',
+    //         'uses' => 'Agency\Cms\Controllers\ContentController@section'
+    //     ]);
+
+     // Route::get('/content/{num}', [
+     //        'as' => 'cms.content.show',
+     //        'uses' => 'Agency\Cms\Controllers\ContentController@section'
+     //    ]);
+
+    Route::post('/content/post/assign', [
+            'as' => 'cms.content.assignForm',
+            'uses' => 'Agency\Cms\Controllers\ContentController@assignForm'
+        ]);
+
 
     Route::group(['prefix' => 'configuration'], function() {
 
