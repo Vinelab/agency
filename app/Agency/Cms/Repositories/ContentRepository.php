@@ -1,10 +1,10 @@
 <?php namespace Agency\Cms\Repositories;
 
-use Agency\Cms\Repositories\Contracts\ContentsRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\ContentRepositoryInterface;
 
 use Agency\Cms\Content;
 
-class ContentRepository extends Repository implements ContentsRepositoryInterface {
+class ContentRepository extends Repository implements ContentRepositoryInterface {
 
 	protected $content;
 
@@ -20,21 +20,46 @@ class ContentRepository extends Repository implements ContentsRepositoryInterfac
 		return $content;
 	}
 
-	public function update($id,$title)
-	{
-		$content=$this->content->find($id);
-		if(!is_null($content))
-		{
-			$content->title=$title;
-			$content->save();
-			return $content;
-		}
-			return false;
+	public function update($id,$title,$parent_id)
+	{	
+		try {
+				$content= $this->content->find($id);
+
+				if($content)
+				{
+					$content->title = $title;
+					$content->parent_id = $parent_id;
+					return $content->save();
+				}
+			} catch(Exception $e){
+				return Response::json($e->getMessage());
+			}
 	}
 
 	function set($content)
 	{
 		$this->content = $this->model = $content;
+	}
+
+
+	public function findBy($attribute,$value)
+	{
+		$content=$this->content->where($attribute,$value);
+		if($content->count()!=0)
+		{
+			return $content;
+		}
+		return false;
+	}
+
+	public function delete($id)
+	{
+		try {
+            $this->model = $this->find($id);
+            return $this->model->delete(); 
+       	} catch (Exception $e) {
+           return Response::json(['message'=>$e->getMessage()]);
+       }
 	}
 
 	
