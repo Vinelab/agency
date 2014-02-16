@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration {
 		{
 			$table -> increments ('id') -> unsigned();
 			$table -> string ('title');
-			$table -> string ('body');
+			$table -> text ('body');
 			$table -> boolean ("published") -> default(0);
 			$table -> integer ('admin_id') -> unsigned();
 			$table -> foreign ('admin_id') -> references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
