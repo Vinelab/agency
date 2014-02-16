@@ -12,6 +12,7 @@
     'id'     => 'content-form'
 ]) }}
 
+
 		<div class="center">
 			<div class="form-group">
 				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Title </label>
@@ -35,7 +36,14 @@
 				<div class="col-sm-3">
 					<select class="form-control" name="parent_id" id="form-field-select-1">
 						@foreach($contents as $subsection)
-							<option @if($subsection["id"]==$content->id)selected@endif value={{$subsection["id"]}}>{{$subsection["title"]}}</option>
+							<option  @if($updating)
+										@if($subsection["id"]==$content->parent_id)
+											 selected 
+										@endif
+									@endif
+
+								value={{$subsection["id"]}}>{{$subsection["title"]}}
+							</option>
 						@endforeach
 						
 					</select>
