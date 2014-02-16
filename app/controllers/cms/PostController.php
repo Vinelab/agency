@@ -18,7 +18,7 @@ use Agency\Cms\Post;
 
 
 
-use View,Input,App,Session,Auth,Response;
+use View,Input,App,Session,Auth,Response,Redirect;
 
 class PostController extends Controller {
 
@@ -41,7 +41,8 @@ class PostController extends Controller {
     							ImageRepositoryInterface $image,
     							ManagerInterface $manager,
     							VideoRepositoryInterface $video,
-    							PostValidatorInterface $postValidator)
+    							PostValidatorInterface $postValidator
+    							)
     {
         parent::__construct($sections);
 
@@ -51,11 +52,20 @@ class PostController extends Controller {
 		$this->image            = $image;
 		$this->video            = $video;
 		$this->postValidator    = $postValidator;
+		$this->section          = $sections;
     }
 
 	public function index()
 	{
-		return View::make('cms.pages.post.index', compact('permissions'));
+		try {
+			$posts = $this->post->all();
+
+			return View::make('cms.pages.post.index', compact('permissions','posts'));
+
+			
+		} catch (Exception $e) {
+			return Response::json(['message'=>$e->getMessage()]);
+		}
 
 	}
 
@@ -161,7 +171,18 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		if($this->admin_permissions->has("read"))
+		{
+			try {
+				$post = $this->post->find($id);
+				return dd($post);
+			} catch (Exception $e) {
+				return Response::json(['message'=>$e->getMessage()]);
+			}
+			
+		}
+
+		throw new UnauthorizedException;
 	}
 
 	/**
@@ -194,7 +215,42 @@ class PostController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		if($this->admin_permissions->has("delete"))
+		{
+			try {
+
+				if($this->post->delete($id))
+					return Redirect::route("cms.post");	
+			} catch (Exception $e) {
+				return Response::json(['message'=>$e->getMessage()]);
+			}
+			
+		}
+
+		throw new UnauthorizedException;
+	}
+
+	public function unlink($id)
+	{
+		try {
+			if(isset($_GET['section']))
+			{
+				$section_id = $_GET['section'];
+				$section = $this->section->find($section_id);
+
+				$post = $this->post->find($id);
+				$this->post->set($post);
+
+				$result = $this->post->unlink($section);
+
+				$section = $this->section->find($section->parent_id);
+
+				return Redirect::route('cms.content.show',$section->alias);
+			}
+			
+		} catch (Exception $e) {
+			return Response::json(['message'=>$e->getMessage()]);
+		}
 	}
 
 
