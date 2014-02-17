@@ -19,7 +19,7 @@
               
                 @foreach($section_posts as $key=>$section_post)
                     <div id="{{$section_post['sub_section']->alias}}" class="tab-pane {{$key==0? 'active':''}}">
-                        <a class="green" class="button" href="/cms/content/post/assign?content={{$section_post['sub_section']->id}}">
+                        <a class="green" class="button" href="{{URL::route('cms.post.create')}}">
                             Add Post
                             <i class="fa fa-plus bigger-130"></i>
                         </a>
@@ -29,8 +29,7 @@
                                     @foreach($section_post['posts'] as $post)
                                         <li>
                                             {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
-                                            <a href="/cms/post/unlink/{{$post->id}}?section={{$section_post['sub_section']->id}}">Remove</a>
-
+                                            {{HTML::link(URL::route('cms.post.destroy',$post->id),'X')}}
                                         </li>
                                     @endforeach
                                 </ul>
