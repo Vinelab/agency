@@ -125,11 +125,13 @@ class ContentController extends Controller {
 					foreach ($sub_sections as $key => $sub_section) {
 						$posts="";
 
-						if(!empty($sub_section->linker->toArray()))
-						{
-							$posts_id = $sub_section->linker->fetch("post_id")->toArray();
-							$posts = $this->post->getPostsByIds($posts_id);
-						}
+							if($section->posts()->count()>0)
+							{
+								$posts_id = $section->posts()->get(['id'])->fetch('id')->toArray();
+								$posts = $this->post->getPostsByIds($posts_id);
+							}
+							
+						
 						
 						array_push($section_posts,['sub_section'=>$sub_section,'posts'=>$posts]);
 					}
@@ -137,20 +139,20 @@ class ContentController extends Controller {
 					return View::make("cms.pages.content.index",compact("section_posts"));
 				}else{
 
-					$section = $this->section->findBy("alias",$alias);
+					// $section = $this->section->findBy("alias",$alias);
 
-					if(!is_null($section))
-					{
+					
 						$posts="";
-
-						if(!empty($section->linker->toArray()))
+						if($section->posts()->count()>0)
 						{
-							$posts_id = $section->linker->fetch("post_id")->toArray();
+							$posts_id = $section->posts()->get(['id'])->fetch('id')->toArray();
 							$posts = $this->post->getPostsByIds($posts_id);
 						}
+						
+						
 
 						return View::make("cms.pages.content.posts",compact("posts"));
-					}
+					
 				}
 			}
 
