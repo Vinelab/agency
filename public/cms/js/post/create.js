@@ -80,7 +80,8 @@ function submitForm()
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location="/cms/content/post/assign?post="+res.id;
+
+			top.location="/cms/content";
 		}
 	});
 
