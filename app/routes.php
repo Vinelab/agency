@@ -86,57 +86,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         'as' => 'cms.post.destroy',
         'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
-     
 
 
-    // Route::get("/content/{id}","Agency\Cms\Controllers\ContentController@show");
-    
-
-
-    
-
-     Route::resource('/content', 'Agency\Cms\Controllers\ContentController',
-            [
-                'names' => [
-                    'index'   => 'cms.content',
-                    'create'  => 'cms.content.create',
-                    'store'   => 'cms.content.store',
-                    'update'  => 'cms.content.update',
-                ],
-                'except' => ['show','destroy','edit']
-        ]);
-
-     // Route::get("/content/delete/{id}",[
-     //    'as' => 'cms.content.destroy',
-     //    'uses' => 'Agency\Cms\Controllers\ContentController@destroy'
-     //    ]);
-
-    // Route::get("/content/edit/{id}",[
-    //     'as' => 'cms.content.edit',
-    //     'uses' => 'Agency\Cms\Controllers\ContentController@edit'
-    //     ]);
-
-
-    Route::get('/content/post/assign', [
-            'as' => 'cms.content.assign',
-            'uses' => 'Agency\Cms\Controllers\ContentController@assign'
-        ]);
-
-    // Route::get('/content/{num}', [
-    //         'as' => 'cms.content.posts',
-    //         'uses' => 'Agency\Cms\Controllers\ContentController@section'
-    //     ]);
-
-     // Route::get('/content/{num}', [
-     //        'as' => 'cms.content.show',
-     //        'uses' => 'Agency\Cms\Controllers\ContentController@section'
-     //    ]);
-
-    Route::post('/content/post/assign', [
-            'as' => 'cms.content.assignForm',
-            'uses' => 'Agency\Cms\Controllers\ContentController@assignForm'
-        ]);
-
+    Route::get("/content",[
+        'as'=>'cms.content',
+        'uses'=>'Agency\Cms\Controllers\ContentController@index'
+    ]);
 
     Route::group(['prefix' => 'configuration'], function() {
 

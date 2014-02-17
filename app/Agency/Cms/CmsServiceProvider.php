@@ -66,11 +66,6 @@ class CmsServiceProvider extends ServiceProvider {
             });
 
         $this->app->bind(
-            'Agency\Cms\Validators\Contracts\ContentValidatorInterface', function() {
-                return new \Agency\Cms\Validators\ContentValidator($this->app->make('validator'));
-            });
-
-        $this->app->bind(
             'Agency\Cms\Validators\Contracts\ImageValidatorInterface', function() {
                 return new \Agency\Cms\Validators\ImageValidator($this->app->make('validator'));
             });
@@ -88,10 +83,6 @@ class CmsServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\PermissionRepositoryInterface',
             'Agency\Cms\Repositories\PermissionRepository');
-
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\ContentRepositoryInterface',
-            'Agency\Cms\Repositories\ContentRepository');
 
         $this->app->bind(
             'Agency\Cms\Validators\Contracts\PermissionValidatorInterface', function() {
