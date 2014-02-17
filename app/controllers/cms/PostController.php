@@ -101,9 +101,10 @@ class PostController extends Controller {
 		{
 			$input = Input::all();
 
+
 			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id);
+				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'));
 
 				if(isset($input['croped_images_array']))
 				{
