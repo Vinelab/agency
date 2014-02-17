@@ -125,9 +125,9 @@ class ContentController extends Controller {
 					foreach ($sub_sections as $key => $sub_section) {
 						$posts="";
 
-							if($section->posts()->count()>0)
+							if($sub_section->posts()->count()>0)
 							{
-								$posts_id = $section->posts()->get(['id'])->fetch('id')->toArray();
+								$posts_id = $sub_section->posts()->get(['id'])->fetch('id')->toArray();
 								$posts = $this->post->getPostsByIds($posts_id);
 							}
 							
