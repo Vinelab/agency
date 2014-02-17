@@ -52,6 +52,11 @@ class Section extends Eloquent implements PrivilegableInterface,LinkableInterfac
         return $this->hasMany('Agency\Cms\Section', 'parent_id');
     }
 
+    public function posts()
+    {
+        return $this->hasMany('Agency\Cms\Post');
+    }
+
     public function alias()
     {
         return $this->alias;
