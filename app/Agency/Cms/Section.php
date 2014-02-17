@@ -8,9 +8,8 @@ use Eloquent;
 use Agency\Helper;
 
 use Agency\Cms\Authority\Contracts\PrivilegableInterface;
-use Agency\Cms\Repositories\Contracts\LinkableInterface;
 
-class Section extends Eloquent implements PrivilegableInterface,LinkableInterface {
+class Section extends Eloquent implements PrivilegableInterface {
 
     protected $table = 'cms_sections';
 
@@ -72,9 +71,6 @@ class Section extends Eloquent implements PrivilegableInterface,LinkableInterfac
         return $this;
     }
 
-    public function linker()
-    {
-        return $this->morphMany("Agency\Cms\Linker", "linkable");
-    }
+
 
 }

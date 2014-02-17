@@ -1,10 +1,8 @@
 <?php  namespace Agency\Cms\Repositories;
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\LinkableInterface;
 use DB;
 use Agency\Cms\Post;
-use Agency\Cms\Linker;
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
@@ -40,31 +38,6 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			return $post;
 		}
 		return false;
-	}
-
-	public function assign( LinkableInterface $linker)
-	{
-		$link = $linker->linker()
-			->create(["post_id" => $this->post->id]);
-
-		if ( ! is_null($link))
-		{
-			return $link;
-		}
-
-		return false;
-	}
-
-	public function unlink ( LinkableInterface $linker )
-	{
-		$link = Linker::where ( "post_id", "=", $this->post->id ) 
-				-> where ( "linkable_id", "=", $linker->getIdentifier() ) 
-				-> where ( "linkable_type", "=", get_class($linker->getInstance()))
-				-> get() -> first();
-
-		$result = $link -> delete();
-		
-		return $result;
 	}
 
 	public function publish()

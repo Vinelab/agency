@@ -279,30 +279,7 @@ class ContentController extends Controller {
 		throw new UnauthorizedException;
 	}
 
-	public function assignForm()
-	{
-		$content = Input::get("content");
-		$post    = Input::get("post");
-		if(isset($post) && isset($content))
-		{
-			
-			
-			$content = $this->section->findBy("id",$content);
-			$post    = $this->post->findBy("id",$post);
-			$this->post->set($post);
-
-			
-			$linker  = $this->post->assign($content);
-
-			if(isset($linker->id))
-			{
-				return Redirect::route("cms.content");
-			}
-
-			return Response::json("false");
-		}
-	}
-
+	
 	public function section($id)
 	{
 		try {

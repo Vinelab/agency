@@ -235,28 +235,7 @@ class PostController extends Controller {
 		throw new UnauthorizedException;
 	}
 
-	public function unlink($id)
-	{
-		try {
-			if(isset($_GET['section']))
-			{
-				$section_id = $_GET['section'];
-				$section = $this->section->find($section_id);
 
-				$post = $this->post->find($id);
-				$this->post->set($post);
-
-				$result = $this->post->unlink($section);
-
-				$section = $this->section->find($section->parent_id);
-
-				return Redirect::route('cms.content.show',$section->alias);
-			}
-			
-		} catch (Exception $e) {
-			return Response::json(['message'=>$e->getMessage()]);
-		}
-	}
 
 
 }

@@ -8,10 +8,6 @@ interface PostRepositoryInterface {
 
 	public function update($id,$title,$body,$user_id);
 
-	public function assign(LinkableInterface $linker);
-
-	public function unlink(LinkableInterface $linker);
-
 	public function publish();
 
 	public function set($post);

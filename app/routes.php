@@ -86,10 +86,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         'as' => 'cms.post.destroy',
         'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
-      Route::get("/post/unlink/{id}",[
-        'as' => 'cms.post.unlink',
-        'uses' => 'Agency\Cms\Controllers\PostController@unlink'
-        ]);
+     
 
 
     // Route::get("/content/{id}","Agency\Cms\Controllers\ContentController@show");
