@@ -3,7 +3,7 @@
 class Post extends \Eloquent  {
 
 	protected $table = "posts";
-	protected $fillable=["title","body","admin_id"];
+	protected $fillable=["title","body","admin_id","section_id"];
 	
 
 	public function admins()
@@ -14,6 +14,11 @@ class Post extends \Eloquent  {
 	public function media()
 	{
 		return $this->hasMany("Agency\Cms\Media");
+	}
+
+	public function section()
+	{
+		return $this->belongsTo("Agency\Cms\Section");
 	}
 	
 }
