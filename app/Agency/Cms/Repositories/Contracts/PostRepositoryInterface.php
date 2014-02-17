@@ -2,7 +2,7 @@
 
 interface PostRepositoryInterface {
 
-	public function create($title,$body,$user_id);
+	public function create($title,$body,$user_id,$section);
 
 	public function getPostsByIds($ids);
 
