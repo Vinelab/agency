@@ -138,9 +138,6 @@ class ContentController extends Controller {
 
 					return View::make("cms.pages.content.index",compact("section_posts"));
 				}else{
-
-					// $section = $this->section->findBy("alias",$alias);
-
 					
 						$posts="";
 						if($section->posts()->count()>0)
@@ -148,8 +145,6 @@ class ContentController extends Controller {
 							$posts_id = $section->posts()->get(['id'])->fetch('id')->toArray();
 							$posts = $this->post->getPostsByIds($posts_id);
 						}
-						
-						
 
 						return View::make("cms.pages.content.posts",compact("posts"));
 					
