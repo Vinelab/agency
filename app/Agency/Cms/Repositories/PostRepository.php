@@ -21,9 +21,9 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		$this->post=$post;
 	}
 
-	public function create($title,$body,$admin_id)
+	public function create($title,$body,$admin_id,$section_id)
 	{
-		$post=$this->post->create(compact("title","body","admin_id"));
+		$post=$this->post->create(compact("title","body","admin_id","section_id"));
 		$this->post=$post;
 		return $post;
 	}
