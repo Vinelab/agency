@@ -20,5 +20,9 @@ class Post extends \Eloquent  {
 	{
 		return $this->belongsTo("Agency\Cms\Section");
 	}
-	
+
+	public function tags()
+    {
+        return $this->belongsToMany("Agency\Cms\Tag");
+    }
 }
