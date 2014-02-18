@@ -4,17 +4,21 @@ use Agency\Cms\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
 use Agency\Cms\Validators\Contracts\PostValidatorInterface;
+use Agency\Cms\Validators\Contracts\TagValidatorInterface;
 
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 
 use Agency\Media\Photos\UploadedPhoto;
 use Agency\Media\Photos\UploadedPhotosCollection;
 use Agency\Media\Photos\Contracts\ManagerInterface;
 
 use Agency\Cms\Post;
+
+use Agency\Cms\Tag;
 
 
 
@@ -41,8 +45,9 @@ class PostController extends Controller {
     							ImageRepositoryInterface $image,
     							ManagerInterface $manager,
     							VideoRepositoryInterface $video,
-    							PostValidatorInterface $postValidator
-    							)
+    							TagRepositoryInterface $tag,
+    							TagValidatorInterface $tagValidator,
+    							PostValidatorInterface $postValidator)
     {
         parent::__construct($sections);
 
@@ -53,12 +58,16 @@ class PostController extends Controller {
 		$this->video            = $video;
 		$this->postValidator    = $postValidator;
 		$this->section          = $sections;
+		$this->tag 				= $tag;
+		$this->tagValidator     = $tagValidator;
     }
 
 	public function index()
 	{
+
 		try {
 			$posts = $this->post->all();
+
 
 			return View::make('cms.pages.post.index', compact('permissions','posts'));
 
@@ -76,6 +85,7 @@ class PostController extends Controller {
 	 */
 	public function create()
 	{
+
 		if($this->admin_permissions->has("create"))
 		{
 
@@ -83,7 +93,7 @@ class PostController extends Controller {
 
 			$contents = $this->section->infertile();
 
-			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
+			return View::make("cms.pages.post.create",compact("edit_post",'contents','tags'));
 		}
 
 		throw new UnauthorizedException;
@@ -106,12 +116,21 @@ class PostController extends Controller {
 			{
 				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'));
 
+				$tags = Input::get('tags');
+				$tags = explode(", ", $tags);
+
+				array_map(function($tag)use($post){
+
+					$result = $this->tag->create($tag);
+					$post->tags()->save($result);
+				}, $tags);
+
+
 				if(isset($input['croped_images_array']))
 				{
 					$photos = new UploadedPhotosCollection;
 
 				 	$crop_sizes = json_decode($input['croped_images_array']);
-
 
 				 	if(isset($input['images']))
 				 	{
@@ -122,6 +141,7 @@ class PostController extends Controller {
 							$crop_size = get_object_vars($crop_sizes[$key]);
 						 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
 		        			$photos->push($photo);
+
 						}
 
 						$aws_response = $this->manager->upload($photos,'artists/webs');
@@ -176,6 +196,7 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
+
 		if($this->admin_permissions->has("read"))
 		{
 			try {
