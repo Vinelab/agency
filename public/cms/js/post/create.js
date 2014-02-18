@@ -2,6 +2,41 @@ var temp_images;
 var croped_object;
 var yt_video_index=0;
 
+//Add document.ready
+//
+//we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
+var tag_input = $('#form-field-tags');
+
+var tags="";
+
+$.ajax({
+	url: "/cms/tag/all",
+	type: "get",
+	processData: false,
+	contentType: false,
+	success: function (res) {
+		tags = JSON.parse(res.tags);
+
+		if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ) 
+		{
+			tag_input.tag(
+			  {
+				placeholder:tag_input.attr('placeholder'),
+				//enable typeahead by specifying the source array
+				source: tags,//defined in ace.js >> ace.enable_search_ahead
+			  }
+			);
+		}
+		else {
+			//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+			tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
+			//$('#form-field-tags').autosize({append: "\n"});
+		}		
+	}
+});
+
+
+
 function FilesUploadChange()
 {
 	var images=$("#images").prop("files");
@@ -64,10 +99,12 @@ function submitForm()
 	var title = $("#title").val();
 	var body = $("#body").val();
 	var section = $("#section").val();
+	var tags=$("#form-field-tags").val();
 
 	formdata.append("title",title);
 	formdata.append("body",body);
 	formdata.append("section",section);
+	formdata.append("tags",tags);
 
 
 	videos_array=JSON.stringify(getVideosArray());
@@ -81,7 +118,7 @@ function submitForm()
 		contentType: false,
 		success: function (res) {
 
-			top.location="/cms/content";
+			 top.location="/cms/content";
 		}
 	});
 

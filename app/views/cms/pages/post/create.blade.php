@@ -10,6 +10,7 @@
 	@section('scripts')
 	    @parent
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
+		{{HTML::script("/assets/js/bootstrap-tag.min.js")}}
 		{{HTML::script("/cms/js/post/create.js")}}
 	@stop
 

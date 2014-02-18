@@ -59,6 +59,15 @@
 		</div>
 	</div>
 
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Tag input</label>
+
+		<div class="col-sm-9">
+			<input type="text" name="tags" id="form-field-tags"  placeholder="Enter tags ..." style="display: none;">
+			
+		</div>
+	</div>
+
 	{{--Add Images --}}
 
 	<h3 class="row header smaller lighter blue">
@@ -94,8 +103,6 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="space-12"></div>
 	
 	<ul id="videos_list">
 		
