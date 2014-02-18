@@ -5,6 +5,8 @@
 @section('content')
 	<div class="col-sm-6">
         <ol class="dd-list">
+        	
+		@if(!empty($posts))
 			@foreach($posts as $post)
 				<li class="dd-item" data-id="1">
 					<div class="dd-handle">
@@ -12,7 +14,7 @@
 					</div>
 				</li>
 			@endforeach
-			
+		@endif
 
 		</ol>
     </div>
