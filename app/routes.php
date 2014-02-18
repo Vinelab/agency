@@ -63,6 +63,24 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             ]
         ]);
 
+    Route::resource('/tag', 'Agency\Cms\Controllers\TagController',
+        [
+            'names' => [
+                'index'   => 'cms.tag',
+                'create'  => 'cms.tag.create',
+                'store'   => 'cms.tag.store',
+                'edit'    => 'cms.tag.edit',
+                'update'  => 'cms.tag.update',
+                'destroy' => 'cms.tag.destroy'
+            ],
+            'except' => ['show']
+        ]);
+
+    Route::get("/tag/all",[
+        'as'=>'cms.tags',
+        'uses'=>'Agency\Cms\Controllers\TagController@all'
+    ]);
+
    
 
     Route::get('/audience', [
@@ -142,5 +160,6 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         "as" => "cms.post.tmp",
         "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
     ]);
+
 
 });
