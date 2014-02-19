@@ -3,7 +3,18 @@
 
 @stop
 @section('content')
+
+    
 	<div class="col-sm-6">
+        @if ($admin_permissions->has('create'))
+            <div class="row">
+                <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
+                    <span class="icon-plus"></span>
+                    New Post
+                </a>
+            </div>
+        @endif
+        <div class="space-4"></div>
         <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                 @foreach($section_posts as $key=>$section_post)
@@ -19,11 +30,6 @@
               
                 @foreach($section_posts as $key=>$section_post)
                     <div id="{{$section_post['sub_section']->alias}}" class="tab-pane {{$key==0? 'active':''}}">
-                        <a class="green" class="button" href="{{URL::route('cms.post.create')}}">
-                            Add Post
-                            <i class="fa fa-plus bigger-130"></i>
-                        </a>
-                            
                             @if(!empty($section_post['posts']))
                                 <ul>
                                     @foreach($section_post['posts'] as $post)
