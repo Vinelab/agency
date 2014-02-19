@@ -1,4 +1,4 @@
-<?php
+git<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +39,11 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
     Route::get('/dashboard', [
         'as' => 'cms.dashboard',
         'uses' => 'Agency\Cms\Controllers\DashboardController@index'
+    ]);
+
+    Route::post("/tmp",[
+        "as" => "cms.post.tmp",
+        "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
     ]);
 
 
@@ -156,10 +161,4 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     });
     
-    Route::post("/tmp",[
-        "as" => "cms.post.tmp",
-        "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
-    ]);
-
-
 });
