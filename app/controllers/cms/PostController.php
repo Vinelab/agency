@@ -201,7 +201,17 @@ class PostController extends Controller {
 		{
 			try {
 				$post = $this->post->find($id);
-				return dd($post);
+				$media = $post->media()->get();
+				$media_array=[];
+				foreach ($media as $value) {
+					array_push($media_array, $value->media);
+				}
+
+
+				return View::make('cms.pages.post.show',compact('post','media_array'));
+
+				
+
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
