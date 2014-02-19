@@ -1,6 +1,8 @@
 	@section('head')
 		@parent
 		{{HTML::style("/css/post/create.css")}}
+		<link rel="stylesheet" href="{{asset('css/jquery.Jcrop.min.css')}}" />
+
 	@stop
 
 	@section('content')
