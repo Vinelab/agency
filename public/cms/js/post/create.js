@@ -73,7 +73,9 @@ function displayCropView(temp_images)
 		croped_images_ul.append(element);
 		$("#croped-img-"+i).Jcrop({
 			aspectRatio: 3/2,
-			//trueSize:[500,500]
+			setSelect: [0, 0, 600, 400],
+			minSize: [300, 200],
+			boxWidth: 800
 		});
 	}
 }
@@ -118,7 +120,7 @@ function submitForm()
 		contentType: false,
 		success: function (res) {
 
-			 top.location="/cms/content";
+			top.location="/cms/content";
 		}
 	});
 
@@ -142,27 +144,47 @@ function getCropedImagesArray()
 
 
 function showPreview(image_to_crop, coords) {
+
+	var crop_x=0;
+	var crop_width=0;
+
+	if(image_to_crop.width()<=800)
+	{
+		crop_x = Math.round(coords.x);
+		crop_width = Math.round(coords.w);
+
+	}else{
+
+		crop_x = Math.round((coords.x*(image_to_crop.width()))/800);
+		crop_width = Math.round((coords.w*(image_to_crop.width()))/800);
+	}
+
 	var croped_image_object={
 		"name":image_to_crop.prop("src"),
-		crop_x : Math.round(coords.x),
+		crop_x : crop_x,
 		crop_y : Math.round(coords.y),
-		crop_width  : Math.round(coords.w),
+		crop_width  : crop_width,
 		crop_height  : Math.round(coords.h),
-		width : getImageWidth(),
-		height : getImageHeight(),
+		width : image_to_crop.width(),
+		height : image_to_crop.height(),
 
 	};
+	
 	return croped_image_object;
+
 }
 
 function getImageWidth()
 {
-	return $('.jcrop-holder img:eq(0)').width();
+	// return $('.jcrop-holder img:eq(0)').width();
+	return $(".image_to_crop").width();
 }
 
 function getImageHeight()
 {
-	return $('.jcrop-holder img:eq(0)').height();
+	// return $('.jcrop-holder img:eq(0)').height();
+		return $(".image_to_crop").width();
+
 
 }
 
@@ -249,8 +271,11 @@ function getVideosArray()
 			"title" : $(videos_title[i]).val(),
 			"desc" : $(videos_desc[i]).val(),
 			"src" : $(videos_thumbnail[i]).prop("src"),
-			"url" : $(videos_url).val()
+			"url" : "http://youtube.com/embed/"+get_youtube_id($(videos_url).val()),
+
 		}
+
+		console.log("http://youtube.com/embed/"+get_youtube_id($(videos_url).val()));
 
 		videos_array.push(video_obj);	
 	};
