@@ -1,6 +1,8 @@
 <?php  namespace Agency\Cms;
 
-class Video extends \Eloquent  {
+use Agency\Cms\Contracts\MediaInterface;
+
+class Video extends \Eloquent implements MediaInterface  {
 
 	protected $table = "videos";
 	protected $fillable = ["url","title","description","thumbnail"];
@@ -8,6 +10,16 @@ class Video extends \Eloquent  {
 	public function post()
     {
         return $this -> morphMany ( "Agency\Cms\Media", "media");
+    }
+
+    public function type()
+    {
+    	return "video";
+    }
+
+    public function url()
+    {
+    	return $this->url;
     }
 	
 }
