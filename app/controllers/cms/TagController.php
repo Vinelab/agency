@@ -27,7 +27,7 @@ class TagController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		return Redirect::route('cms.dashboard');
 	}
 
 	/**
