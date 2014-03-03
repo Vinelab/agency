@@ -43,10 +43,10 @@ class UploadedPhotoValidator {
      */
     public function validateFile(File $file)
     {
-        if ( ! $file->isValid())
-        {
-            throw new PhotoUploadException('error occured while uploading photo' , $file->getError());
-        }
+        // if ( ! $file->isValid())
+        // {
+        //     throw new PhotoUploadException('error occured while uploading photo' , $file->getError());
+        // }
 
         $input = ['extension' => $file->guessExtension()];
         $rules = ['extension' => 'in:jpeg,jpg,png,bmp,gif'];
