@@ -29,6 +29,19 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 		return $media;
 	}
 
+	public function detachImageFromPost($image,$post)
+	{
+		try {
+			
+			return $post->media()->where('media_type','=','Agency\Cms\Image')->where('media_id','=',$image)->first()->delete();
+
+		} catch (Exception $e) {
+			
+			return Response::json(['message'=>$e->getMessage()]);
+		}
+
+	}
+
 	public function storeTemp($images)
 	{
 		$images_url=[];
@@ -47,6 +60,20 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 
 		$base = base_path().'/public/tmp/';
 		unlink($base.$file);
+	}
+
+	public function delete($id)
+	{
+		try {
+
+			$image = Image::find($id);
+			$image->delete();
+
+		} catch (Exception $e) {
+			
+			return Response::json(['messages'=>$e->getMessages()]);
+		}
+
 	}
 
 
