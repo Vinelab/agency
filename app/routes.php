@@ -1,4 +1,4 @@
-git<?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -8,7 +8,7 @@ git<?php
 | Here is where you can register all of the routes for an application.
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the Closure to execute when that URI is requested.
-|
+|ok
 */
 
 Route::get('/', function()
@@ -46,6 +46,11 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
     ]);
 
+    Route::post("/tmp/delete",[
+        "as" => "cms.delete.tmp",
+        "uses" => "Agency\Cms\Controllers\TempsController@deletePhoto"
+    ]);
+   
 
     Route::get("/content/{slug}",[
         'as'=>"cms.content.show",
@@ -100,9 +105,9 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                     'create'  => 'cms.post.create',
                     'store'   => 'cms.post.store',
                     'show'    => 'cms.post.show',
-                    'edit'    => 'cms.post.update',
+                    'edit'    => 'cms.post.edit'
                 ],
-                'except' => ['destroy']
+                'except' => ['destroy','update']
     ]);
 
       Route::get("/post/delete/{id}",[
@@ -110,6 +115,15 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
 
+      Route::post("/post/remove/photo",[
+        'as' => 'cms.post.remove.photo',
+        'uses' => 'Agency\Cms\Controllers\PostController@removePhoto'
+        ]);
+
+      Route::post("/post/{id}",[
+        'as' => 'cms.post.update',
+        'uses' => 'Agency\Cms\Controllers\PostController@update'
+        ]);
 
     Route::get("/content",[
         'as'=>'cms.content',
