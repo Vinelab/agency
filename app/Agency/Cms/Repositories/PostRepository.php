@@ -26,14 +26,14 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return $post;
 	}
 
-	public function update($id,$title,$body,$user_id)
+	public function update($id,$title,$body,$admin_id)
 	{
 		$post=$this->post->find($id);
 		if(!is_null($post))
 		{
 			$post->title = $title;
 			$post->body = $body;
-			$post->user_id = $user_id;
+			$post->admin_id = $admin_id;
 			$post->save();
 			return $post;
 		}
