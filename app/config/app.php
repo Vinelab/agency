@@ -110,6 +110,7 @@ return array(
 
 		'Vinelab\Auth\AuthServiceProvider',
 		'Agency\AgencyServiceProvider',
+		'Agency\Cms\CmsServiceProvider'
 	),
 
 	/*

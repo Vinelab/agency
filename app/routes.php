@@ -38,6 +38,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::get('/dashboard', [
         'as' => 'cms.dashboard',
+
         'uses' => 'Agency\Cms\Controllers\DashboardController@index'
     ]);
 
@@ -49,6 +50,15 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
     Route::post("/tmp/delete",[
         "as" => "cms.delete.tmp",
         "uses" => "Agency\Cms\Controllers\TempsController@deletePhoto"
+
+    ]);
+   
+
+
+    Route::get("/content/{slug}",[
+        'as'=>"cms.content.show",
+        'uses'=>"Agency\Cms\Controllers\ContentController@show"
+
     ]);
    
 
@@ -124,6 +134,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         'as' => 'cms.post.update',
         'uses' => 'Agency\Cms\Controllers\PostController@update'
         ]);
+
 
     Route::get("/content",[
         'as'=>'cms.content',
