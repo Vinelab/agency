@@ -6,6 +6,10 @@ interface ImageRepositoryInterface {
 
 	public function assignImageToPost($image,$post);
 
+	public function detachImageFromPost($image,$post);
+
+	public function delete($id);
+
 	public function storeTemp($images);
 
 	public function deleteTemp($image);
