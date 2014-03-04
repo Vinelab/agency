@@ -6,4 +6,6 @@ interface VideoRepositoryInterface {
 
 	public function validate_url($url);
 
+	public function detachAll($post);
+
 }
