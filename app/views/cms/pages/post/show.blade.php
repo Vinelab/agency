@@ -8,11 +8,14 @@
 		
 
 
-		
-		@if($media_array[0]->type()=="image")
-			<img src="{{$media_array[0]->url}}">
-		@elseif($media_array[0]->type()=="video")
-			<iframe width="420" height="315" src="{{$media_array[0]->url}}" frameborder="0" allowfullscreen></iframe>
+		@if(!empty($media_array))
+
+			@if($media_array[0]->type()=="image")
+				<img src="{{$media_array[0]->url}}">
+			@elseif($media_array[0]->type()=="video")
+				<iframe width="420" height="315" src="{{$media_array[0]->url}}" frameborder="0" allowfullscreen></iframe>
+			@endif
+			
 		@endif
 
 

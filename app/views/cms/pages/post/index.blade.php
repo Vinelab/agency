@@ -16,8 +16,18 @@
             <ul>
                 @foreach($posts as $post)
                     <li>
-                        {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
-                        {{HTML::link(URL::route('cms.post.destroy',$post->id),"X")}}
+                        <div class="dd-handle">
+                            {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
+                            <div class="pull-right action-buttons">
+                                <a class="blue" href="{{URL::route('cms.post.edit',$post->id)}}">
+                                    <i class="icon-pencil bigger-130"></i>
+                                </a>
+
+                                <a class="red" href="{{URL::route('cms.post.destroy',$post->id)}}">
+                                    <i class="icon-trash bigger-130"></i>
+                                </a>
+                            </div>
+                        </div>
 
                     </li>
                 @endforeach

@@ -1,6 +1,18 @@
 var temp_images;
 var croped_object;
 var yt_video_index=0;
+var images=[];
+var croped_images_ul=$("#croped-images-list");
+var image_counter=0;
+
+//array to store images
+var files=[];
+
+
+$(document).ready(function(){
+	var updating = $("#updating");
+	
+});
 
 //Add document.ready
 //
@@ -39,15 +51,17 @@ $.ajax({
 
 function FilesUploadChange()
 {
-	var images=$("#images").prop("files");
+	temp_images=$("#images").prop("files");
 
 
 	
 	formdata = new FormData();
 
-	for(var i=0;i<images.length;i++)
+	for(var i=0;i<temp_images.length;i++)
 	{
-		formdata.append("images[]", images[i]);
+		formdata.append("images[]", temp_images[i]);
+		images.push(temp_images[i]);
+
 	}
 
 	$.ajax({
@@ -65,19 +79,27 @@ function FilesUploadChange()
 
 function displayCropView(temp_images)
 {
-	var croped_images_ul=$("#croped-images-list");
 	var temp_images_lengh=temp_images.length;
+	var updating= $('#updating').val();
 	for(var i=0; i<temp_images_lengh;i++)
 	{
-		var element='<li id="croped-image-item-'+i+'"><img class="image_to_crop" src="/tmp/'+temp_images[i]+'" id="croped-img-'+i+'"></li>';
-		croped_images_ul.append(element);
-		$("#croped-img-"+i).Jcrop({
+
+		files.push(temp_images[i]);
+		templateHTML=$('#image_item').html();
+	    template=Handlebars.compile(templateHTML);
+	    compiledHtml=template({data:temp_images[i],index:image_counter+i});
+	    croped_images_ul.append(compiledHtml);
+
+		$("#croped-img-"+(image_counter+i)).Jcrop({
 			aspectRatio: 3/2,
-			setSelect: [0, 0, 600, 400],
-			minSize: [300, 200],
-			boxWidth: 800
+            allowSelect: false,
+            keySupport: false,
+            setSelect: [0, 0, 600, 400],
+            minSize: [300, 200],
+            boxWidth: 800
 		});
 	}
+	image_counter=image_counter+temp_images_lengh;
 }
 
 var croped_images_array=[];
@@ -89,9 +111,6 @@ function submitForm()
 	croped_images_array=JSON.stringify(getCropedImagesArray());
 	formdata.append("croped_images_array",croped_images_array);
 
-
-	var files = $("#images").prop("files");
-
 	for(var i=0;i<files.length;i++)
 	{
 		formdata.append("images[]", files[i]);
@@ -102,6 +121,14 @@ function submitForm()
 	var body = $("#body").val();
 	var section = $("#section").val();
 	var tags=$("#form-field-tags").val();
+	if($('#updating').val()=="1")
+	{
+		var old_tags=$(".tag-value");
+		for(var i=0;i<old_tags.length;i++)
+		{
+			tags=tags+", "+(old_tags[i].innerText);
+		}
+	}
 
 	formdata.append("title",title);
 	formdata.append("body",body);
@@ -112,17 +139,14 @@ function submitForm()
 	videos_array=JSON.stringify(getVideosArray());
 	formdata.append("videos",videos_array);
 
-	$.ajax({
-		url: "/cms/post",
-		type: "POST",
-		data: formdata,
-		processData: false,
-		contentType: false,
-		success: function (res) {
+	if($('#updating').val()=="1")
+	{
+		post_id=$('#post_id').val();
+		submitUpdatedForm(formdata,post_id);
 
-			top.location="/cms/content";
-		}
-	});
+	}else{
+		submitNewForm(formdata);
+	}
 
 }
 
@@ -144,32 +168,16 @@ function getCropedImagesArray()
 
 
 function showPreview(image_to_crop, coords) {
-
-	var crop_x=0;
-	var crop_width=0;
-
-	if(image_to_crop.width()<=800)
-	{
-		crop_x = Math.round(coords.x);
-		crop_width = Math.round(coords.w);
-
-	}else{
-
-		crop_x = Math.round((coords.x*(image_to_crop.width()))/800);
-		crop_width = Math.round((coords.w*(image_to_crop.width()))/800);
-	}
-
+	
 	var croped_image_object={
 		"name":image_to_crop.prop("src"),
-		crop_x : crop_x,
+		crop_x : Math.round(coords.x),
 		crop_y : Math.round(coords.y),
-		crop_width  : crop_width,
+		crop_width  : Math.round(coords.w),
 		crop_height  : Math.round(coords.h),
-		width : image_to_crop.width(),
-		height : image_to_crop.height(),
-
+		width : getImageWidth(),
+		height : getImageHeight(),
 	};
-	
 	return croped_image_object;
 
 }
@@ -183,7 +191,7 @@ function getImageWidth()
 function getImageHeight()
 {
 	// return $('.jcrop-holder img:eq(0)').height();
-		return $(".image_to_crop").width();
+		return $(".image_to_crop").height();
 
 
 }
@@ -283,4 +291,107 @@ function getVideosArray()
 	return videos_array;
 
 }
+
+
+function removeTag(tag)
+{
+	$(tag).parent().remove();
+}
+
+function getTags()
+{
+	tags=$("#form-field-tags").val();
+	tags_values=$(".tag-value");
+	old_tags="";
+
+	for(var i=0;i<tags_values.length;i++)
+	{
+		old_tags=old_tags+($(tags_values[i]).html())+",";
+	}
+	return old_tags+tags;
+
+
+}
+
+function submitUpdatedForm(formdata,id)
+{
+	console.log(formdata);
+	$.ajax({
+		url: "/cms/post/"+id,
+		type: "POST",
+		data: formdata,
+		processData: false,
+		contentType: false,
+		success: function (res) {
+			top.location="/cms/content";
+		}
+	});
+}
+
+
+function submitNewForm(formdata)
+{
+	$.ajax({
+		url: "/cms/post",
+		type: "POST",
+		data: formdata,
+		processData: false,
+		contentType: false,
+		success: function (res) {
+
+			// top.location="/cms/content";
+		}
+	});
+}
+
+
+function deleteImage(id,element)
+{
+	//remove croped image list item
+	//delete temp image from the server
+	$.ajax({
+		url:"/cms/tmp/delete",
+		type:"POST",
+		data:{image:id},
+		success:function(res)
+		{
+			if(res.result==true)
+			{
+				files = jQuery.grep(files, function(value) {
+				  return value != id;
+				});
+
+				$(element).parent().remove();
+
+			}
+		}
+	});
+}
+
+
+function removePhotos(id, post_id)
+{
+    var obj = {id: id, post_id: post_id};
+    $.ajax({
+        url: "/cms/post/remove/photo",
+        type: "POST",
+        data: obj,
+        success: function(res){
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            if(xhr.status == 400 || xhr.status == 403 || xhr.status == 408 || xhr.status == 500 || xhr.status == 504)
+            {
+                alert(xhr.statusText);
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
 

@@ -61,6 +61,8 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     ]);
    
+   
+
 
     Route::get("/content/{slug}",[
         'as'=>"cms.content.show",

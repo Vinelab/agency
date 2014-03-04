@@ -11,9 +11,13 @@
 
 	@section('scripts')
 	    @parent
+	    @include('cms.pages.templates.post')
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
 		{{HTML::script("/assets/js/bootstrap-tag.min.js")}}
 		{{HTML::script("/cms/js/post/create.js")}}
+		{{HTML::script("/js/handlebars.js")}}
+		<script src="{{asset('/assets/js/bootstrap-wysiwyg.min.js')}}"></script>
+
 	@stop
 
 @include('cms.layout.master')

@@ -20,6 +20,8 @@ use Agency\Cms\Post;
 
 use Agency\Cms\Tag;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 
 use View,Input,App,Session,Auth,Response,Redirect;
@@ -93,7 +95,7 @@ class PostController extends Controller {
 
 			$contents = $this->section->infertile();
 
-			return View::make("cms.pages.post.create",compact("edit_post",'contents','tags'));
+			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
 
 		throw new UnauthorizedException;
@@ -137,7 +139,7 @@ class PostController extends Controller {
 				 		$images = $input['images'];
 
 				 		foreach ($images as $key=>$image) {
-
+				 			$image= new UploadedFile(public_path()."/tmp/$image",$image);
 							$crop_size = get_object_vars($crop_sizes[$key]);
 						 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
 		        			$photos->push($photo);
@@ -229,7 +231,31 @@ class PostController extends Controller {
 	 */
 	public function edit($id)
 	{
+		if($this->admin_permissions->has("update"))
+		{
 
+			try {
+
+				$post=$this->post->find($id);
+				$media = $post->media()->get();
+				$media_array=[];
+				foreach ($media as $value) {
+					array_push($media_array, $value->media);
+				}
+
+				$tags = $post->tags()->get()->fetch('text')->toArray();
+
+				$contents = $this->section->infertile();
+				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'media'=>$media_array]);
+
+				
+			} catch (Exception $e) {
+				return Response::json(['message'=>$e->getMessage()]);
+			}
+			
+		}
+
+		throw new UnauthorizedException;		
 	}
 
 	/**
@@ -240,7 +266,92 @@ class PostController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+		if($this->admin_permissions->has("update"))
+		{
+			$input = Input::all();
+
+			if($this->postValidator->validate($input))
+			{
+				$post = $this->post->update($id,Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'));
+
+				$tags = Input::get('tags');
+				$tags = explode(", ", $tags);
+				if(!empty($post->tags()->get()))
+				{
+					$post->tags()->detach();
+				}
+
+				//remove empty string from tags array
+				$tags = array_filter($tags);
+
+				array_map(function($tag)use($post){
+					
+					$result = $this->tag->create($tag);
+					$post->tags()->save($result);
+					
+				}, $tags);
+
+
+				if(isset($input['croped_images_array']))
+				{
+					$photos = new UploadedPhotosCollection;
+
+				 	$crop_sizes = json_decode($input['croped_images_array']);
+
+				 	if(isset($input['images']))
+				 	{
+				 		$images = $input['images'];
+
+				 		foreach ($images as $key=>$image) {
+				 			$image= new UploadedFile(public_path()."/tmp/$image",$image);
+							$crop_size = get_object_vars($crop_sizes[$key]);
+						 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
+		        			$photos->push($photo);
+
+						}
+
+						$aws_response = $this->manager->upload($photos,'artists/webs');
+
+						$aws_response = $aws_response->toArray();
+
+						foreach ($aws_response as $response) {
+
+							$url = $response['original']->url;
+
+							$image = $this->image->create($url);
+
+							$image->post()->create(["post_id"=>$post->id]);
+						}
+
+						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
+							$this->image->deleteTemp($crop_sizes[$i]->name);
+						}
+
+				 	}
+				}
+
+				if(isset($input["videos"]))
+				{
+					$videos = json_decode($input["videos"]);
+
+					foreach ($videos as $video) {
+						if($this->video->validate_url($video->url))
+						{
+							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
+							$v->post()->create(["post_id"=>$post->id]);
+
+						}
+					}
+				}
+				return Response::json($post);
+			} else {
+				//display error
+
+			}
+
+		}
+
+		throw new UnauthorizedException;
 	}
 
 	/**
@@ -264,6 +375,25 @@ class PostController extends Controller {
 		}
 
 		throw new UnauthorizedException;
+	}
+
+	public function removePhoto()
+	{
+		$post_id=Input::get('post_id');
+		$photo_id=Input::get('id');
+
+		try {
+
+			$post=$this->post->find($post_id);
+			$this->image->detachImageFromPost($photo_id,$post);
+			$image=$this->image->delete($photo_id);
+
+		} catch (Exception $e) {
+			return Response::json(['messages'=>$e->getMessages()]);
+		}
+		
+
+
 	}
 
 

@@ -2,7 +2,7 @@
 
 use Agency\Media\Temp\Contracts\TemporaryInterface;
 
-use Input, Response;
+use Input, Response,File;
 
 class TempsController extends \Controller {
 
@@ -22,8 +22,25 @@ class TempsController extends \Controller {
         }
 
         return json_encode($tempImages);
+    }
+
+    /**
+     * delete temporary image from the disk
+     * @return boolean
+     */
+    public function deletePhoto()
+    {
 
 
+        try {
+            $result = File::delete(public_path()."/tmp/".Input::get('image'));
 
+            return Response::json(["result"=>$result]);
+            
+
+        } catch (Exception $e) {
+            
+            return Response::json(['message'=>$e->getMessage()]);
+        }
     }
 }

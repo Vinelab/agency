@@ -4,4 +4,6 @@ interface TagRepositoryInterface {
 
 	public function create($text);
 
-}
+	public function detach($post,$tag);
+
+} 

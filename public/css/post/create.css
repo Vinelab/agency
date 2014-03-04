@@ -1,7 +1,4 @@
-.image_to_crop {
-	/*width: 500px ;
-	height: 500px ;*/
-}
+
 
 .video-container{
 	/*background-color: blue;*/
@@ -53,4 +50,9 @@
 
 .video_item{
 	margin-bottom: 15px;
+}
+
+.croped-image-item{
+	width: 559px;
+	margin-top: 36px;
 }

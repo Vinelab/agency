@@ -14,8 +14,14 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 
 	public function create($text)
 	{
+		
 		$this->tag = $this->tag->firstOrCreate(compact("text"));
 		return $this->tag;
+	}
+
+	public function detach($post,$tag)
+	{
+
 	}
 
 	
