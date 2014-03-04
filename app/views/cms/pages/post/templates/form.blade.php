@@ -178,6 +178,36 @@
 	</div>
 	
 	<ul id="videos_list">
+		<?php
+		?>
+		
+		@if( isset($media) && count($media) > 0 )
+                @foreach($media as $key => $media_element)
+
+                	@if($media_element->type()=="video")
+                		<?php
+                		?>
+                        <li class="video_item" id="video_item_{{$key}}">
+                        	<div class="video-container">
+                        		<div class="yt-img">
+                        			<img src="{{$media_element->thumbnail}}" class="yt-img-thumbnail">
+                        		</div>
+                        		<div class="yt-data">
+                        			<input type="text" id="yt-title-{{$key}}" class="yt-title" value="{{$media_element->title}}">
+                        			<textarea id="yt-desc-{{$key}}" class="yt-desc">{{$media_element->description}}</textarea>
+                        			<input type="hidden" class="yt-url" id="yt-url-{{$key}}" value="{{$media_element->url}}">
+                        		</div>
+                        		@if ($admin_permissions->has('delete'))
+	                        		<div class="yt-delete">
+	                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="delete_yt({{$key}})"><i class="icon-trash"></i></button>
+	                        		</div>
+	                        	@endif
+                        	</div>                       
+                        </li>
+	                @endif
+                @endforeach
+        @endif
+		
 		
     </ul>
 
