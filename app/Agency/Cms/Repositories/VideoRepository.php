@@ -47,5 +47,15 @@ class VideoRepository extends Repository implements VideoRepositoryInterface {
 		return $has_match;
 	}
 
+	public function detachAll($post)
+	{
+		$old_videos=$post->media()->where('media_type','=','Agency\Cms\Video')->get();
+		foreach ($old_videos as $key => $video) {
+			$media_id=$video->media_id;
+			$this->video->find($media_id)->delete();
+			$video->delete();
+		}
+	}
+
 
 }
