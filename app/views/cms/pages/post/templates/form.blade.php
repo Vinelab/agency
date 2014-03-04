@@ -214,6 +214,68 @@
 
     <div class="space-12"></div>
 
+
+	<div class="control-group">
+	    <div class="pull-left publish-date-margin">
+	        @if($updating)
+	            {{ Form::label('editing',Lang::get('artists/article.editing')) }}
+	            {{ Form::radio('publishstate[]','editing', ( $edit_post->publish_state == 'editing' ) ? 'true' : '', ['id'=>'editing','class'=>'publish_state']) }}
+	            @if ($admin_permissions->has('publish'))
+	                {{ Form::label('published',Lang::get('artists/article.publish'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::radio('publishstate[]','published',( $edit_post->publish_state == 'published' ) ? 'true' : '' ,['id'=>'published','class'=>'publish_state']) }}
+
+	                {{ Form::label('scheduled',Lang::get('artists/article.schedule'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::radio('publishstate[]','scheduled',( $edit_post->publish_state == 'scheduled' ) ? 'true' : '', ['id'=>'scheduled','class'=>'publish_state']) }}
+	            @endif
+	        @else
+	            {{ Form::label('editing',Lang::get('artists/article.editing')) }}
+	            {{ Form::radio('publishstate[]','editing','true', ['id'=>'editing','class'=>'publish_state']) }}
+	            @if ($admin_permissions->has('publish'))
+	                {{ Form::label('published',Lang::get('artists/article.publish'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::radio('publishstate[]','published','', ['id'=>'published','class'=>'publish_state']) }}
+
+	                {{ Form::label('scheduled',Lang::get('artists/article.schedule'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::radio('publishstate[]','scheduled','', ['id'=>'scheduled','class'=>'publish_state']) }}
+	            @endif
+	        @endif
+	    </div>
+
+	    @if ($admin_permissions->has('publish'))
+	    	
+	        <div class="form-group">
+	            <div class="input-group input-large ">
+	                <div id="publish-date" class="input-append date">
+	                    <span class="add-on">
+	                    @if($updating)
+	                        {{ Form::text(
+	                            'publish_date',
+	                            ($edit_post->publish_state == 'scheduled') ? $edit_post->publish_date : '',
+	                            [
+	                                'data-format'=>'yyyy-MM-dd hh:mm:ss',
+	                                'id'=>'datepicker',
+	                                'class' => 'form-control',
+	                                'placeholder' => Lang::get('artists/article.publish_date') 
+	                            ] 
+	                        )}}
+	                    @else
+	                        {{ Form::text(
+	                                'publish_date', 
+	                                null, 
+	                                [
+	                                    'data-format'=>'yyyy-MM-dd hh:mm:ss',
+	                                    'id'=>'datepicker', 
+	                                    'placeholder' => Lang::get('artists/article.publish_date') 
+	                                ] 
+	                        )}}
+	                    @endif
+	                    </span>
+	                </div>
+	                
+	            </div>
+	        </div>
+	    @endif
+	</div>
+
     {{Form::button("Submit",["onclick"=>"submitForm()"])}}
 
 
