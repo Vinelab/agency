@@ -339,7 +339,7 @@ function submitNewForm(formdata)
 		contentType: false,
 		success: function (res) {
 
-			// top.location="/cms/content";
+			top.location="/cms/content";
 		}
 	});
 }
