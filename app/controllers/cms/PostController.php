@@ -68,8 +68,22 @@ class PostController extends Controller {
 	{
 
 		try {
-			$posts = $this->post->all();
+			$all_posts = $this->post->all();
 
+			$posts=[];
+			foreach ($all_posts as $key => $post) {
+				$media=$post->media()->first()->media;
+				if($media->type()=="image")
+				{
+					$image_id = $post->media()->first()->media->photo_id;
+					$thumbnail =  $this->image->getThumbnail($image_id)->url;
+				} else{
+
+					$thumbnail = $media->thumbnail;
+				}
+		
+				array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+			}
 
 			return View::make('cms.pages.post.index', compact('permissions','posts'));
 
@@ -149,12 +163,8 @@ class PostController extends Controller {
 						$aws_response = $this->manager->upload($photos,'artists/webs');
 
 						$aws_response = $aws_response->toArray();
-
 						foreach ($aws_response as $response) {
-
-							$url = $response['original']->url;
-
-							$image = $this->image->create($url);
+							$image = $this->image->create($response);
 
 							$image->post()->create(["post_id"=>$post->id]);
 						}
@@ -316,9 +326,7 @@ class PostController extends Controller {
 
 						foreach ($aws_response as $response) {
 
-							$url = $response['original']->url;
-
-							$image = $this->image->create($url);
+							$image = $this->image->create($response);
 
 							$image->post()->create(["post_id"=>$post->id]);
 						}
@@ -330,19 +338,23 @@ class PostController extends Controller {
 				 	}
 				}
 
-				if(isset($input["videos"]))
-				{
-					$videos = json_decode($input["videos"]);
+
+				
+					$videos = json_decode(Input::get('videos'));
+
+					$this->video->detachAll($post);
+
+					
+
 
 					foreach ($videos as $video) {
 						if($this->video->validate_url($video->url))
 						{
 							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
 							$v->post()->create(["post_id"=>$post->id]);
-
 						}
 					}
-				}
+			
 				return Response::json($post);
 			} else {
 				//display error
