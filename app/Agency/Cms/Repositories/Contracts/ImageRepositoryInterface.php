@@ -14,5 +14,6 @@ interface ImageRepositoryInterface {
 
 	public function deleteTemp($image);
 
+	public function getThumbnail($photo_id);
 
 }
