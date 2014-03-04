@@ -67,4 +67,6 @@ class PostRepository extends Repository implements PostRepositoryInterface {
        }
 	}
 
+	
+
 }
