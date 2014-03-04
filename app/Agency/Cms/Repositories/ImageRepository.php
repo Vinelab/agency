@@ -17,9 +17,22 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 		$this->image = $this->model = $image;
 	}
 
-	public function create($url)
+	public function create($response)
 	{
-		$this->image=$this->image->create(compact("url"));
+		$original = $response['original'];
+		$hashed_id = md5($original->id.time());
+
+		$this->image=$this->image->create(["url"=>$original->url,"preset"=>"original","photo_id"=>$hashed_id]);
+		
+		$small = $response['small'];
+		$this->image->create(["url"=>$small->url,"preset"=>"small","photo_id"=>$hashed_id]);
+		
+		$thumbnail = $response['thumbnail'];
+		$this->image->create(["url"=>$thumbnail->url,"preset"=>"thumbnail","photo_id"=>$hashed_id]);
+		
+		$square = $response['square'];
+		$this->image->create(["url"=>$square->url,"preset"=>"square","photo_id"=>$hashed_id]);
+		
 		return $this->image;
 	}
 
@@ -73,6 +86,12 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 			
 			return Response::json(['messages'=>$e->getMessages()]);
 		}
+
+	}
+
+	public function getThumbnail($photo_id)
+	{
+		return $this->image->where('photo_id','=',$photo_id)->where('preset','=','thumbnail')->first();
 
 	}
 
