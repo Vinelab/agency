@@ -11,7 +11,28 @@ var files=[];
 
 $(document).ready(function(){
 	var updating = $("#updating");
-	
+
+	 $(function() {
+        $('#publish-date').datetimepicker({
+          language: 'pt-BR'
+        });
+    });
+
+
+	$('#datepicker').hide();
+    $('#editing').click(function() {
+        $('#datepicker').hide();
+    });
+    $('#published').click(function() {
+        $('#datepicker').hide();
+    });
+    $('#scheduled').click(function() {
+        $('#datepicker').show();
+    });
+    if($('#scheduled').is(':checked'))
+    {
+        $('#datepicker').show();
+    }
 });
 
 //Add document.ready
@@ -130,10 +151,25 @@ function submitForm()
 		}
 	}
 
+
+	var publish_state=$(".publish_state");
+	for (var i = 0; i < publish_state.length; i++) {
+		if(publish_state[i].checked)
+		{
+			publish_state = $(".publish_state")[i].value;
+		}
+	};
+
+	var publish_date=$("#datepicker").val();
+
+
 	formdata.append("title",title);
 	formdata.append("body",body);
 	formdata.append("section",section);
 	formdata.append("tags",tags);
+	formdata.append("publish_state",publish_state);
+	formdata.append("publish_date",publish_date);
+
 
 
 	videos_array=JSON.stringify(getVideosArray());
