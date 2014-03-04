@@ -6,7 +6,7 @@ class Image extends \Eloquent implements MediaInterface  {
 
 	protected $table = "images";
 
-	protected $fillable = ["url"];
+	protected $fillable = ["url","preset","photo_id"];
 
 	/**
 	 * Get posts
