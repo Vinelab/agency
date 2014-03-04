@@ -14,7 +14,6 @@ class VideoRepository extends Repository implements VideoRepositoryInterface {
 	public function create($url,$title,$description,$thumbnail)
 	{
 		$this->video=$this->video->create(compact("url","title","description","thumbnail"));
-		$this->video->save();
 		return $this->video;
 	}
 
