@@ -14,16 +14,18 @@
 
         <div class="row">
             <ul>
+                
                 @foreach($posts as $post)
                     <li>
                         <div class="dd-handle">
-                            {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
+                            <img src="{{$post['thumbnail']}}">
+                            {{HTML::link(URL::route('cms.post.show',$post['data']->id),$post['data']->title)}}
                             <div class="pull-right action-buttons">
-                                <a class="blue" href="{{URL::route('cms.post.edit',$post->id)}}">
+                                <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->id)}}">
                                     <i class="icon-pencil bigger-130"></i>
                                 </a>
 
-                                <a class="red" href="{{URL::route('cms.post.destroy',$post->id)}}">
+                                <a class="red" href="{{URL::route('cms.post.destroy',$post['data']->id)}}">
                                     <i class="icon-trash bigger-130"></i>
                                 </a>
                             </div>
