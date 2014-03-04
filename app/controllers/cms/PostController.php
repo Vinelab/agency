@@ -72,17 +72,24 @@ class PostController extends Controller {
 
 			$posts=[];
 			foreach ($all_posts as $key => $post) {
-				$media=$post->media()->first()->media;
-				if($media->type()=="image")
+				$thumbnail="";
+				if(isset($post->media()->first()->media))
 				{
-					$image_id = $post->media()->first()->media->photo_id;
-					$thumbnail =  $this->image->getThumbnail($image_id)->url;
-				} else{
+					$media=$post->media()->first()->media;
+					if($media->type()=="image")
+					{
+						$image_id = $post->media()->first()->media->photo_id;
+						$thumbnail =  $this->image->getThumbnail($image_id)->url;
+					} else{
 
 					$thumbnail = $media->thumbnail;
 				}
 		
-				array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+				}
+
+			array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+
+				
 			}
 
 			return View::make('cms.pages.post.index', compact('permissions','posts'));
@@ -130,7 +137,7 @@ class PostController extends Controller {
 
 			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'));
+				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
@@ -282,7 +289,7 @@ class PostController extends Controller {
 
 			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->update($id,Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'));
+				$post = $this->post->update($id,Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
