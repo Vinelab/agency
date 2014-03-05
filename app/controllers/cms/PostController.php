@@ -21,7 +21,7 @@ use Agency\Cms\Post;
 use Agency\Cms\Tag;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Agency\Helper;
 
 
 use View,Input,App,Session,Auth,Response,Redirect;
@@ -137,7 +137,8 @@ class PostController extends Controller {
 
 			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->create(Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
+				$body = Helper::cleanHtml(Input::get('body'));
+				$post = $this->post->create(Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
@@ -289,7 +290,9 @@ class PostController extends Controller {
 
 			if($this->postValidator->validate($input))
 			{
-				$post = $this->post->update($id,Input::get("title"),Input::get("body"),Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
+				$body = Helper::cleanHtml(Input::get('body'));
+
+				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
