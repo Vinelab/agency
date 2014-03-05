@@ -6,9 +6,6 @@
 
 		<link rel="stylesheet" href="{{asset('css/jquery.Jcrop.min.css')}}" />
 
-
-		
-
 	@stop
 
 	@section('content')
@@ -20,9 +17,9 @@
 	    @include('cms.pages.templates.post')
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
 		{{HTML::script("/assets/js/bootstrap-tag.min.js")}}
-		<script src="{{asset('assets/js/jquery-ui-1.10.3.full.min.js')}}"></script>
-		<script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
-
+		{{HTML::script("/assets/js/jquery-ui-1.10.3.full.min.js")}}
+		{{HTML::script("js/bootstrap-datetimepicker.min.js")}}
+		
 
 		{{HTML::script("/cms/js/post/create.js")}}
 		{{HTML::script("/js/handlebars.js")}}
