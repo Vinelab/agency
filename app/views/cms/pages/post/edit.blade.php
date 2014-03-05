@@ -66,6 +66,12 @@
 		})
 		</script>
 
+		<script>
+		$('#wysiwyg-editor-value')
+			.text( $('#editor')
+			.html("{{ preg_replace("/\r|\n/", "", addslashes( nl2br($edit_post->body) ) ) }}"));
+		</script>
+
 
 	@stop
 
