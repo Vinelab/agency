@@ -17,8 +17,6 @@
 	
     <div class="form-group">
 
-		{{Form::label("title","Title",["class"=>"col-sm-3 control-label no-padding-right","for"=>"title"])}}
-
 		<div class="col-sm-9">
 			<div class="clearfix">
 				@if($updating)
@@ -34,16 +32,12 @@
 
 	<div class="form-group">
 
-		{{Form::label("body","Body",["class"=>"col-sm-3 control-label no-padding-right","for"=>"body"])}}
-
 		<div class="col-sm-9">
 			<div class="clearfix">
-				@if($updating)
-				    {{Form::textarea("info[title]","$edit_post->body",["id"=>"body","class"=>"col-xs-10 col-sm-5","placeholder"=>"Body"])}}
-				@else
-					 {{Form::textarea("info[title]","",["id"=>"body","class"=>"col-xs-10 col-sm-5","placeholder"=>"Body"])}}
-				@endif
-
+				
+				<div class="form-group">
+					<div id="editor" class="wysiwyg-editor"></div>
+				</div>
             </div>
 		</div>
 	</div>	
@@ -117,13 +111,11 @@
 		<div class='form-group well'>
 		    <div class="row">
 		        <ul class="ace-thumbnails">
-		            <?php 
-		            ?>
+		            
 		            @if( count($media) > 0 )
 		                @foreach($media as $media_element)
 		                	@if($media_element->type()=="image")
-		                		<?php
-		                		?>
+		                		
 			                    <li>
 			                        <a href="{{$media_element->url}}" data-rel="colorbox">
 			                            <img alt="150x150" src="{{$media_element->url}}" width="200px" height="200px;"/>
@@ -241,7 +233,7 @@
 	    </div>
 
 	    @if ($admin_permissions->has('publish'))
-	    	
+
 	        <div class="form-group">
 	            <div class="input-group input-large ">
 	                <div id="publish-date" class="input-append date">
