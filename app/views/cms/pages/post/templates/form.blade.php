@@ -1,5 +1,5 @@
 <?php
- $updating = isset($edit_post); 
+ $updating = isset($edit_post);
 ?>
 
 {{ Form::open([
@@ -14,24 +14,24 @@
 	
 	
 	<input type="hidden" name="updating" value="{{$updating}}" id="updating">
-	
-    <div class="form-group">
 
+	{{--Title Input--}} 
+    <div class="form-group">
 		<div class="col-sm-9">
 			<div class="clearfix">
 				@if($updating)
-				    {{Form::input("text","info[title]","$edit_post->title",["id"=>"title","class"=>"col-xs-10 col-sm-5","placeholder"=>"Title"])}}
-				    	<input type="hidden" name="post_id" value="{{$edit_post->id}}" id="post_id">
+				    {{Form::input("text","info[title]","$edit_post->title",["id"=>"title","class"=>"col-xs-10 col-sm-5"])}}
+				    <input type="hidden" name="post_id" value="{{$edit_post->id}}" id="post_id">
 
 				@else
-					{{Form::input("text","info[title]","",["id"=>"title","class"=>"col-xs-10 col-sm-5","value"=>"","placeholder"=>"Title"])}}
+					{{Form::input("text","info[title]","",["id"=>"title","class"=>"col-xs-10 col-sm-5","value"=>"","placeholder"=>Lang::get('posts/form.title')])}}
 				@endif
             </div>
 		</div>
 	</div>
-
+	
+	{{--Body Input--}}
 	<div class="form-group">
-
 		<div class="col-sm-9">
 			<div class="clearfix">
 				
@@ -40,11 +40,12 @@
 				</div>
             </div>
 		</div>
-	</div>	
+	</div>
 
+	{{--Content Input--}}
 	<div class="form-group">
 
-		{{Form::label("content","Content",["class"=>"col-sm-3 control-label no-padding-right","for"=>"content"])}}
+		{{Form::label("content",Lang::get("posts/form.content"),["class"=>"col-sm-1 control-label no-padding-right","for"=>"content"])}}
 
 		<div class="col-sm-9">
 			<div class="clearfix">
@@ -68,14 +69,14 @@
 					
 				</select>
 
-            </div>
+	        </div>
 		</div>
-
 	</div>
 
+	{{--Tags Input--}}
 	<div class="form-group">
 		
-		<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Tag input</label>
+		<label class="col-sm-1 control-label no-padding-right" for="form-field-tags">Tag input</label>
 
 		<div class="col-sm-9">
 				@if($updating and (sizeof($tags)>0))
@@ -101,11 +102,11 @@
 	</div>
 
 	{{--Add Images --}}
-
 	<h3 class="row header smaller lighter blue">
-        <span class="col-xs-12">Add Images</span>
+        <span class="col-xs-12">{{Lang::get("posts/form.add_images")}}</span>
     </h3>
 
+	{{--when updating display images--}}
 	@if($updating)
 		<!-- show all photos -->
 		<div class='form-group well'>
@@ -146,32 +147,30 @@
     <div class="space-12"></div>
 
     <ul id="croped-images-list">
-
     </ul>
 
     <div class="space-12"></div>
 
     <h3 class="row header smaller lighter blue">
-        <span class="col-xs-12">Add Videos</span>
+        <span class="col-xs-12">{{Lang::get("posts/form.add_videos")}}</span>
     </h3>
 
     <div class="row">
 		<div class="col-xs-12 col-sm-3">
 			<div class="input-group">
-				<input type="text" class="form-control search-query" placeholder="Youtbe video url" id="yt_video_txt">
+				<input type="text" class="form-control search-query" placeholder="{{Lang::get('posts/form.yt_video_url')}}" id="yt_video_txt">
 				<span class="input-group-btn">
 					<button type="button" onclick="addYoutubeVideo()" class="btn btn-purple btn-sm">
-						Add
+						{{Lang::get("posts/form.add_yt_btn")}}
 						<i class="icon-search icon-on-right bigger-110"></i>
 					</button>
 				</span>
 			</div>
 		</div>
 	</div>
-	
+
+	{{--display videos--}}
 	<ul id="videos_list">
-		<?php
-		?>
 		
 		@if( isset($media) && count($media) > 0 )
                 @foreach($media as $key => $media_element)
@@ -199,8 +198,6 @@
 	                @endif
                 @endforeach
         @endif
-		
-		
     </ul>
 
 
@@ -210,23 +207,23 @@
 	<div class="control-group">
 	    <div class="pull-left publish-date-margin">
 	        @if($updating)
-	            {{ Form::label('editing',Lang::get('artists/article.editing')) }}
+	            {{ Form::label('editing',Lang::get('posts/form.editing')) }}
 	            {{ Form::radio('publishstate[]','editing', ( $edit_post->publish_state == 'editing' ) ? 'true' : '', ['id'=>'editing','class'=>'publish_state']) }}
 	            @if ($admin_permissions->has('publish'))
-	                {{ Form::label('published',Lang::get('artists/article.publish'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::label('published',Lang::get('posts/form.publish'), ['class'=>'increase-margin-left']) }}
 	                {{ Form::radio('publishstate[]','published',( $edit_post->publish_state == 'published' ) ? 'true' : '' ,['id'=>'published','class'=>'publish_state']) }}
 
-	                {{ Form::label('scheduled',Lang::get('artists/article.schedule'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::label('scheduled',Lang::get('posts/form.schedule'), ['class'=>'increase-margin-left']) }}
 	                {{ Form::radio('publishstate[]','scheduled',( $edit_post->publish_state == 'scheduled' ) ? 'true' : '', ['id'=>'scheduled','class'=>'publish_state']) }}
 	            @endif
 	        @else
-	            {{ Form::label('editing',Lang::get('artists/article.editing')) }}
+	            {{ Form::label('editing',Lang::get('posts/form.editing')) }}
 	            {{ Form::radio('publishstate[]','editing','true', ['id'=>'editing','class'=>'publish_state']) }}
 	            @if ($admin_permissions->has('publish'))
-	                {{ Form::label('published',Lang::get('artists/article.publish'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::label('published',Lang::get('posts/form.publish'), ['class'=>'increase-margin-left']) }}
 	                {{ Form::radio('publishstate[]','published','', ['id'=>'published','class'=>'publish_state']) }}
 
-	                {{ Form::label('scheduled',Lang::get('artists/article.schedule'), ['class'=>'increase-margin-left']) }}
+	                {{ Form::label('scheduled',Lang::get('posts/form.schedule'), ['class'=>'increase-margin-left']) }}
 	                {{ Form::radio('publishstate[]','scheduled','', ['id'=>'scheduled','class'=>'publish_state']) }}
 	            @endif
 	        @endif
@@ -268,6 +265,7 @@
 	    @endif
 	</div>
 
-    {{Form::button("Submit",["onclick"=>"submitForm()"])}}
-
-
+    <button onclick="submitForm()" class="btn btn-success btn-lg" id="submitBtn">
+    	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
+    </button>
+		
