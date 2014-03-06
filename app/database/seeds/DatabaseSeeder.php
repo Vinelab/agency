@@ -64,22 +64,6 @@ class SectionTableSeeder extends Seeder {
 				'is_fertile' => true,
 				'is_roleable'=> true
 			],
-			[
-				'title'      => 'Post',
-				'alias'      => 'post',
-				'icon'       => 'book',
-				'parent_id'  => 0,
-				'is_fertile' => true,
-				'is_roleable'=> true
-			],
-			[
-				'title'      => 'Tag',
-				'alias'      => 'tag',
-				'icon'       => 'bookmark',
-				'parent_id'  => 0,
-				'is_fertile' => true,
-				'is_roleable'=> true
-			],
 
 			[
 				'title'      => 'Administration',
