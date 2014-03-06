@@ -158,7 +158,7 @@ var tag_input = $('#form-field-tags');
 var tags="";
 
 $.ajax({
-	url: "/cms/tag/all",
+	url: "/cms/content/post/tag/all",
 	type: "get",
 	processData: false,
 	contentType: false,
@@ -293,6 +293,10 @@ function submitForm()
 	}else{
 		submitNewForm(formdata);
 	}
+
+	$('#submitBtn').attr('disabled','disabled');
+	$('#spinner').show();
+
 }
 
 function getCropedImagesArray()
@@ -454,7 +458,7 @@ function submitUpdatedForm(formdata,id)
 {
 	console.log(formdata);
 	$.ajax({
-		url: "/cms/post/"+id,
+		url: "/cms/content/post/"+id,
 		type: "POST",
 		data: formdata,
 		processData: false,
@@ -469,7 +473,7 @@ function submitUpdatedForm(formdata,id)
 function submitNewForm(formdata)
 {
 	$.ajax({
-		url: "/cms/post",
+		url: "/cms/content/post",
 		type: "POST",
 		data: formdata,
 		processData: false,
