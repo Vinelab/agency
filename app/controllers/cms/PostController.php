@@ -73,13 +73,14 @@ class PostController extends Controller {
 			$posts=[];
 			foreach ($all_posts as $key => $post) {
 				$thumbnail="";
-				if(isset($post->media()->first()->media))
+				if(!is_null($post->media()->first()))
 				{
 					$media=$post->media()->first()->media;
 					if($media->type()=="image")
 					{
 						$image_id = $post->media()->first()->media->photo_id;
 						$thumbnail =  $this->image->getThumbnail($image_id)->url;
+
 					} else{
 
 					$thumbnail = $media->thumbnail;
