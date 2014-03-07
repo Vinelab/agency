@@ -141,8 +141,8 @@ class PostController extends Controller {
 
 			  	$slug = Helper::slugify(Input::get('title'));
 				$body = Helper::cleanHtml(Input::get('body'));
-
-				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'),$slug);
+				$section = $this->section->findBy('alias',Input::get('section'));
+				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
@@ -202,6 +202,7 @@ class PostController extends Controller {
 					}
 				}
 				return Response::json($post);
+
 			} else {
 				//display error
 
@@ -306,8 +307,9 @@ class PostController extends Controller {
 			{
 				$body = Helper::cleanHtml(Input::get('body'));
 				$slug = Helper::slugify(Input::get('title'));
+				$section = $this->section->findBy('alias',Input::get('section'));
 
-				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'),$slug);
+				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
