@@ -13,10 +13,10 @@ var files=[];
 		var updating = $("#updating");
 
 		$(function() {
-	        $('#publish-date').datetimepicker({
-	          language: 'pt-BR'
-	        });
-	    });
+			$('#publish-date').datetimepicker({
+				language: 'pt-BR'
+			});
+		});
 
 		$('#datepicker').hide();
 	    $('#editing').click(function() {
@@ -184,13 +184,13 @@ $.ajax({
 });
 
 
-function FilesUploadChange()
+function filesUploadChange()
 {
 	temp_images=$("#images").prop("files");
 
 	formdata = new FormData();
 
-	for(var i=0;i<temp_images.length;i++)
+	for(var i=0; i < temp_images.length; i++)
 	{
 		formdata.append("images[]", temp_images[i]);
 		images.push(temp_images[i]);
@@ -213,7 +213,7 @@ function displayCropView(temp_images)
 {
 	var temp_images_lengh=temp_images.length;
 	var updating= $('#updating').val();
-	for(var i=0; i<temp_images_lengh;i++)
+	for(var i=0; i < temp_images_lengh; i++)
 	{
 
 		files.push(temp_images[i]);
@@ -232,31 +232,31 @@ function displayCropView(temp_images)
 		});
 	}
 
-	image_counter=image_counter+temp_images_lengh;
+	image_counter = image_counter + temp_images_lengh;
 }
 
-var croped_images_array=[];
+var croped_images_array = [];
 
 function submitForm()
 {
-	
-
-
 	var title = $("#title").val();
 	var body = $("#editor").html();
 	var section = $("#section").val();
 	var tags=$("#form-field-tags").val();
+
 	if($('#updating').val()=="1")
 	{
 		var old_tags=$(".tag-value");
-		for(var i=0;i<old_tags.length;i++)
+
+		for(var i=0; i < old_tags.length; i++)
 		{
-			tags=tags+", "+(old_tags[i].innerText);
+			tags=tags + ", " + (old_tags[i].innerText);
 		}
 	}
 
 
 	var publish_state=$(".publish_state");
+
 	for (var i = 0; i < publish_state.length; i++) {
 		if(publish_state[i].checked)
 		{
@@ -267,16 +267,16 @@ function submitForm()
 	croped_images_array = getCropedImagesArray();
 	videos_array = getVideosArray();
 
-	var publish_date=$("#datepicker").val();
+	var publish_date = $("#datepicker").val();
 
 	formdata = new FormData();
 
 	if(title!="" || body!="" || croped_images_array.length>0 || videos_array.length>0 )
 	{
-		croped_images_array=JSON.stringify(croped_images_array);
+		croped_images_array = JSON.stringify(croped_images_array);
 		formdata.append("croped_images_array",croped_images_array);
 
-		for(var i=0;i<files.length;i++)
+		for(var i=0; i < files.length; i++)
 		{
 			formdata.append("images[]", files[i]);
 		}
@@ -288,14 +288,14 @@ function submitForm()
 		formdata.append("publish_state",publish_state);
 		formdata.append("publish_date",publish_date);
 
-		videos_array=JSON.stringify(videos_array);
+		videos_array = JSON.stringify(videos_array);
 
 		formdata.append("videos",videos_array);
 
 
 		if($('#updating').val()=="1")
 		{
-			post_id=$('#post_id').val();
+			post_id = $('#post_id').val();
 			submitUpdatedForm(formdata,post_id,section);
 
 		}else{
@@ -306,13 +306,8 @@ function submitForm()
 		$('#spinner').show();
 
 	}else{
-		alert("you can't create empty post");
+		displayErrorMessage();
 	}
-
-	
-
-
-
 }
 
 function getCropedImagesArray()
@@ -331,7 +326,8 @@ function getCropedImagesArray()
 
 function showPreview(image_to_crop, coords) {
 	
-	var croped_image_object={
+	var croped_image_object = {
+
 		"name":image_to_crop.prop("src"),
 		crop_x : Math.round(coords.x),
 		crop_y : Math.round(coords.y),
@@ -340,6 +336,7 @@ function showPreview(image_to_crop, coords) {
 		width : getImageWidth(),
 		height : getImageHeight(),
 	};
+	
 	return croped_image_object;
 }
 
@@ -365,12 +362,14 @@ function addYoutubeVideo()
 	yt_id=validYT(yt_url);
 	if(yt_id!=false)
 	{
-		yt_data = ajax_youtube(yt_url,function(data){
-			append_video(data,yt_url);
+		yt_data = ajaxYoutube(yt_url,function(data){
+			appendVideo(data,yt_url);
 		});
 
 		$("#yt_video_txt").val("");
 
+	} else {
+		invalidYoutubeUrl();
 	}
 }
 
@@ -380,10 +379,10 @@ function validYT(url)
 	return (url.match(p)) ? RegExp.$1 : false;
 }
 
-function ajax_youtube(url,callback)
+function ajaxYoutube(url,callback)
 {
 	$.ajax({
-        url: "http://gdata.youtube.com/feeds/api/videos/"+get_youtube_id(url)+"?v=2&alt=json",
+        url: "http://gdata.youtube.com/feeds/api/videos/"+getYoutubeId(url)+"?v=2&alt=json",
         dataType: "jsonp",
         success: function (data) {
   			return callback(data)
@@ -391,7 +390,7 @@ function ajax_youtube(url,callback)
     });
 }
 
-function get_youtube_id(url)
+function getYoutubeId(url)
 {
 	var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     var match = url.match(regExp);
@@ -399,7 +398,7 @@ function get_youtube_id(url)
         return match[7];
 }
 
-function append_video(yt_data,url)
+function appendVideo(yt_data,url)
 {
 	console.log(yt_data);
 
@@ -407,17 +406,17 @@ function append_video(yt_data,url)
 	var description = yt_data.entry.media$group.media$description.$t;
 	var img = yt_data.entry.media$group.media$thumbnail[0].url;
 
-	$("#videos_list").append(yt_template(yt_video_index,img,title,description,url));
+	$("#videos_list").append(ytTemplate(yt_video_index,img,title,description,url));
 	yt_video_index = yt_video_index + 1;
 }
 
-function yt_template(i,img,title,description,url)
+function ytTemplate(i,img,title,description,url)
 {
 
-	return '<li class="video_item" id="video_item_'+i+'"><div class="video-container"><div class="yt-img"><img src="'+img+'" class="yt-img-thumbnail"></div><div class="yt-data"><input type="text" id="yt-title-'+i+'" class="yt-title" value="'+title+'"><textarea id="yt-desc-'+i+'" class="yt-desc">'+description+'</textarea><input type="hidden" class="yt-url" id="yt-url-'+i+'" value="'+url+'"></div><div class="yt-delete"><button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="delete_yt('+i+')"><i class="icon-trash"></i></button></div></div></li>'
+	return '<li class="video_item" id="video_item_'+i+'"><div class="video-container"><div class="yt-img"><img src="'+img+'" class="yt-img-thumbnail"></div><div class="yt-data"><input type="text" id="yt-title-'+i+'" class="yt-title" value="'+title+'"><textarea id="yt-desc-'+i+'" class="yt-desc">'+description+'</textarea><input type="hidden" class="yt-url" id="yt-url-'+i+'" value="'+url+'"></div><div class="yt-delete"><button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt('+i+')"><i class="icon-trash"></i></button></div></div></li>'
 }
 
-function delete_yt(id)
+function deleteYt(id)
 {
 	$("#video_item_"+id).remove();
 		yt_video_index--;
@@ -438,11 +437,11 @@ function getVideosArray()
 			"title" : $(videos_title[i]).val(),
 			"desc" : $(videos_desc[i]).val(),
 			"src" : $(videos_thumbnail[i]).prop("src"),
-			"url" : "http://youtube.com/embed/"+get_youtube_id($(videos_url).val()),
+			"url" : "http://youtube.com/embed/"+getYoutubeId($(videos_url).val()),
 
 		}
 
-		console.log("http://youtube.com/embed/"+get_youtube_id($(videos_url).val()));
+		console.log("http://youtube.com/embed/"+getYoutubeId($(videos_url).val()));
 
 		videos_array.push(video_obj);	
 	};
@@ -542,6 +541,21 @@ function removePhotos(id, post_id)
         }
     });
 }
+
+
+
+
+//////////////////////////
+//////////////////////////
+//////////////////////////
+//////////////////////////
+
+jQuery(function($) {
+	$("#bootbox-options").on(ace.click_event, function() {
+		
+	});
+});
+
 
 
 
