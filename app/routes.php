@@ -206,17 +206,6 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     ]);
    
-   
-
-
-    Route::get("/content/{slug}",[
-        'as'=>"cms.content.show",
-        'uses'=>"Agency\Cms\Controllers\ContentController@show"
-    ]);
-
-
-
-
     Route::resource('/administration', 'Agency\Cms\Controllers\AdminController',
         [
             'names' => [
@@ -267,17 +256,17 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 'except' => ['destroy','update']
     ]);
 
-      Route::get("/post/delete/{id}",[
+      Route::get("/content/post/delete/{id}",[
         'as' => 'cms.post.destroy',
         'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
 
-      Route::post("/post/remove/photo",[
+      Route::post("/content/post/remove/photo",[
         'as' => 'cms.post.remove.photo',
         'uses' => 'Agency\Cms\Controllers\PostController@removePhoto'
         ]);
 
-      Route::post("/post/{id}",[
+      Route::post("/content/post/{id}",[
         'as' => 'cms.post.update',
         'uses' => 'Agency\Cms\Controllers\PostController@update'
         ]);
