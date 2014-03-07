@@ -1,15 +1,18 @@
 <?php  namespace Agency\Cms\Repositories;
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 use DB;
 use Agency\Cms\Post;
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
 
-	public function __construct(Post $post)
+	public function __construct(Post $post,
+								ImageRepositoryInterface $image)
 	{
 		$this->post = $this->model = $post;
+		$this->image = $image;
 	}
 
 	protected $section;
@@ -56,7 +59,28 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function getPostsByIds($ids)
 	{
-		$posts = DB::table('posts')->whereIn('id', $ids)->get();
+
+		$posts=[];
+
+		foreach ($ids as $key => $id) {
+			$post=$this->post->find($id);
+			$thumbnail="";
+			if(!is_null($post->media()->first()))
+			{
+				$media=$post->media()->first()->media;
+				if($media->type()=="image")
+				{
+					$image_id = $post->media()->first()->media->photo_id;
+					$thumbnail =  $this->image->getThumbnail($image_id)->url;
+
+				} else{
+					$thumbnail = $media->thumbnail;
+				}	
+			}
+
+			array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+		}
+
 		return $posts;
 	}
 
