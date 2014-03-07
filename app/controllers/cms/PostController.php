@@ -138,8 +138,11 @@ class PostController extends Controller {
 
 			if($this->postValidator->validate($input))
 			{
+
+			  	$slug = Helper::slugify(Input::get('title'));
 				$body = Helper::cleanHtml(Input::get('body'));
-				$post = $this->post->create(Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
+
+				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'),$slug);
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
@@ -215,12 +218,12 @@ class PostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($slug)
 	{
 		if($this->admin_permissions->has("read"))
 		{
 			try {
-				$post = $this->post->find($id);
+				$post = $this->post->findBy("slug",$slug);
 				$section = $post->section()->first();
 				//get all parent sections
 				
@@ -302,8 +305,9 @@ class PostController extends Controller {
 			if($this->postValidator->validate($input))
 			{
 				$body = Helper::cleanHtml(Input::get('body'));
+				$slug = Helper::slugify(Input::get('title'));
 
-				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'));
+				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,Input::get('section'),Input::get('publish_date'),Input::get('publish_state'),$slug);
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
