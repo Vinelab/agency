@@ -239,15 +239,7 @@ var croped_images_array=[];
 
 function submitForm()
 {
-	formdata = new FormData();
-
-	croped_images_array=JSON.stringify(getCropedImagesArray());
-	formdata.append("croped_images_array",croped_images_array);
-
-	for(var i=0;i<files.length;i++)
-	{
-		formdata.append("images[]", files[i]);
-	}
+	
 
 
 	var title = $("#title").val();
@@ -272,30 +264,54 @@ function submitForm()
 		}
 	};
 
+	croped_images_array = getCropedImagesArray();
+	videos_array = getVideosArray();
+
 	var publish_date=$("#datepicker").val();
 
+	formdata = new FormData();
 
-	formdata.append("title",title);
-	formdata.append("body",body);
-	formdata.append("section",section);
-	formdata.append("tags",tags);
-	formdata.append("publish_state",publish_state);
-	formdata.append("publish_date",publish_date);
-
-	videos_array=JSON.stringify(getVideosArray());
-	formdata.append("videos",videos_array);
-
-	if($('#updating').val()=="1")
+	if(title!="" || body!="" || croped_images_array.length>0 || videos_array.length>0 )
 	{
-		post_id=$('#post_id').val();
-		submitUpdatedForm(formdata,post_id);
+		croped_images_array=JSON.stringify(croped_images_array);
+		formdata.append("croped_images_array",croped_images_array);
+
+		for(var i=0;i<files.length;i++)
+		{
+			formdata.append("images[]", files[i]);
+		}
+
+		formdata.append("title",title);
+		formdata.append("body",body);
+		formdata.append("section",section);
+		formdata.append("tags",tags);
+		formdata.append("publish_state",publish_state);
+		formdata.append("publish_date",publish_date);
+
+		videos_array=JSON.stringify(videos_array);
+
+		formdata.append("videos",videos_array);
+
+
+		if($('#updating').val()=="1")
+		{
+			post_id=$('#post_id').val();
+			submitUpdatedForm(formdata,post_id,section);
+
+		}else{
+			 submitNewForm(formdata,section);
+		}
+
+		$('#submitBtn').attr('disabled','disabled');
+		$('#spinner').show();
 
 	}else{
-		submitNewForm(formdata);
+		alert("you can't create empty post");
 	}
 
-	$('#submitBtn').attr('disabled','disabled');
-	$('#spinner').show();
+	
+
+
 
 }
 
@@ -454,9 +470,8 @@ function getTags()
 	return old_tags+tags;
 }
 
-function submitUpdatedForm(formdata,id)
+function submitUpdatedForm(formdata,id,section)
 {
-	console.log(formdata);
 	$.ajax({
 		url: "/cms/content/post/"+id,
 		type: "POST",
@@ -464,13 +479,13 @@ function submitUpdatedForm(formdata,id)
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location="/cms/content";
+			top.location="/cms/content/"+section;
 		}
 	});
 }
 
 
-function submitNewForm(formdata)
+function submitNewForm(formdata,section)
 {
 	$.ajax({
 		url: "/cms/content/post",
@@ -479,7 +494,7 @@ function submitNewForm(formdata)
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location="/cms/content";
+			top.location="/cms/content/"+section;
 		}
 	});
 }
