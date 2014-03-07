@@ -69,6 +69,9 @@ class ContentController extends Controller {
 		try {
 			$section = $this->section->findBy("alias",$alias);
 
+			//get parent section
+			$parent_sections = $this->section->parentSection($section);
+
 			if(!is_null($section))
 			{
 				$this->section->set($section);
@@ -86,13 +89,10 @@ class ContentController extends Controller {
 								$posts_id = $sub_section->posts()->get(['id'])->fetch('id')->toArray();
 								$posts = $this->post->getPostsByIds($posts_id);
 							}
-							
-						
-						
+													
 						array_push($section_posts,['sub_section'=>$sub_section,'posts'=>$posts]);
 					}
-
-					return View::make("cms.pages.content.index",compact("section_posts"));
+					return View::make("cms.pages.content.index",compact("section_posts","parent_sections"));
 				}else{
 					
 						$posts="";
@@ -102,7 +102,7 @@ class ContentController extends Controller {
 							$posts = $this->post->getPostsByIds($posts_id);
 						}
 
-						return View::make("cms.pages.content.posts",compact("posts"));
+						return View::make("cms.pages.content.posts",compact("posts","parent_sections"));
 					
 				}
 			}
