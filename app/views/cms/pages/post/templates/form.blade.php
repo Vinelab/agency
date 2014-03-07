@@ -4,8 +4,16 @@
 
 
 	
-	<input type="hidden" name="updating" value="{{$updating}}" id="updating">
-
+	<div class="form-group">
+		<div class="col-sm-9">
+			<div class="clearfix">
+				
+				<div class="form-group">
+						<input type="hidden" name="updating" value="{{$updating}}" id="updating">
+				</div>
+            </div>
+		</div>
+	</div>
 	{{--Title Input--}} 
     <div class="form-group">
 		<div class="col-sm-9">
@@ -35,10 +43,8 @@
 
 	{{--Content Input--}}
 	<div class="form-group">
-
-		{{Form::label("content",Lang::get("posts/form.content"),["class"=>"col-sm-1 control-label no-padding-right","for"=>"content"])}}
-
-		<div class="col-sm-9">
+		{{Form::label("content",Lang::get("posts/form.content"),["class"=>"col-sm-3 control-label no-padding-right","for"=>"content"])}}
+		<div class="col-sm-3">
 			<div class="clearfix">
 				<select name="section" id="section">
 
@@ -67,9 +73,9 @@
 	{{--Tags Input--}}
 	<div class="form-group">
 		
-		<label class="col-sm-1 control-label no-padding-right" for="form-field-tags">Tag input</label>
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Tag input</label>
 
-		<div class="col-sm-9">
+		<div class="col-sm-3">
 				@if($updating and (sizeof($tags)>0))
 					<div class="tags">
 						<input type="text" name="tags" id="form-field-tags"  placeholder="Enter tags ..." style="display: none;">
@@ -132,7 +138,7 @@
 	@endif
 
     <div class="col-sm-9">
-    	<input multiple="" type="file" id="images" onChange="FilesUploadChange()" />
+    	<input multiple="" type="file" id="images" onChange="filesUploadChange()" />
     </div>
 
     <div class="space-12"></div>
@@ -253,8 +259,72 @@
 	        </div>
 	    @endif
 	</div>
-
-    <button onclick="submitForm()" class="btn btn-success btn-lg" id="submitBtn">
+	
+    <button onclick="submitForm()" class="btn btn-success btn-lg pull-right" id="submitBtn">
     	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
     </button>
-		
+    @if($updating)
+		{{ Form::submit('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost('$edit_post->slug')"]) }}
+	@endif
+<script type="text/javascript">
+	function deletePost(slug)
+	{
+		bootbox.dialog({
+			message: "<span class='bigger-110'>{{Lang::get('posts/form.conf_messasge_delete_post')}}</span>",
+			buttons: 			
+			{
+				"default" :
+				 {
+					"label" : "{{Lang::get('posts/form.cancel')}}",
+					"className" : "btn-sm btn-grey",
+					"callback": function() {
+						//Example.show("great success");
+					}
+				},
+				"danger" :
+				{
+					"label" : "<i class='icon-trash'></i> {{Lang::get('posts/form.delete')}}!",
+					"className" : "btn-sm btn-danger",
+					"callback": function() {
+						top.location='/cms/content/post/delete/'+slug
+					}
+				}
+			}
+		});
+	}
+
+	function displayErrorMessage()
+	{
+		bootbox.dialog({
+			message: "<span class='bigger-110'>{{Lang::get('posts/form.empty_post_msg')}}</span>",
+			buttons: 			
+			{
+				"default" :
+				 {
+					"label" : "{{Lang::get('posts/form.ok')}}",
+					"className" : "btn-sm btn-success",
+					"callback": function() {
+					}
+				}
+			}
+		});
+	}
+
+	function invalidYoutubeUrl()
+	{
+		bootbox.dialog({
+			message: "<span class='bigger-110'>{{Lang::get('posts/form.invalid_youtube_url')}}</span>",
+			buttons: 			
+			{
+				"default" :
+				 {
+					"label" : "{{Lang::get('posts/form.ok')}}",
+					"className" : "btn-sm btn-success",
+					"callback": function() {
+					}
+				}
+			}
+		});
+	}
+</script>
+
