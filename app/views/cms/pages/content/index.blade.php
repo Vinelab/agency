@@ -1,11 +1,12 @@
 @section("head")
     @parent
+    {{HTML::style("/css/content/posts.css")}}
 
 @stop
 @section('content')
 
     
-	<div class="col-sm-6">
+	<div>
         @if ($admin_permissions->has('create'))
             <div class="row">
                 <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
@@ -33,17 +34,26 @@
                             @if(!empty($section_post['posts']))
                                 <ul>
                                     @foreach($section_post['posts'] as $post)
-                                        <li>
-                                            {{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
-                                            {{HTML::link(URL::route('cms.post.destroy',$post->id),'X')}}
+                                        <li class="posts-container">
+                                            <div class="dd-handle">
+                                                <div class="pull-right action-buttons">
+
+                                                    @if ($admin_permissions->has('update'))
+
+                                                        <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->id)}}">
+                                                            <i class="icon-pencil bigger-130"></i>
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                                <img src="{{$post['thumbnail']}}">
+                                                    {{HTML::link(URL::route('cms.post.show',$post['data']->id),$post['data']->title)}}
+                                            </div>
                                         </li>
                                     @endforeach
                                 </ul>
                             @endif
                     </div>
                 @endforeach
-                
-
 
             </div>
         </div>
