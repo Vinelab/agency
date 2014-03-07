@@ -513,7 +513,7 @@ function removePhotos(id, post_id)
 {
     var obj = {id: id, post_id: post_id};
     $.ajax({
-        url: "/cms/post/remove/photo",
+        url: "/cms/content/post/remove/photo",
         type: "POST",
         data: obj,
         success: function(res){
