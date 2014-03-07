@@ -18,5 +18,6 @@ return [
     'empty_post_msg' => "You can't submit empty post",
     'cancel'        => 'Cancel',
     'delete' => 'Delete',
-    'ok' => 'OK'
+    'ok' => 'OK',
+    'invalid_youtube_url' => "Please enter a valid youtube URL"
 ];
