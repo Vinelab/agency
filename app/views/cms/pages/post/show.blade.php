@@ -20,12 +20,13 @@
 
 
 		<p>
-			{{$post->body}}
+			{{nl2br($post->body)}}
 		</p>
 
 		@if(sizeof($media_array)>1)
 			@foreach($media_array as $media)
 				@if($media->type()=="image")
+					
 					<img style="width:200px;height200px;" src="{{$media->url}}">
 				@elseif($media->type()=="video")
 					<iframe width="200" height="200" src="{{$media->url}}" frameborder="0" allowfullscreen></iframe>
