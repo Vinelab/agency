@@ -258,17 +258,17 @@ class PostController extends Controller {
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  string  $slug
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($slug)
 	{
 		if($this->admin_permissions->has("update"))
 		{
 
 			try {
 
-				$post=$this->post->find($id);
+				$post=$this->post->findBy("slug",$slug);
 				$media = $post->media()->get();
 				$media_array=[];
 				foreach ($media as $value) {
@@ -398,13 +398,13 @@ class PostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($slug)
 	{
 		if($this->admin_permissions->has("delete"))
 		{
 			try {
-				$section=$this->post->section($id);
-				if($this->post->delete($id))
+				$section=$this->post->section($slug);
+				if($this->post->delete($slug))
 					return Redirect::route("cms.content.show",$section->alias);	
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
