@@ -2,16 +2,7 @@
  $updating = isset($edit_post);
 ?>
 
-{{ Form::open([
-    'url'    => $updating ?
-                    URL::route('cms.post.update', $edit_post->id) :
-                    URL::route('cms.post.store'),
-    'method' => $updating ? 'PUT' : 'POST',
-    'class'  => 'form-horizontal',
-    'role'   =>'form',
-    'id'     => 'admin-info'
-]) }}
-	
+
 	
 	<input type="hidden" name="updating" value="{{$updating}}" id="updating">
 
@@ -54,15 +45,15 @@
 					@if($updating)
 						@foreach($contents as $content)
 							@if($content->id==$edit_post->section_id)
-								<option value="{{$content->id}}" selected>{{$content->title}}</option>
+								<option value="{{$content->alias}}" selected>{{$content->title}}</option>
 							@else
-								<option value="{{$content->id}}">{{$content->title}}</option>
+								<option value="{{$content->alias}}">{{$content->title}}</option>
 							@endif
 						@endforeach
 					@else 
 
 						@foreach($contents as $content)
-							<option value="{{$content->id}}">{{$content->title}}</option>
+							<option value="{{$content->alias}}">{{$content->title}}</option>
 						@endforeach
 
 					@endif
@@ -176,8 +167,6 @@
                 @foreach($media as $key => $media_element)
 
                 	@if($media_element->type()=="video")
-                		<?php
-                		?>
                         <li class="video_item" id="video_item_{{$key}}">
                         	<div class="video-container">
                         		<div class="yt-img">
