@@ -22,14 +22,14 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		$this->post=$post;
 	}
 
-	public function create($title,$body,$admin_id,$section_id,$publish_date,$publish_state)
+	public function create($title,$body,$admin_id,$section_id,$publish_date,$publish_state,$slug)
 	{
-		$post=$this->post->create(compact("title","body","admin_id","section_id","publish_date","publish_state"));
+		$post=$this->post->create(compact("title","body","admin_id","section_id","publish_date","publish_state","slug"));
 		$this->post=$post;
 		return $post;
 	}
 
-	public function update($id,$title,$body,$admin_id,$section_id,$publish_date,$publish_state)
+	public function update($id,$title,$body,$admin_id,$section_id,$publish_date,$publish_state,$slug)
 	{
 		$post=$this->post->find($id);
 		if(!is_null($post))
@@ -40,6 +40,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			$post->section_id = $section_id;
 			$post->publish_date = $publish_date;
 			$post->publish_state = $publish_state;
+			$post->slug = $slug;
 			$post->save();
 			return $post;
 		}
