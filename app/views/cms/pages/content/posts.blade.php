@@ -4,6 +4,14 @@
 
 @stop
 @section('content')
+        @if ($admin_permissions->has('create'))
+            <div class="row">
+                <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
+                    <span class="icon-plus"></span>
+                    New Post
+                </a>
+            </div>
+        @endif
 	<div class="col-sm-6">
 
         <ol class="dd-list">
