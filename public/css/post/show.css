@@ -1,0 +1,24 @@
+#post-container{
+	width: 50%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#post-cover{
+	height: 300px;
+}
+
+#cover-photo{
+	height: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#post-body{
+	text-align:right;
+	font-size: 13pt;
+}
+
+
