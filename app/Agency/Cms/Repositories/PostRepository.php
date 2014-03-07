@@ -31,7 +31,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function update($id,$title,$body,$admin_id,$section_id,$publish_date,$publish_state,$slug)
 	{
-		$post=$this->post->where('slug','=',$slug)->first();
+		$post=$this->post->find($id);
 		if(!is_null($post))
 		{
 			$post->title = $title;
