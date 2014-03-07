@@ -80,4 +80,13 @@ class Helper {
     {
         return preg_replace('~<div>~', "<br>", $html);
     }
+
+
+    public static function slugify($title)
+    {
+        $seo_st = str_replace(' ', '-', $title);
+        $seo_alm = str_replace('--', '-', $seo_st);
+        $title_seo = str_replace(' ', '', $seo_alm);
+        return mb_strtolower($title_seo, 'UTF-8');
+    }
 }
