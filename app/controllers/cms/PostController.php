@@ -66,7 +66,6 @@ class PostController extends Controller {
 
 	public function index()
 	{
-
 		try {
 			$all_posts = $this->post->all();
 
@@ -404,9 +403,9 @@ class PostController extends Controller {
 		if($this->admin_permissions->has("delete"))
 		{
 			try {
-
+				$section=$this->post->section($id);
 				if($this->post->delete($id))
-					return Redirect::route("cms.post");	
+					return Redirect::route("cms.content.show",$section->alias);	
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
