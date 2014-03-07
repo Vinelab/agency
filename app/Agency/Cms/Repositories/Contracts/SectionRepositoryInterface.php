@@ -17,4 +17,6 @@ interface SectionRepositoryInterface {
     public function infertile();
 
     public function set($section);
+
+    public function parentSection($section);
 }
