@@ -3,7 +3,7 @@
 class Post extends \Eloquent  {
 
 	protected $table = "posts";
-	protected $fillable=["title","body","admin_id","section_id","publish_date","publish_state"];
+	protected $fillable=["title","body","admin_id","section_id","publish_date","publish_state","slug"];
 	
 
 	public function admins()
