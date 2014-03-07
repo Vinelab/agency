@@ -18,8 +18,8 @@
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
 		{{HTML::script("/assets/js/bootstrap-tag.min.js")}}
 		{{HTML::script("/assets/js/jquery-ui-1.10.3.full.min.js")}}
-		{{HTML::script("js/bootstrap-datetimepicker.min.js")}}
-		
+		{{HTML::script("/js/bootstrap-datetimepicker.min.js")}}
+		<script src="/assets/js/bootbox.min.js"></script>
 
 		{{HTML::script("/cms/js/post/create.js")}}
 		{{HTML::script("/js/handlebars.js")}}
