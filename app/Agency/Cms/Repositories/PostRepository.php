@@ -31,7 +31,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function update($id,$title,$body,$admin_id,$section_id,$publish_date,$publish_state,$slug)
 	{
-		$post=$this->post->find($id);
+		$post=$this->post->where('slug','=',$slug)->first();
 		if(!is_null($post))
 		{
 			$post->title = $title;
@@ -85,19 +85,20 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return $posts;
 	}
 
-	public function delete($id)
+	public function delete($slug)
 	{
 		try {
-            $this->model = $this->find($id);
+            $this->model = $this->post->where("slug","=",$slug)->first();
             return $this->model->delete(); 
        	} catch (Exception $e) {
            return Response::json(['message'=>$e->getMessage()]);
        }
 	}
 
-	public function section($id)
+	public function section($slug)
 	{
-		$post = $this->post->find($id);
+		$post = $this->post->where("slug","=",$slug)->first();
+
 		return $post->section()->first();
 	}
 
