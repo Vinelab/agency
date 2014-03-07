@@ -217,19 +217,29 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
-
 		if($this->admin_permissions->has("read"))
 		{
 			try {
 				$post = $this->post->find($id);
+				$section = $post->section()->first();
+				//get all parent sections
+				
+				$parent_sections = $this->section->parentSection($section);
 				$media = $post->media()->get();
 				$media_array=[];
 				foreach ($media as $value) {
-					array_push($media_array, $value->media);
+					if($value->media->type()=="image")
+					{
+						$image = $this->image->getThumbnail($value->media->photo_id);
+						array_push($media_array, $image);
+
+					}else{
+						array_push($media_array, $value->media);
+					}
 				}
 
 
-				return View::make('cms.pages.post.show',compact('post','media_array'));
+				return View::make('cms.pages.post.show',compact('post','media_array','parent_sections'));
 
 				
 
