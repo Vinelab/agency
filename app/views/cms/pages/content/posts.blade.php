@@ -22,7 +22,7 @@
                     <div class="dd-handle">
                     	<div class="pull-right action-buttons">
                             @if ($admin_permissions->has('update'))
-                                <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->id)}}">
+                                <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->slug)}}">
                                     <i class="icon-pencil bigger-130"></i>
                                 </a>
                             @endif
