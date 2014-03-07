@@ -5,6 +5,7 @@
  */
 
 use Agency\Cms\Section;
+use DB;
 
 class SectionRepository extends Repository implements Contracts\SectionRepositoryInterface {
 
@@ -101,5 +102,20 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
     public function set($section)
     {
         $this->section = $this->model =$section;
+    }
+
+    public function parentSection($section)
+    {
+        $parent_sections = [];
+
+        $content_section = $this->section->where('alias','=','content')->first();
+
+        while($section->parent_id!=$content_section->id)
+        {
+            array_push($parent_sections, $section);
+            $section=$this->section->find($section->parent_id);
+        }
+        array_push($parent_sections, $section);
+        return  array_reverse($parent_sections);
     }
 }
