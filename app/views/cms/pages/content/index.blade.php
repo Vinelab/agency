@@ -46,7 +46,7 @@
                                                     @endif
                                                 </div>
                                                 <img src="{{$post['thumbnail']}}">
-                                                    {{HTML::link(URL::route('cms.post.show',$post['data']->id),$post['data']->title)}}
+                                                    {{HTML::link(URL::route('cms.post.show',$post['data']->slug),$post['data']->title)}}
                                             </div>
                                         </li>
                                     @endforeach
