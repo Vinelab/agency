@@ -12,4 +12,6 @@ interface PostRepositoryInterface {
 
 	public function set($post);
 
+	public function section($id);
+
 }
