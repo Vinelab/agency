@@ -1,18 +1,28 @@
 @section("head")
     @parent
+	{{HTML::style("/css/content/posts.css")}}
 
 @stop
 @section('content')
 	<div class="col-sm-6">
+
         <ol class="dd-list">
-        	
+        
 		@if(!empty($posts))
 			@foreach($posts as $post)
-				<li class="dd-item" data-id="1">
-					<div class="dd-handle">
-						{{HTML::link(URL::route('cms.post.show',$post->id),$post->title)}}
-					</div>
-				</li>
+				 <li class="posts-container">
+                    <div class="dd-handle">
+                    	<div class="pull-right action-buttons">
+                            @if ($admin_permissions->has('update'))
+                                <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->id)}}">
+                                    <i class="icon-pencil bigger-130"></i>
+                                </a>
+                            @endif
+                        </div>
+                        <img src="{{$post['thumbnail']}}">
+                        {{HTML::link(URL::route('cms.post.show',$post['data']->id),$post['data']->title)}}
+                    </div>
+                </li>
 			@endforeach
 		@endif
 
