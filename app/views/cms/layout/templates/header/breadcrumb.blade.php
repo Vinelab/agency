@@ -5,4 +5,18 @@
             {{ $cms_sections['current']->title }}
         </a>
 	</li>
+
+	@if(isset($parent_sections))
+		@foreach($parent_sections as $section)
+			<li>
+	        	<a href="{{URL::route('cms.content.show',$section->alias)}}">
+	            	{{$section->title}}
+	        	</a>
+        	</li>
+		@endforeach	
+	@endif
+
+	
+	
+	
 </ul><!-- .breadcrumb -->
