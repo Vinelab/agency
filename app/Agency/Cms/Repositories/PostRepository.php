@@ -95,6 +95,12 @@ class PostRepository extends Repository implements PostRepositoryInterface {
        }
 	}
 
+	public function section($id)
+	{
+		$post = $this->post->find($id);
+		return $post->section()->first();
+	}
+
 	
 
 }
