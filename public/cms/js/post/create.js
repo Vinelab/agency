@@ -522,12 +522,13 @@ function deleteImage(id,element)
 	});
 }
 
+console.log(routes);
 
 function removePhotos(id, post_id)
 {
     var obj = {id: id, post_id: post_id};
     $.ajax({
-        url: "/cms/content/post/remove/photo",
+        url: routes.cms_post_remove_photo,
         type: "POST",
         data: obj,
         success: function(res){
