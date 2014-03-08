@@ -73,13 +73,16 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 				{
 					$image_id = $post->media()->first()->media->photo_id;
 					$thumbnail =  $this->image->getThumbnail($image_id)->url;
+					$post->setThumbnail($thumbnail);
 
 				} else{
 					$thumbnail = $media->thumbnail;
+					$post->setThumbnail($thumbnail);
+
 				}	
 			}
 
-			array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+			array_push($posts,$post);
 		}
 
 		return $posts;
