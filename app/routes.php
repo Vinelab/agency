@@ -175,8 +175,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                             'is_fertile' => false,
                             'is_roleable'=> false
                 ]);
-
     });
+
+    Route::get('/audience', [
+            'as' => 'cms.audience',
+            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
+    ]);
 
     
 
@@ -207,19 +211,21 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
     ]);
    
     Route::resource('/administration', 'Agency\Cms\Controllers\AdminController',
-        [
-            'names' => [
-                'index'   => 'cms.administration',
-                'create'  => 'cms.administration.create',
-                'store'   => 'cms.administration.store',
-                'show'    => 'cms.administration.show',
-                'edit'    => 'cms.administration.edit',
-                'update'  => 'cms.administration.update',
-                'destroy' => 'cms.administration.destroy'
-            ]
-        ]);
+    [
+        'names' => [
+            'index'   => 'cms.administration',
+            'create'  => 'cms.administration.create',
+            'store'   => 'cms.administration.store',
+            'show'    => 'cms.administration.show',
+            'edit'    => 'cms.administration.edit',
+            'update'  => 'cms.administration.update',
+            'destroy' => 'cms.administration.destroy'
+        ]
+    ]);
 
-    Route::resource('/content/post/tag', 'Agency\Cms\Controllers\TagController',
+    Route::group(['prefix' => '/content'], function(){
+
+        Route::resource('/post/tag', 'Agency\Cms\Controllers\TagController',
         [
             'names' => [
                 'index'   => 'cms.tag',
@@ -232,50 +238,47 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             'except' => ['show']
         ]);
 
-    Route::get("/content/post/tag/all",[
-        'as'=>'cms.tags',
-        'uses'=>'Agency\Cms\Controllers\TagController@all'
-    ]);
-
-   
-
-    Route::get('/audience', [
-            'as' => 'cms.audience',
-            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
+        Route::get("/post/tag/all",[
+            'as'=>'cms.tags',
+            'uses'=>'Agency\Cms\Controllers\TagController@all'
         ]);
 
-     Route::resource('/content/post', 'Agency\Cms\Controllers\PostController',
-            [
-                'names' => [
-                    'index'   => 'cms.post',
-                    'create'  => 'cms.post.create',
-                    'store'   => 'cms.post.store',
-                    'show'    => 'cms.post.show',
-                    'edit'    => 'cms.post.edit'
-                ],
-                'except' => ['destroy','update']
-    ]);
-
-      Route::get("/content/post/delete/{id}",[
-        'as' => 'cms.post.destroy',
-        'uses' => 'Agency\Cms\Controllers\PostController@destroy'
+         Route::resource('/post', 'Agency\Cms\Controllers\PostController',
+                [
+                    'names' => [
+                        'index'   => 'cms.post',
+                        'create'  => 'cms.post.create',
+                        'store'   => 'cms.post.store',
+                        'show'    => 'cms.post.show',
+                        'edit'    => 'cms.post.edit'
+                    ],
+                    'except' => ['destroy','update']
         ]);
 
-      Route::post("/content/post/remove/photo",[
-        'as' => 'cms.post.remove.photo',
-        'uses' => 'Agency\Cms\Controllers\PostController@removePhoto'
+        Route::get("/post/delete/{id}",[
+            'as' => 'cms.post.destroy',
+            'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
 
-      Route::post("/content/post/{id}",[
-        'as' => 'cms.post.update',
-        'uses' => 'Agency\Cms\Controllers\PostController@update'
+        Route::post("/post/remove/photo",[
+            'as' => 'cms.post.remove.photo',
+            'uses' => 'Agency\Cms\Controllers\PostController@removePhoto'
+        ]);
+
+        Route::post("/post/{id}",[
+            'as' => 'cms.post.update',
+            'uses' => 'Agency\Cms\Controllers\PostController@update'
         ]);
 
 
-    Route::get("/content",[
-        'as'=>'cms.content',
-        'uses'=>'Agency\Cms\Controllers\ContentController@index'
-    ]);
+        Route::get("/",[
+            'as'=>'cms.content',
+            'uses'=>'Agency\Cms\Controllers\ContentController@index'
+        ]);
+
+    });
+
+
 
     Route::group(['prefix' => 'configuration'], function() {
 
