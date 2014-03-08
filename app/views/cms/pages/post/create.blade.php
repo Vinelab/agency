@@ -15,6 +15,7 @@
 	@section('scripts')
 	    @parent
 	    @include('cms.pages.templates.post')
+	    @include('cms.pages.post.templates.routes')
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
 		{{HTML::script("/assets/js/bootstrap-tag.min.js")}}
 		{{HTML::script("/assets/js/jquery-ui-1.10.3.full.min.js")}}
