@@ -228,21 +228,21 @@ class PostController extends Controller {
 				//get all parent sections
 				
 				$parent_sections = $this->section->parentSection($section);
-				$media = $post->media()->get();
-				$media_array=[];
-				foreach ($media as $value) {
+				$gallery = $post->media()->get();
+				$media=[];
+				foreach ($gallery as $value) {
 					if($value->media->type()=="image")
 					{
 						$image = $this->image->getThumbnail($value->media->photo_id);
-						array_push($media_array, $image);
+						array_push($media, $image);
 
 					}else{
-						array_push($media_array, $value->media);
+						array_push($media, $value->media);
 					}
 				}
 
 
-				return View::make('cms.pages.post.show',compact('post','media_array','parent_sections'));
+				return View::make('cms.pages.post.show',compact('post','media','parent_sections'));
 
 				
 

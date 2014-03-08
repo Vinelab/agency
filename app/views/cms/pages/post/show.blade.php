@@ -11,12 +11,12 @@
 			<h2>{{$post->title}}</h2>
 		</div>
 		<div id="post-cover">
-			@if(!empty($media_array))
+			@if(!empty($media))
 
-				@if($media_array[0]->type()=="image")
-					<img id="cover-photo" src="{{$media_array[0]->url}}">
-				@elseif($media_array[0]->type()=="video")
-					<iframe width="420" height="315" src="{{$media_array[0]->url}}" frameborder="0" allowfullscreen></iframe>
+				@if($media[0]->type()=="image")
+					<img id="cover-photo" src="{{$media[0]->url}}">
+				@elseif($media[0]->type()=="video")
+					<iframe width="420" height="315" src="{{$media[0]->url}}" frameborder="0" allowfullscreen></iframe>
 				@endif
 				
 			@endif
@@ -27,13 +27,13 @@
 			</p>
 		</div>
 		<div id="media">
-			@if(sizeof($media_array)>1)
-				@foreach($media_array as $media)
-					@if($media->type()=="image")
+			@if(sizeof($media)>1)
+				@foreach($media as $m)
+					@if($m->type()=="image")
 						
-						<img style="width:200px;height200px;" src="{{$media->url}}">
-					@elseif($media->type()=="video")
-						<iframe width="200" height="200" src="{{$media->url}}" frameborder="0" allowfullscreen></iframe>
+						<img style="width:200px;height200px;" src="{{$m->url}}">
+					@elseif($m->type()=="video")
+						<iframe width="200" height="200" src="{{$m->url}}" frameborder="0" allowfullscreen></iframe>
 					@endif
 				@endforeach
 			@endif

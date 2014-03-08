@@ -185,7 +185,7 @@
                         		</div>
                         		@if ($admin_permissions->has('delete'))
 	                        		<div class="yt-delete">
-	                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="delete_yt({{$key}})"><i class="icon-trash"></i></button>
+	                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt({{$key}})"><i class="icon-trash"></i></button>
 	                        		</div>
 	                        	@endif
                         	</div>                       
