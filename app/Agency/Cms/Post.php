@@ -5,6 +5,7 @@ class Post extends \Eloquent  {
 	protected $table = "posts";
 	protected $fillable=["title","body","admin_id","section_id","publish_date","publish_state","slug"];
 	
+	protected $thumbnail;	
 
 	public function admins()
 	{
@@ -24,5 +25,15 @@ class Post extends \Eloquent  {
 	public function tags()
     {
         return $this->belongsToMany("Agency\Cms\Tag");
+    }
+
+    public function setThumbnail($thumbnail)
+    {
+    	$this->thumbnail = $thumbnail;
+    }
+
+    public function thumbnail()
+    {
+    	return $this->thumbnail;
     }
 }
