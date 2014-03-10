@@ -4,9 +4,6 @@
 @stop
 @section('content')
 
-<?php
-    return dd("hiii");
-?>
 
 	<div class="col-sm-6">
 		@if ($admin_permissions->has('create'))
