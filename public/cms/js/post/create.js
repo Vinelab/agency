@@ -19,23 +19,24 @@ var files=[];
 		});
 
 		$('#datepicker').hide();
+
 	    $('#editing').click(function() {
 	        $('#datepicker').hide();
 	    });
+
 	    $('#published').click(function() {
 	        $('#datepicker').hide();
 	    });
+
 	    $('#scheduled').click(function() {
 	        $('#datepicker').show();
 	    });
+
 	    if($('#scheduled').is(':checked'))
 	    {
 	        $('#datepicker').show();
 	    }
-	});
 
-	jQuery(function($){
-	    
 	    function showErrorAlert (reason, detail) {
 	        var msg='';
 
@@ -90,10 +91,6 @@ var files=[];
 					}
 		}).prev().addClass('wysiwyg-style2');
 
-	    // $('#article_form').on('submit', function(){
-	    //         $('input[name=wysiwyg-value]' , this).val($('#editor').html());
-	    // });
-
 	    $('[data-toggle="buttons"] .btn').on('click', function(e){
 	        var target = $(this).find('input[type=radio]');
 	        var which = parseInt(target.val());
@@ -147,8 +144,8 @@ var files=[];
 
 	        enableImageResize();
 	    }
+	
 	});
-
 
 //Add document.ready
 //
