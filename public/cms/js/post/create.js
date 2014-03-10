@@ -158,7 +158,7 @@ var tag_input = $('#form-field-tags');
 var tags="";
 
 $.ajax({
-	url: "/cms/content/post/tag/all",
+	url: routes.cms_tags,
 	type: "get",
 	processData: false,
 	contentType: false,
@@ -197,7 +197,7 @@ function filesUploadChange()
 	}
 
 	$.ajax({
-		url: "/cms/tmp",
+		url: routes.cms_post_tmp,
 		type: "POST",
 		data: formdata,
 		processData: false,
@@ -271,8 +271,9 @@ function submitForm()
 
 	formdata = new FormData();
 
-	if(title!="" || body!="" || croped_images_array.length>0 || videos_array.length>0 )
+	if(title!="" && (body!="" || croped_images_array.length>0 || videos_array.length>0) )
 	{
+
 		croped_images_array = JSON.stringify(croped_images_array);
 		formdata.append("croped_images_array",croped_images_array);
 
@@ -306,7 +307,13 @@ function submitForm()
 		$('#spinner').show();
 
 	}else{
-		displayErrorMessage();
+		if(title=="")
+		{
+			displayErrorMessage('title_error')
+		} else {
+
+			displayErrorMessage('empty_post_msg');
+		}
 	}
 }
 
@@ -369,7 +376,7 @@ function addYoutubeVideo()
 		$("#yt_video_txt").val("");
 
 	} else {
-		invalidYoutubeUrl();
+		displayErrorMessage('invalid_youtube_url')
 	}
 }
 
@@ -472,13 +479,13 @@ function getTags()
 function submitUpdatedForm(formdata,id,section)
 {
 	$.ajax({
-		url: "/cms/content/post/"+id,
+		url: routes.cms_post_update+"/"+id,
 		type: "POST",
 		data: formdata,
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location="/cms/content/"+section;
+			top.location=routes.cms_content_show+"/"+section;
 		}
 	});
 }
@@ -487,13 +494,13 @@ function submitUpdatedForm(formdata,id,section)
 function submitNewForm(formdata,section)
 {
 	$.ajax({
-		url: "/cms/content/post",
+		url: routes.cms_post_create,
 		type: "POST",
 		data: formdata,
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location="/cms/content/"+section;
+			top.location=routes.cms_content_show+"/"+section;
 		}
 	});
 }
@@ -504,7 +511,7 @@ function deleteImage(id,element)
 	//remove croped image list item
 	//delete temp image from the server
 	$.ajax({
-		url:"/cms/tmp/delete",
+		url:routes.cms_delete_temp,
 		type:"POST",
 		data:{image:id},
 		success:function(res)
@@ -556,6 +563,56 @@ jQuery(function($) {
 		
 	});
 });
+
+/////////////////////////////////////////
+//////////Error Messages////////////////
+///////////////////////////////////////
+
+function displayErrorMessage(msg)
+{
+	bootbox.dialog({
+		message: "<span class='bigger-110'>"+lang[msg]+"</span>",
+		buttons: 			
+		{
+			"default" :
+			 {
+				"label" : lang['ok'],
+				"className" : "btn-sm btn-success",
+				"callback": function() {
+				}
+			}
+		}
+	});
+}
+
+function deletePost(slug)
+{
+	bootbox.dialog({
+		message: "<span class='bigger-110'>"+lang['conf_messasge_delete_post']+"</span>",
+		buttons: 			
+		{
+			"default" :
+			 {
+				"label" : lang['cancel'],
+				"className" : "btn-sm btn-grey",
+				"callback": function() {
+					//Example.show("great success");
+				}
+			},
+			"danger" :
+			{
+				"label" : "<i class='icon-trash'></i>"+lang['delete']+"!",
+				"className" : "btn-sm btn-danger",
+				"callback": function() {
+					top.location=routes.cms_post_destroy+"/"+slug
+				}
+			}
+		}
+	});
+}
+
+
+
 
 
 
