@@ -4,13 +4,16 @@
 @stop
 @section('content')
 
+<?php
+    return dd("hiii");
+?>
 
 	<div class="col-sm-6">
 		@if ($admin_permissions->has('create'))
             <div class="row">
-            <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
+                <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
                     <span class="icon-plus"></span>
-                    New Post
+                    {{Lang::get('posts/form.new_post')}}
                 </a>
             </div>
         @endif

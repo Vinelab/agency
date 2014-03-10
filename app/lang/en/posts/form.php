@@ -20,5 +20,6 @@ return [
     'delete' => 'Delete',
     'ok' => 'OK',
     'invalid_youtube_url' => "Please enter a valid youtube URL",
-    'title_error' => 'Please enter a title'
+    'title_error' => 'Please enter a title',
+    'new_post' => 'New Post'
 ];

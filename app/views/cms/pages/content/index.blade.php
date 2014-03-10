@@ -11,7 +11,7 @@
             <div class="row">
                 <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
                     <span class="icon-plus"></span>
-                    New Post
+                    {{Lang::get('posts/form.new_post')}}
                 </a>
             </div>
         @endif
