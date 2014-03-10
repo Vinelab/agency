@@ -195,7 +195,7 @@ function filesUploadChange()
 		formdata.append("images[]", temp_images[i]);
 		images.push(temp_images[i]);
 	}
-
+	displayLoading();
 	$.ajax({
 		url: routes.cms_post_tmp,
 		type: "POST",
@@ -205,6 +205,7 @@ function filesUploadChange()
 		success: function (res) {
 			temp_images = JSON.parse(res);
 			displayCropView(temp_images);
+			bootbox.hideAll();
 		}
 	});
 }
@@ -304,7 +305,7 @@ function submitForm()
 		}
 
 		$('#submitBtn').attr('disabled','disabled');
-		$('#spinner').show();
+		displayLoading();
 
 	}else{
 		if(title=="")
@@ -582,6 +583,13 @@ function displayErrorMessage(msg)
 				}
 			}
 		}
+	});
+}
+
+function displayLoading()
+{
+	bootbox.dialog({
+		message: "<img src='/cms/images/server.gif'>"
 	});
 }
 
