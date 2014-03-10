@@ -21,6 +21,7 @@
 	    @parent
 	    @include('cms.pages.templates.post')
 	    @include('cms.pages.post.templates.routes')
+	    @include('cms.pages.post.templates.lang')
 
 	    {{HTML::script("/js/jquery.Jcrop.min.js")}}
 
