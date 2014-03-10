@@ -143,15 +143,16 @@ class PostController extends Controller {
 				$section = $this->section->findBy('alias',Input::get('section'));
 				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
 
-				$tags = Input::get('tags');
-				$tags = explode(", ", $tags);
+				$tags = input::get('tags');
+				if($tags!="")
+				{
+					$tags = explode(", ", $tags);
+					array_map(function($tag)use($post){
 
-				array_map(function($tag)use($post){
-
-					$result = $this->tag->create($tag);
-					$post->tags()->save($result);
-				}, $tags);
-
+						$result = $this->tag->create($tag);
+						$post->tags()->save($result);
+					}, $tags);
+				}
 
 				if(isset($input['croped_images_array']))
 				{
