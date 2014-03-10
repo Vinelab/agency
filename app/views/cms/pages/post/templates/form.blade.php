@@ -1,53 +1,49 @@
 <?php
  $updating = isset($edit_post);
 ?>
-
-
-	
-	<div class="form-group">
-		<div class="col-sm-9">
-			<div class="clearfix">
-				
-				<div class="form-group">
+	<div class='form-horizontal'>
+		<div class="form-group">
+			<div class="col-sm-9">
+				<div class="clearfix">	
+					<div class="form-group">
 						<input type="hidden" name="updating" value="{{$updating}}" id="updating">
-				</div>
-            </div>
+						@if($updating)
+							<input type="hidden" name="post_id" value="{{$edit_post->id}}" id="post_id">
+						@endif
+					</div>
+	            </div>
+			</div>
 		</div>
-	</div>
-	{{--Title Input--}} 
-    <div class="form-group">
-		<div class="col-sm-9">
-			<div class="clearfix">
-				@if($updating)
-				    {{Form::input("text","info[title]","$edit_post->title",["id"=>"title","class"=>"col-xs-10 col-sm-5"])}}
-				    <input type="hidden" name="post_id" value="{{$edit_post->id}}" id="post_id">
 
-				@else
-					{{Form::input("text","info[title]","",["id"=>"title","class"=>"col-xs-10 col-sm-5","value"=>"","placeholder"=>Lang::get('posts/form.title')])}}
-				@endif
-            </div>
+		{{--Title Input--}} 
+	    <div class="form-group">
+			<div class="col-sm-12">
+					{{ Form::text('title', ( $updating ) ? $edit_post->title : '' , [
+	                'class'=>'form-control input-lg', 
+	                'id'=>'title', 
+	                'placeholder'=> Lang::get('posts/form.title')
+	            	]) }}<br>
+			</div>
 		</div>
-	</div>
-	
-	{{--Body Input--}}
-	<div class="form-group">
-		<div class="col-sm-9">
-			<div class="clearfix">
-				
+
+		<div class="space-4"></div>
+
+		{{--Body Input--}}
+		<div class="form-group">
+			<div class="col-sm-12">
 				<div class="form-group">
 					<div id="editor" class="wysiwyg-editor"></div>
 				</div>
-            </div>
+			</div>
 		</div>
-	</div>
 
-	{{--Content Input--}}
-	<div class="form-group">
-		{{Form::label("content",Lang::get("posts/form.content"),["class"=>"col-sm-3 control-label no-padding-right","for"=>"content"])}}
-		<div class="col-sm-3">
-			<div class="clearfix">
-				<select name="section" id="section">
+		<div class="space-4"></div>
 
+		<div class="form-group">
+			{{Form::label("content",Lang::get("posts/form.content"),["class"=>"col-sm-3 input-lg control-label no-padding-right","for"=>"content"])}}
+
+			<div class="col-sm-9">
+				<select class="col-sm-5 input-lg" name="section" id="section">
 					@if($updating)
 						@foreach($contents as $content)
 							@if($content->id==$edit_post->section_id)
@@ -62,20 +58,19 @@
 							<option value="{{$content->alias}}">{{$content->title}}</option>
 						@endforeach
 
-					@endif
-					
+					@endif	
 				</select>
-
-	        </div>
+			</div>
 		</div>
-	</div>
 
-	{{--Tags Input--}}
-	<div class="form-group">
-		
-		<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Tag input</label>
+		<div class="space-4"></div><br>
 
-		<div class="col-sm-3">
+		{{--Tags Input--}}
+		<div class="form-group">
+			
+			<label class="col-sm-3 control-label input-lg no-padding-right" for="form-field-tags">Tag input</label>
+
+			<div class="col-sm-9">
 				@if($updating and (sizeof($tags)>0))
 					<div class="tags">
 						<input type="text" name="tags" id="form-field-tags"  placeholder="Enter tags ..." style="display: none;">
@@ -94,9 +89,10 @@
 					<input type="text" name="tags" id="form-field-tags"  placeholder="Enter tags ..." style="display: none;">
 
 				@endif
-
+			</div>
 		</div>
 	</div>
+
 
 	{{--Add Images --}}
 	<h3 class="row header smaller lighter blue">
