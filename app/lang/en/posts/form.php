@@ -13,7 +13,7 @@ return [
     'publish'       =>  'Publish',
     'schedule'     =>  'Schedule',
     'published'     =>  'Published',
-    'submit' 		=>	"Submit",
+    'submit' 		=>	"Save",
     'conf_messasge_delete_post' => 'Are you sure that you want to delete this post',
     'empty_post_msg' => "You can't submit empty post",
     'cancel'        => 'Cancel',
