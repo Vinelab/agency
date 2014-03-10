@@ -19,5 +19,6 @@ return [
     'cancel'        => 'Cancel',
     'delete' => 'Delete',
     'ok' => 'OK',
-    'invalid_youtube_url' => "Please enter a valid youtube URL"
+    'invalid_youtube_url' => "Please enter a valid youtube URL",
+    'title_error' => 'Please enter a title'
 ];
