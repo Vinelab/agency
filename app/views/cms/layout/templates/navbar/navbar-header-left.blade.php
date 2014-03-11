@@ -1,8 +1,8 @@
-<div class="navbar-header pull-left">
+<div class="navbar-header pull-right">
 	<a href="#" class="navbar-brand">
 		<small>
 			<i class="icon-leaf"></i>
-			Star Academy CMS
+			Agency CMS
 		</small>
 	</a><!-- /.brand -->
 </div><!-- /.navbar-header -->
