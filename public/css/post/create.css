@@ -16,15 +16,16 @@
 	/*background-color: green;*/
 	width: 189px;
 	height: 111px;
-	margin-top: -111px;
-	margin-left: 172px;
+	margin-top: -109px;
+	margin-right: 185px;
 }
 
 .yt-delete{
 /*	background-color: yellow;*/
+	float: left;
 	width: 35px;
 	height: 111px;
-	margin-left: 361px;
+	margin-left: -44px;
 	margin-top: -111px;
 }
 
@@ -67,4 +68,24 @@
 
 #spinner{
 	display: none;
+}
+
+#videos-container{
+	display: block;
+	height: 100%;
+	width: 100%;
+	margin-top: 20px;
+
+}
+
+#videos_list{
+	list-style: none;
+}
+
+#controls-container{
+	margin-top: 55px;
+}
+
+#status-container{
+	width: 100%;
 }
