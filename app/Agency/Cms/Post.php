@@ -7,7 +7,7 @@ class Post extends \Eloquent  {
 	
 	protected $thumbnail;	
 
-	public function admins()
+	public function admin()
 	{
 		return $this->belongsTo("Agency\Cms\Admin");
 	}
