@@ -20,5 +20,7 @@ interface MediaInterface {
      */
     public function url();
 
+    public function thumbnail();
+
 
 }
