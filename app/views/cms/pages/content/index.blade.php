@@ -36,7 +36,7 @@
                                     @foreach($section_post['posts'] as $post)
                                         <li class="posts-container">
                                             <div class="dd-handle">
-                                                <div class="pull-right action-buttons">
+                                                <div class="pull-left action-buttons">
 
                                                     @if ($admin_permissions->has('update'))
 
