@@ -410,15 +410,18 @@ function appendVideo(yt_data,url)
 	var title = yt_data.entry.title.$t;
 	var description = yt_data.entry.media$group.media$description.$t;
 	var img = yt_data.entry.media$group.media$thumbnail[0].url;
+		templateHTML = $('#video_item_template').html();
+	    template = Handlebars.compile(templateHTML);
+	    compiledHtml = template({
+	    	img:img,
+	    	title:title,
+	    	description:description,
+	    	index: yt_video_index
+	    });
+	    console.log(compiledHtml);
+		$("#videos_list").append(compiledHtml);
 
-	$("#videos_list").append(ytTemplate(yt_video_index,img,title,description,url));
 	yt_video_index = yt_video_index + 1;
-}
-
-function ytTemplate(i,img,title,description,url)
-{
-
-	return '<li class="video_item" id="video_item_'+i+'"><div class="video-container"><div class="yt-img"><img src="'+img+'" class="yt-img-thumbnail"></div><div class="yt-data"><input type="text" id="yt-title-'+i+'" class="yt-title" value="'+title+'"><textarea id="yt-desc-'+i+'" class="yt-desc">'+description+'</textarea><input type="hidden" class="yt-url" id="yt-url-'+i+'" value="'+url+'"></div><div class="yt-delete"><button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt('+i+')"><i class="icon-trash"></i></button></div></div></li>'
 }
 
 function deleteYt(id)
