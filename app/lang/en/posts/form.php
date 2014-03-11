@@ -21,5 +21,6 @@ return [
     'ok' => 'OK',
     'invalid_youtube_url' => "Please enter a valid youtube URL",
     'title_error' => 'Please enter a title',
-    'new_post' => 'New Post'
+    'new_post' => 'New Post',
+    'publish_date' => 'Publish Date'
 ];
