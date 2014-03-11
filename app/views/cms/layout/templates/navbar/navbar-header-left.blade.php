@@ -1,4 +1,4 @@
-<div class="navbar-header pull-right">
+<div class="navbar-header">
 	<a href="#" class="navbar-brand">
 		<small>
 			<i class="icon-leaf"></i>
