@@ -137,9 +137,10 @@
     </div>
 
     <div class="space-12"></div>
-
-    <ul id="croped-images-list">
-    </ul>
+	<div>
+	    <ul id="croped-images-list">
+	    </ul>
+	</div>
 
     <div class="space-12"></div>
 
@@ -161,41 +162,45 @@
 		</div>
 	</div>
 
-	{{--display videos--}}
-	<ul id="videos_list">
-		
-		@if( isset($media) && count($media) > 0 )
-                @foreach($media as $key => $media_element)
+	<div id="videos-container">
+		<ul id="videos_list">
+			@if( isset($media) && count($media) > 0 )
+	                @foreach($media as $key => $media_element)
 
-                	@if($media_element->type()=="video")
-                        <li class="video_item" id="video_item_{{$key}}">
-                        	<div class="video-container">
-                        		<div class="yt-img">
-                        			<img src="{{$media_element->thumbnail}}" class="yt-img-thumbnail">
-                        		</div>
-                        		<div class="yt-data">
-                        			<input type="text" id="yt-title-{{$key}}" class="yt-title" value="{{$media_element->title}}">
-                        			<textarea id="yt-desc-{{$key}}" class="yt-desc">{{$media_element->description}}</textarea>
-                        			<input type="hidden" class="yt-url" id="yt-url-{{$key}}" value="{{$media_element->url}}">
-                        		</div>
-                        		@if ($admin_permissions->has('delete'))
-	                        		<div class="yt-delete">
-	                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt({{$key}})"><i class="icon-trash"></i></button>
+	                	@if($media_element->type()=="video")
+	                        <li class="video_item" id="video_item_{{$key}}">
+	                        	<div class="video-container">
+	                        		<div class="yt-img">
+	                        			<img src="{{$media_element->thumbnail}}" class="yt-img-thumbnail">
 	                        		</div>
-	                        	@endif
-                        	</div>                       
-                        </li>
-	                @endif
-                @endforeach
-        @endif
-    </ul>
+	                        		<div class="yt-data">
+	                        			<input type="text" id="yt-title-{{$key}}" class="yt-title" value="{{$media_element->title}}">
+	                        			<textarea id="yt-desc-{{$key}}" class="yt-desc">{{$media_element->description}}</textarea>
+	                        			<input type="hidden" class="yt-url" id="yt-url-{{$key}}" value="{{$media_element->url}}">
+	                        		</div>
+	                        		@if ($admin_permissions->has('delete'))
+		                        		<div class="yt-delete">
+		                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt({{$key}})"><i class="icon-trash"></i></button>
+		                        		</div>
+		                        	@endif
+	                        	</div>                       
+	                        </li>
+		                @endif
+	                @endforeach
+	        @endif
+	    </ul>
+	</div>
+
+
+	{{--display videos--}}
+
 
 
     <div class="space-12"></div>
 
 
-	<div class="control-group">
-	    <div class="pull-left publish-date-margin">
+	<div class="control-group pull-right" id="status-container">
+	    <div class="publish-date-margin">
 	        @if($updating)
 	            {{ Form::label('editing',Lang::get('posts/form.editing')) }}
 	            {{ Form::radio('publishstate[]','editing', ( $edit_post->publish_state == 'editing' ) ? 'true' : '', ['id'=>'editing','class'=>'publish_state']) }}
@@ -233,7 +238,7 @@
 	                                'data-format'=>'yyyy-MM-dd hh:mm:ss',
 	                                'id'=>'datepicker',
 	                                'class' => 'form-control',
-	                                'placeholder' => Lang::get('artists/article.publish_date') 
+	                                'placeholder' => Lang::get('posts/form.publish_date') 
 	                            ] 
 	                        )}}
 	                    @else
@@ -243,7 +248,7 @@
 	                                [
 	                                    'data-format'=>'yyyy-MM-dd hh:mm:ss',
 	                                    'id'=>'datepicker', 
-	                                    'placeholder' => Lang::get('artists/article.publish_date') 
+	                                    'placeholder' => Lang::get('posts/form.publish_date') 
 	                                ] 
 	                        )}}
 	                    @endif
@@ -254,12 +259,15 @@
 	        </div>
 	    @endif
 	</div>
-	
-    <button onclick="submitForm()" class="btn btn-success btn-lg pull-right" id="submitBtn">
-    	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
-    </button>
-    @if($updating)
-		{{ Form::submit('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost('$edit_post->slug')"]) }}
-	@endif
+	    <div class="space-12"></div>
+
+	<div class="form-group" id="controls-container">
+	    <button onclick="submitForm()" class="btn btn-success btn-lg pull-right" id="submitBtn">
+	    	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
+	    </button>
+	    @if($updating)
+			{{ Form::submit('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost('$edit_post->slug')"]) }}
+		@endif
+	</div>
 
 
