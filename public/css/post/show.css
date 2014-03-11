@@ -14,11 +14,17 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 35px;
 }
 
 #post-body{
 	text-align:right;
 	font-size: 13pt;
+	margin-top: 35px;
+}
+
+#post-title{
+	text-align: center;
 }
 
 
