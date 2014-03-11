@@ -27,6 +27,8 @@
 <link rel="stylesheet" href="{{ asset('assets/css/ace.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/ace-rtl.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/ace-skins.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/ace-skins.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/breadcrumb.css') }}" />
 
 <!--[if lte IE 8]>
   <link rel="stylesheet" href="{{asset('assets/css/ace-ie.min.css')}}" />
