@@ -269,7 +269,7 @@ function submitForm()
 
 	formdata = new FormData();
 
-	if(title!="" && (body!="" || croped_images_array.length>0 || videos_array.length>0) )
+	if(title!="")
 	{
 
 		croped_images_array = JSON.stringify(croped_images_array);
@@ -416,6 +416,7 @@ function appendVideo(yt_data,url)
 	    	img:img,
 	    	title:title,
 	    	description:description,
+	    	url:url,
 	    	index: yt_video_index
 	    });
 	    console.log(compiledHtml);
