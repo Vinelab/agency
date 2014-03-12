@@ -24,5 +24,6 @@ return [
     'new_post' => 'New Post',
     'publish_date' => 'Publish Date',
     'scheduled_at' => "Scheduled At",
-    'author' => "Author"
+    'author' => "Author",
+    'edit' => 'Edit'
 ];
