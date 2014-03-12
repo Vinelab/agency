@@ -34,6 +34,19 @@ class Post extends \Eloquent  {
 
     public function thumbnail()
     {
-    	return $this->thumbnail;
+    	if(!is_null($this->thumbnail))
+    	{
+    		return $this->thumbnail;
+    	} else {
+    		$media=$this->media()->first()->media;
+    		if($media->type()=="image")
+    		{
+    			return $media->thumbnail();
+    		}else{
+    			return $media->thumbnail;
+    		}
+    		return $this->media()->first()->media->url;
+    	}
     }
+
 }
