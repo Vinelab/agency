@@ -3,8 +3,7 @@
 	{{HTML::style("/css/content/posts.css")}}
 
 @stop
-<?php
-?>
+
 @section('content')
     @if ($admin_permissions->has('create'))
         <div class="row">
@@ -22,7 +21,11 @@
 			@foreach($posts as $post)
 				@include('cms.pages.content.templates.post',compact('admin_permissions','post'))
 			@endforeach
+
+            {{$posts->links()}}
+
 		@endif
+
 
 		</ol>
     </div>
