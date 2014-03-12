@@ -66,6 +66,7 @@ class ContentController extends Controller {
 	 */
 	public function show($alias)
 	{
+
 		try {
 			$section = $this->section->findBy("alias",$alias);
 
@@ -81,35 +82,21 @@ class ContentController extends Controller {
 					//get its children
 					$section_posts=[];
 					$sub_sections = $this->section->children();
-					foreach ($sub_sections as $key => $sub_section) {
-						$posts="";
 
-							if($sub_section->posts()->count()>0)
-							{
-								$posts_id = $sub_section->posts()->get(['id'])->fetch('id')->toArray();
-								$posts = $this->post->getPostsByIds($posts_id);
-							}
-													
-						array_push($section_posts,['sub_section'=>$sub_section,'posts'=>$posts]);
-					}
-					return View::make("cms.pages.content.index",compact("section_posts","parent_sections"));
-				}else{
+					return View::make("cms.pages.content.index",compact("sub_sections","parent_sections"));
+				
+				} else {
 					
 						$posts="";
 						if($section->posts()->count()>0)
 						{
-							$posts_id = $section->posts()->get(['id'])->fetch('id')->toArray();
-							$posts = $this->post->getPostsByIds($posts_id);
+							$posts = $section->posts()->paginate(1);
 						}
 
-						return View::make("cms.pages.content.posts",compact("posts","parent_sections"));
-					
-				}
+						return View::make("cms.pages.content.posts",compact("posts","parent_sections"));	
+					}
 			}
 
-			//check if the section is fertile
-			//if yes get its children
-			//if not get its content
 		} catch (Exception $e) {
 			return Response::json(["message"=>$e->getMessage()]);
 		}	
