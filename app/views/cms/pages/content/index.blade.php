@@ -1,11 +1,10 @@
+
 @section("head")
     @parent
     {{HTML::style("/css/content/posts.css")}}
 
 @stop
 @section('content')
-
-    
 	<div>
         @if ($admin_permissions->has('create'))
             <div class="row">
@@ -18,30 +17,13 @@
         <div class="space-4"></div>
         <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                @foreach($section_posts as $key=>$section_post)
-               
-                    <li {{$key==0?"class='active'":"class=''"}}>
-                        <a data-toggle="tab" href="#{{$section_post['sub_section']->alias}}">{{$section_post['sub_section']->title}}</a>
+
+                @foreach($sub_sections as $sub_section)
+                    <li>
+                        <a href="{{URL::route('cms.content.show',$sub_section->alias)}}">{{$sub_section->title}}</a>
                     </li>
                 @endforeach                
-            </ul>
-
-            
-            <div class="tab-content">
-              
-                @foreach($section_posts as $key=>$section_post)
-                    <div id="{{$section_post['sub_section']->alias}}" class="tab-pane {{$key==0? 'active':''}}">
-                            @if(!empty($section_post['posts']))
-                                <ul>
-                                    @foreach($section_post['posts'] as $post)
-                                        @include('cms.pages.content.templates.post',compact('admin_permissions','post'))
-                                    @endforeach
-                                </ul>
-                            @endif
-                    </div>
-                @endforeach
-
-            </div>
+            </ul>     
         </div>
     </div>
 @stop
