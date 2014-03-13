@@ -38,14 +38,21 @@ class Post extends \Eloquent  {
     	{
     		return $this->thumbnail;
     	} else {
-    		$media=$this->media()->first()->media;
-    		if($media->type()=="image")
-    		{
-    			return $media->thumbnailURL();
-    		}else{
-    			return $media->thumbnail;
-    		}
-    		return $this->media()->first()->media->url;
+
+            $media = $this->media()->get();
+            
+            if(!$media->isempty())
+            {
+                $media=$this->media()->first()->media;
+                if($media->type()=="image")
+                {
+                    return $media->thumbnailURL();
+                }else{
+                    return $media->thumbnail;
+                }
+                return $this->media()->first()->media->url;
+            }
+    		
     	}
     }
 
