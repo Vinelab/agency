@@ -19,7 +19,7 @@
         
 		@if(!empty($posts))
 			@foreach($posts as $post)
-				@include('cms.pages.content.templates.post',compact('admin_permissions','post'))
+				@include('cms.pages.content.templates.post')
 			@endforeach
 
             {{$posts->links()}}
