@@ -7,7 +7,9 @@
                 </a>
             @endif
         </div>
+
         <img src="{{$post->thumbnailURL()}}">
+
         {{HTML::link(URL::route('cms.post.show',$post->slug),$post->title)}}
         <div class="author-status-container">
             <div class="status-container">

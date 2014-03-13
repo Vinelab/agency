@@ -22,7 +22,7 @@ class Video extends \Eloquent implements MediaInterface  {
     	return $this->url;
     }
 
-    public function thumbnail()
+    public function thumbnailURL()
     {
         
     }

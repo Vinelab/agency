@@ -66,7 +66,6 @@ class ContentController extends Controller {
 	 */
 	public function show($alias)
 	{
-
 		try {
 			$section = $this->section->findBy("alias",$alias);
 
@@ -75,6 +74,7 @@ class ContentController extends Controller {
 
 			if(!is_null($section))
 			{
+
 				$this->section->set($section);
 				//check if section is fertile
 				if($section->is_fertile)
@@ -86,11 +86,13 @@ class ContentController extends Controller {
 					return View::make("cms.pages.content.index",compact("sub_sections","parent_sections"));
 				
 				} else {
-					
+
 						$posts="";
 						if($section->posts()->count()>0)
 						{
+
 							$posts = $section->posts()->paginate(1);
+
 						}
 
 						return View::make("cms.pages.content.posts",compact("posts","parent_sections"));	

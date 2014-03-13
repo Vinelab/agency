@@ -36,7 +36,7 @@ class Image extends \Eloquent implements MediaInterface  {
     	$this->url;
     }
 
-    public function thumbnail()
+    public function thumbnailURL()
     {
         $photo_id = $this->photo_id;
         $image = $this->where('photo_id','=',$photo_id)->where('preset','=','thumbnail')->first();

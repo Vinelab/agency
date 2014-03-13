@@ -41,7 +41,7 @@ class Post extends \Eloquent  {
     		$media=$this->media()->first()->media;
     		if($media->type()=="image")
     		{
-    			return $media->thumbnail();
+    			return $media->thumbnailURL();
     		}else{
     			return $media->thumbnail;
     		}
