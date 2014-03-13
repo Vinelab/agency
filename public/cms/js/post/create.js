@@ -155,7 +155,7 @@ var tag_input = $('#form-field-tags');
 var tags="";
 
 $.ajax({
-	url: routes.cms_tags,
+	url: Routes.cms_tags,
 	type: "get",
 	processData: false,
 	contentType: false,
@@ -194,7 +194,7 @@ function filesUploadChange()
 	}
 	displayLoading();
 	$.ajax({
-		url: routes.cms_post_tmp,
+		url: Routes.cms_post_tmp,
 		type: "POST",
 		data: formdata,
 		processData: false,
@@ -481,13 +481,13 @@ function getTags()
 function submitUpdatedForm(formdata,id,section)
 {
 	$.ajax({
-		url: routes.cms_post_update+"/"+id,
+		url: Routes.cms_post_update+"/"+id,
 		type: "POST",
 		data: formdata,
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location=routes.cms_content_show+"/"+section;
+			top.location=Routes.cms_content_show+"/"+section;
 		}
 	});
 }
@@ -496,13 +496,13 @@ function submitUpdatedForm(formdata,id,section)
 function submitNewForm(formdata,section)
 {
 	$.ajax({
-		url: routes.cms_post_create,
+		url: Routes.cms_post_create,
 		type: "POST",
 		data: formdata,
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			top.location=routes.cms_content_show+"/"+section;
+			top.location=Routes.cms_content_show+"/"+section;
 		}
 	});
 }
@@ -513,7 +513,7 @@ function deleteImage(id,element)
 	//remove croped image list item
 	//delete temp image from the server
 	$.ajax({
-		url:routes.cms_delete_temp,
+		url:Routes.cms_delete_temp,
 		type:"POST",
 		data:{image:id},
 		success:function(res)
@@ -531,13 +531,12 @@ function deleteImage(id,element)
 	});
 }
 
-console.log(routes);
 
 function removePhotos(id, post_id)
 {
     var obj = {id: id, post_id: post_id};
     $.ajax({
-        url: routes.cms_post_remove_photo,
+        url: Routes.cms_post_remove_photo,
         type: "POST",
         data: obj,
         success: function(res){
@@ -573,12 +572,12 @@ jQuery(function($) {
 function displayErrorMessage(msg)
 {
 	bootbox.dialog({
-		message: "<span class='bigger-110'>"+lang[msg]+"</span>",
+		message: "<span class='bigger-110'>"+Lang[msg]+"</span>",
 		buttons: 			
 		{
 			"default" :
 			 {
-				"label" : lang['ok'],
+				"label" : Lang['ok'],
 				"className" : "btn-sm btn-success",
 				"callback": function() {
 				}
@@ -597,12 +596,12 @@ function displayLoading()
 function deletePost(slug)
 {
 	bootbox.dialog({
-		message: "<span class='bigger-110'>"+lang['conf_messasge_delete_post']+"</span>",
+		message: "<span class='bigger-110'>"+Lang['conf_messasge_delete_post']+"</span>",
 		buttons: 			
 		{
 			"default" :
 			 {
-				"label" : lang['cancel'],
+				"label" : Lang['cancel'],
 				"className" : "btn-sm btn-grey",
 				"callback": function() {
 					//Example.show("great success");
@@ -610,10 +609,10 @@ function deletePost(slug)
 			},
 			"danger" :
 			{
-				"label" : "<i class='icon-trash'></i>"+lang['delete']+"!",
+				"label" : "<i class='icon-trash'></i>"+Lang['delete']+"!",
 				"className" : "btn-sm btn-danger",
 				"callback": function() {
-					top.location=routes.cms_post_destroy+"/"+slug
+					top.location=Routes.cms_post_destroy+"/"+slug
 				}
 			}
 		}
