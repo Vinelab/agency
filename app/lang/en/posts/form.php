@@ -25,5 +25,6 @@ return [
     'publish_date' => 'Publish Date',
     'scheduled_at' => "Scheduled At",
     'author' => "Author",
-    'edit' => 'Edit'
+    'edit' => 'Edit',
+    'agency_cms'=> "Agency CMS"
 ];
