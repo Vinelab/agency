@@ -7,12 +7,14 @@
 	@section('content')
 
 	<div id="post-container">
-		<div id="edit-post-container">
-			<a href="{{URL::route('cms.post.edit',$post->slug)}}" class="btn btn-app btn-primary no-radius">
-				<i class="icon-edit bigger-230"></i>
-				{{Lang::get('posts/form.edit')}}
-			</a>
-		</div>
+		@if ($admin_permissions->has('update'))
+			<div id="edit-post-container">
+				<a href="{{URL::route('cms.post.edit',$post->slug)}}" class="btn btn-app btn-primary no-radius">
+					<i class="icon-edit bigger-230"></i>
+					{{Lang::get('posts/form.edit')}}
+				</a>
+			</div>
+		@endif
 		<div id="post-title">
 			<h2>{{$post->title}}</h2>
 		</div>
