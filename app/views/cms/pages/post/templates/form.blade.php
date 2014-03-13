@@ -44,21 +44,10 @@
 
 			<div class="col-sm-9">
 				<select class="col-sm-5 input-lg" name="section" id="section">
-					@if($updating)
-						@foreach($contents as $content)
-							@if($content->id==$edit_post->section_id)
-								<option value="{{$content->alias}}" selected>{{$content->title}}</option>
-							@else
-								<option value="{{$content->alias}}">{{$content->title}}</option>
-							@endif
-						@endforeach
-					@else 
-
-						@foreach($contents as $content)
-							<option value="{{$content->alias}}">{{$content->title}}</option>
-						@endforeach
-
-					@endif	
+					
+					@foreach($contents as $content)
+						<option {{(($updating) and ($content->id == $edit_post->section_id))? 'selected' :''}}  value="{{$content->alias}}">{{$content->title}}</option>
+					@endforeach
 				</select>
 			</div>
 		</div>
