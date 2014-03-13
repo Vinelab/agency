@@ -32,7 +32,7 @@ class Post extends \Eloquent  {
     	$this->thumbnail = $thumbnail;
     }
 
-    public function thumbnail()
+    public function thumbnailURL()
     {
     	if(!is_null($this->thumbnail))
     	{
