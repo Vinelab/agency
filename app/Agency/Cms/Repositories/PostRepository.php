@@ -105,6 +105,16 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return $post->section()->first();
 	}
 
+	public function uniqSlug($slug)
+	{
+		if(!is_null($this->findBy("slug",$slug)))
+		{
+			return $slug.date('Y-m-d H:i:s');
+		} else {
+			return $slug;
+		}
+	}
+
 	
 
 }

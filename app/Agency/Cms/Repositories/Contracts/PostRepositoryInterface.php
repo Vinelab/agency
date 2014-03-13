@@ -14,4 +14,6 @@ interface PostRepositoryInterface {
 
 	public function section($id);
 
+	public function uniqSlug($slug);
+
 }

@@ -66,38 +66,38 @@ class PostController extends Controller {
 
 	public function index()
 	{
-		try {
-			$all_posts = $this->post->all();
+		// try {
+		// 	$all_posts = $this->post->all();
 
-			$posts=[];
-			foreach ($all_posts as $key => $post) {
-				$thumbnail="";
-				if(!is_null($post->media()->first()))
-				{
-					$media=$post->media()->first()->media;
-					if($media->type()=="image")
-					{
-						$image_id = $post->media()->first()->media->photo_id;
-						$thumbnail =  $this->image->getThumbnail($image_id)->url;
+		// 	$posts=[];
+		// 	foreach ($all_posts as $key => $post) {
+		// 		$thumbnail="";
+		// 		if(!is_null($post->media()->first()))
+		// 		{
+		// 			$media=$post->media()->first()->media;
+		// 			if($media->type()=="image")
+		// 			{
+		// 				$image_id = $post->media()->first()->media->photo_id;
+		// 				$thumbnail =  $this->image->getThumbnail($image_id)->url;
 
-					} else{
+		// 			} else{
 
-					$thumbnail = $media->thumbnail;
-				}
+		// 			$thumbnail = $media->thumbnail;
+		// 		}
 		
-				}
+		// 		}
 
-			array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
+		// 	array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
 
 				
-			}
+		// 	}
 
-			return View::make('cms.pages.post.index', compact('permissions','posts'));
+		// 	return View::make('cms.pages.post.index', compact('permissions','posts'));
 
 			
-		} catch (Exception $e) {
-			return Response::json(['message'=>$e->getMessage()]);
-		}
+		// } catch (Exception $e) {
+		// 	return Response::json(['message'=>$e->getMessage()]);
+		// }
 
 	}
 
@@ -138,7 +138,8 @@ class PostController extends Controller {
 			if($this->postValidator->validate($input))
 			{
 
-			  	$slug = Helper::slugify(Input::get('title'));
+			  	$slug = $this->post->uniqSlug( Helper::slugify(Input::get('title')) );
+
 				$body = Helper::cleanHtml(Input::get('body'));
 				$section = $this->section->findBy('alias',Input::get('section'));
 				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
@@ -306,7 +307,8 @@ class PostController extends Controller {
 			if($this->postValidator->validate($input))
 			{
 				$body = Helper::cleanHtml(Input::get('body'));
-				$slug = Helper::slugify(Input::get('title'));
+				$slug = $this->post->uniqSlug( Helper::slugify(Input::get('title')) );
+
 				$section = $this->section->findBy('alias',Input::get('section'));
 
 				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
