@@ -86,4 +86,13 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
         $admin->password=Hash::make($password);
         return $admin->save();
     }
+
+    public function updateProfile($admin, $input)
+    {
+        
+        $admin->name = $input['name'];
+        $admin->email = $input['email'];
+        return $admin->save();
+
+    }
 }

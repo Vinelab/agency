@@ -19,7 +19,7 @@
 				</li>
 
 				<li>
-					<a href="#">
+					<a href="{{URL::route('cms.profile')}}">
 						<i class="icon-user"></i>
 						{{Lang::get('navbar.profile')}}
 					</a>

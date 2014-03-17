@@ -4,7 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use View, Request, Auth, Authority, Input, Lang, Redirect, Hash, Session, Password;
+use View, Request, Auth, Authority, Input, Lang, Redirect, Hash, Session, Validator;
 
 use Agency\Cms\Validators\Contracts\AdminValidatorInterface;
 
@@ -334,8 +334,32 @@ class AdminController extends Controller {
             return Redirect::back()->withInput();
 
         }
+    }
 
+    public function profile()
+    {
+        $admin = Auth::user();
+        return View::make('cms.pages.administration.profile',compact('admin'));
+    }
 
+    public function updateProfile()
+    {
+        try {
+            $admin = Auth::user();
+            $validator = Validator::make( 
+            Input::all(),
+            ['email' => 'required|email','name'=>'required']
+            );
+            if($validator->passes())
+            {
+                $this->admins->updateProfile($admin,Input::all());
+                Session::flash('success',[Lang::get('profile.data_update_successfully')]);
+                return Redirect::route('cms.dashboard');
+            }
+        } catch (Exception $e) {
+            Session::flash('errors',[Lang::get('profile.something_went_wrong')]);
+            return Redirect::route('cms.dashboard');
+        }
     }
 
 }

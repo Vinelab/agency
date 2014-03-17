@@ -64,6 +64,16 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         'uses' => 'Agency\Cms\Controllers\DashboardController@index'
     ]);
 
+    Route::get('/dashboard/profile',[
+        'as' => 'cms.profile',
+        'uses' => 'Agency\Cms\Controllers\AdminController@profile'
+    ]);
+
+    Route::post('/dashboard/profile',[
+        'as' => 'cms.profile.udpate',
+        'uses' => 'Agency\Cms\Controllers\AdminController@updateProfile'
+    ]);
+
     Route::post("/tmp",[
         "as" => "cms.post.tmp",
         "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
