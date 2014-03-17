@@ -18,10 +18,10 @@
                             <div class="center">
                                 <h1>
                                     <i class="icon-leaf green"></i>
-                                    <span class="red">Star Academy</span>
+                                    <span class="red">Agency</span>
                                     <span class="white">CMS</span>
                                 </h1>
-                                <h4 class="blue">&copy; Vinelab</h4>
+                                <h4 class="blue">&copy;{{date('Y')}} Vinelab</h4>
                             </div>
 
                             <div class="space-6"></div>
@@ -94,23 +94,22 @@
                                                 Enter your email and to receive instructions
                                             </p>
 
-                                            <form>
+                                            {{ Form::open(['url' => URL::route('cms.login.password.email'), 'method'=>'POST']) }}
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <input type="email" class="form-control" placeholder="Email" />
+                                                            <input type="email" name="email" class="form-control" placeholder="Email" />
                                                             <i class="icon-envelope"></i>
                                                         </span>
                                                     </label>
 
                                                     <div class="clearfix">
-                                                        <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
-                                                            <i class="icon-lightbulb"></i>
-                                                            Send Me!
-                                                        </button>
+                                                        
+                                                        {{ Form::submit('Send Me',['class'=> 'width-35 pull-right btn btn-sm btn-danger']) }}
+
                                                     </div>
                                                 </fieldset>
-                                            </form>
+                                            {{ Form::close() }}
                                         </div><!-- /widget-main -->
 
                                         <div class="toolbar center">
