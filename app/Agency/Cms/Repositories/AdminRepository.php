@@ -4,7 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Hash;
+use Hash, Str;
 
 use Agency\Cms\Admin;
 
@@ -68,5 +68,22 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
     protected function generatePassword()
     {
         return uniqid();
+    }
+
+    public function generateCode($email)
+    {
+        $code = Str::random($length = 64);
+        $admin = $this->findBy('email',$email);
+        $admin->code = $code;
+        $admin->save();
+
+        return $admin; 
+
+    }
+
+    public function changePassword($admin,$password)
+    {
+        $admin->password=Hash::make($password);
+        return $admin->save();
     }
 }
