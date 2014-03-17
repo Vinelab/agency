@@ -13,16 +13,16 @@
 			</a>
 			<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 				<li>
-					<a href="#">
+					<a href="{{URL::route('cms.administration.password')}}">
 						<i class="icon-cog"></i>
-						Settings
+						{{Lang::get('navbar.change_password')}}
 					</a>
 				</li>
 
 				<li>
 					<a href="#">
 						<i class="icon-user"></i>
-						Profile
+						{{Lang::get('navbar.profile')}}
 					</a>
 				</li>
 
@@ -30,7 +30,7 @@
 				<li>
 					<a href="{{ URL::route('cms.logout') }}">
 						<i class="icon-off"></i>
-						Logout
+						{{Lang::get('navbar.logout')}}
 					</a>
 				</li>
 			</ul>
