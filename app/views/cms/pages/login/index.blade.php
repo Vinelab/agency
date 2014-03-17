@@ -157,5 +157,8 @@
              jQuery('#'+id).addClass('visible');
             }
         </script>
+         @section('scripts')
+            @include('cms.layout.templates.scripts')
+        @show
     </body>
 </html>
