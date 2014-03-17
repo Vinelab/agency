@@ -24,7 +24,7 @@
                     </span>
                 @else
                     <span class="label label-danger arrowed-right arrowed-in pull-left">
-                        {{Lang::get('posts/posts.scheduled_at')}} : 
+                        {{Lang::get('posts/form.scheduled_at')}} : 
                         {{$post->publish_date}}
                     </span>
                 @endif
