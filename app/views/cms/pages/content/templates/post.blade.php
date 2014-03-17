@@ -10,8 +10,9 @@
         <a href="{{URL::route('cms.post.show',$post->slug)}}">
             <img src="{{$post->thumbnailURL()}}">
         </a>
+        
 
-        {{HTML::link(URL::route('cms.post.show',$post->slug),$post->title)}}
+        {{HTML::link(URL::route('cms.post.show',$post->slug),$post->title,['class'=>'post-title'])}}
         <div class="author-status-container">
             <div class="status-container">
                 @if($post->publish_state == 'published')

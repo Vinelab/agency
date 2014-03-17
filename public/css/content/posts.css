@@ -16,3 +16,8 @@
 .publisher-container{
 	float: left;
 }
+
+.post-title{
+	font-size: 16pt;
+	margin-right: 10px;
+}

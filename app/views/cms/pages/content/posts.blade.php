@@ -13,7 +13,7 @@
             </a>
         </div>
     @endif
-	<div class="col-sm-6">
+	<div>
 
         <ol class="dd-list">
         
