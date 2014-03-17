@@ -152,12 +152,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     });
 
-    Route::get('/administration/password',[
+    Route::get('/dashboard/password',[
         'as' => 'cms.administration.password',
         'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
     ]);
 
-    Route::post('/administration/password',[
+    Route::post('/dashboard/password',[
         'as' => 'cms.administration.updatePassword',
         'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
     ]);
