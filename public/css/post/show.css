@@ -33,3 +33,13 @@
 }
 
 
+#tag-list{
+	list-style: none;
+	display: inline;
+}
+
+.tag-item{
+	display: inline;
+	margin-left: 10px;
+}
+

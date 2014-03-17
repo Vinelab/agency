@@ -38,6 +38,18 @@
 				{{nl2br($post->body)}}
 			</p>
 		</div>
+		@if(!empty($tags))
+			<div id="tags-container">
+				<ul id="tag-list">
+					@foreach($tags as $tag)
+						<li class="tag-item">
+							<span class="label label-info arrowed-in-left arrowed">{{$tag->text}}</span>
+						</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
+		
 
 		<div id="media">
 			@if(sizeof($media)>1)

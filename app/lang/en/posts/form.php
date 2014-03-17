@@ -4,8 +4,8 @@ return [
 
     'title'         =>  'Title',
     'content'       =>  'Content',
-    'add_images'   	=>  'Add Images',
-    'add_videos'    =>  'Add Videos',
+    'add_images'   	=>  'Images',
+    'add_videos'    =>  'Videos',
     'add_photo'     =>  'Add Photo',
     'add_yt_btn'	=>	'Add',
     'yt_video_url'	=>	'Youtbe video url',

@@ -242,8 +242,9 @@ class PostController extends Controller {
 					}
 				}
 
+				$tags = $post->tags()->get();
 
-				return View::make('cms.pages.post.show',compact('post','media','parent_sections'));
+				return View::make('cms.pages.post.show',compact('post','media','parent_sections','tags'));
 
 				
 
