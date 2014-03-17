@@ -89,11 +89,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             'index'   => 'cms.administration',
             'create'  => 'cms.administration.create',
             'store'   => 'cms.administration.store',
-            'show'    => 'cms.administration.show',
             'edit'    => 'cms.administration.edit',
             'update'  => 'cms.administration.update',
             'destroy' => 'cms.administration.destroy'
-        ]
+        ],
+        'except' => ['show']
+
     ]);
 
     Route::group(['prefix' => '/content'], function(){
@@ -150,6 +151,16 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         ]);
 
     });
+
+    Route::get('/administration/password',[
+        'as' => 'cms.administration.password',
+        'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
+    ]);
+
+    Route::post('/administration/password',[
+        'as' => 'cms.administration.updatePassword',
+        'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
+    ]);
 
 
 
