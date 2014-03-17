@@ -52,6 +52,11 @@ class Admin extends Eloquent implements AuthorableInterface, UserInterface, Regi
         return $this->name;
     }
 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
     public function posts()
     {
         return $this->hasMany("Agency\Cms\Post");
