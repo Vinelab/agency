@@ -33,6 +33,19 @@ Route::get('cms/logout', [
         'uses' => 'Agency\Cms\Controllers\LoginController@logout'
     ]);
 
+Route::post('cms/login/password/email', [
+        'as'   => 'cms.login.password.email',
+        'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
+    ]);
+
+Route::get('/cms/reset/{code}',[
+    'as' => 'cms.login.password.reset',
+    'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
+    ]);
+Route::post('/cms/reset',[
+    'as' => 'cms.login.password.change',
+    'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
+    ]);
 
 Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
