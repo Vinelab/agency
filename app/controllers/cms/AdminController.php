@@ -4,7 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use View, Request, Auth, Authority, Input, Lang, Redirect;
+use View, Request, Auth, Authority, Input, Lang, Redirect, Hash, Session, Password;
 
 use Agency\Cms\Validators\Contracts\AdminValidatorInterface;
 
@@ -296,6 +296,46 @@ class AdminController extends Controller {
         }
 
         return $roles;
+    }
+
+    public function changePassword()
+    {
+        return View::make('cms.pages.administration.password');
+    }
+
+    public function updatePassword()
+    {
+        $admin = Auth::user();
+        $credentials = ['email'=>$admin->email,'password'=>Input::get('old_password')];
+        if(Auth::validate($credentials))
+        {
+            if(Input::get('new_password')==Input::get('retype_new_password'))
+            {
+                if(Input::get('new_password')!="")
+                {
+                    $this->admins->changePassword($admin,Input::get('new_password'));
+                    Session::flash('success',[Lang::get('resetPassword.password_updated_successfully')]);
+                    Auth::logout();
+                    return Redirect::route('cms.login');
+                } else {
+
+                    Session::flash('errors',[Lang::get('resetPassword.new_password_cannot_be_empty')]);
+                    return Redirect::back()->withInput();
+                }
+                
+            
+            } else {
+                Session::flash('errors',[Lang::get('resetPassword.password_does_not_match_the_confirm_password')]);
+                return Redirect::back()->withInput();
+            }
+
+        } else {
+            Session::flash('errors',[Lang::get('resetPassword.current_password_error')]);
+            return Redirect::back()->withInput();
+
+        }
+
+
     }
 
 }
