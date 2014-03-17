@@ -24,17 +24,15 @@
 		<div id="post-title">
 			<h2 id="title">{{$post->title}}</h2>
 		</div>
-		<div id="post-cover">
-			@if(!empty($media))
-
+		@if(!empty($media))
+			<div id="post-cover">
 				@if($media[0]->type()=="image")
 					<img id="cover-photo" src="{{$media[0]->url}}">
 				@elseif($media[0]->type()=="video")
 					<iframe width="420" height="315" src="{{$media[0]->url}}" frameborder="0" allowfullscreen></iframe>
 				@endif
-				
-			@endif
-		</div>
+			</div>
+		@endif
 		<div id="post-body">
 			<p>
 				{{nl2br($post->body)}}
