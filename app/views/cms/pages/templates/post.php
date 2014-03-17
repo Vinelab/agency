@@ -15,7 +15,7 @@
 				<img src="{{img}}" class="yt-img-thumbnail">
 			</div>
 			<div class="yt-data">
-				<input type="text" id="yt-title-{{index}}" class="yt-title" value="{{title}}">
+				<input type="text" id="yt-title-{{index}}" class="yt-title form-control input-lg" value="{{title}}">
 				<textarea id="yt-desc-{{index}}" class="yt-desc">{{description}}</textarea>
 				<input type="hidden" class="yt-url" id="yt-url-{{index}}" value="{{url}}">
 			</div>

@@ -1,9 +1,7 @@
-
-
 .video-container{
 	/*background-color: blue;*/
-	width: 396px;
-	height: 111px;
+	width: 96%;
+	height: 176px;
 }
 
 .yt-img{
@@ -14,7 +12,7 @@
 
 .yt-data{
 	/*background-color: green;*/
-	width: 189px;
+	width: 80%;
 	height: 111px;
 	margin-top: -109px;
 	margin-right: 185px;
@@ -42,7 +40,10 @@
 .yt-desc{
 	margin-top: 10px;
 	margin-left: 2px;
+	height: 104px;
+	width: 100%;
 }
+
 
 .yt-delete-btn{
 	margin-top: 42px;

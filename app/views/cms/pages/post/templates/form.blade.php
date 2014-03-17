@@ -163,7 +163,7 @@
 	                        			<img src="{{$media_element->thumbnail}}" class="yt-img-thumbnail">
 	                        		</div>
 	                        		<div class="yt-data">
-	                        			<input type="text" id="yt-title-{{$key}}" class="yt-title" value="{{$media_element->title}}">
+	                        			<input type="text" id="yt-title-{{$key}}" class="yt-title form-control input-lg" value="{{$media_element->title}}">
 	                        			<textarea id="yt-desc-{{$key}}" class="yt-desc">{{$media_element->description}}</textarea>
 	                        			<input type="hidden" class="yt-url" id="yt-url-{{$key}}" value="{{$media_element->url}}">
 	                        		</div>
@@ -214,7 +214,6 @@
 	    </div>
 
 	    @if ($admin_permissions->has('publish'))
-
 	        <div class="form-group">
 	            <div class="input-group input-large ">
 	                <div id="publish-date" class="input-append date">
@@ -248,13 +247,14 @@
 	        </div>
 	    @endif
 	</div>
+	
 	    <div class="space-12"></div>
 
 	<div class="form-group" id="controls-container">
 	    <button onclick="submitForm()" class="btn btn-success btn-lg pull-right" id="submitBtn">
 	    	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
 	    </button>
-	    <button onclick="cancel()" class="btn btn-danger btn-lg pull-right" id="cancel-btn">
+	    <button onclick="cancel()" class="btn btn-default btn-lg pull-right" id="cancel-btn">
 	    	{{Lang::get("posts/form.cancel")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
 	    </button>
 	    @if($updating)
