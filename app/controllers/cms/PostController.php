@@ -235,8 +235,7 @@ class PostController extends Controller {
 				foreach ($gallery as $value) {
 					if($value->media->type()=="image")
 					{
-						$image = $this->image->getThumbnail($value->media->photo_id);
-						array_push($media, $image);
+						array_push($media, $value->media);
 
 					}else{
 						array_push($media, $value->media);
