@@ -254,6 +254,9 @@
 	    <button onclick="submitForm()" class="btn btn-success btn-lg pull-right" id="submitBtn">
 	    	{{Lang::get("posts/form.submit")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
 	    </button>
+	    <button onclick="cancel()" class="btn btn-danger btn-lg pull-right" id="cancel-btn">
+	    	{{Lang::get("posts/form.cancel")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
+	    </button>
 	    @if($updating)
 			{{ Form::submit('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost('$edit_post->slug')"]) }}
 		@endif

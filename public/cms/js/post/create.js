@@ -619,6 +619,11 @@ function deletePost(slug)
 	});
 }
 
+function cancel()
+{
+	top.location = Routes.cms_content_show;
+}
+
 
 
 
