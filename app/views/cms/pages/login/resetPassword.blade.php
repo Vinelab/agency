@@ -107,8 +107,11 @@
             function show_box(id) {
              jQuery('.widget-box.visible').removeClass('visible');
              jQuery('#'+id).addClass('visible');
-            }
+            }       
         </script>
+        @section('scripts')
+            @include('cms.layout.templates.scripts')
+        @show
     </body>
 </html>
 
