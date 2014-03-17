@@ -3,9 +3,8 @@
 		<li class="light-blue">
 			<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 				<!-- add the user image here -->
-				<img class="nav-user-photo" src="{{asset('assets/avatars/user.jpg')}}" alt="Jason's Photo" />
 				<span class="user-info">
-					<small>Welcome,</small>
+					<small>Welcome</small>
 					<!-- add the username here -->
 					{{ Auth::user()->name }}
 				</span>
