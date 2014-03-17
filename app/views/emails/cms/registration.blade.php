@@ -1,5 +1,5 @@
 <body>
-    Welcome to Najem!
+    {{Lang::get('email.welcome_to_najem')}}!
     <br /><br />
-    Use this password to login: {{ $password }}
+    {{Lang::get('email.use_this_password_to_login')}}: {{ $password }}
 </body>
