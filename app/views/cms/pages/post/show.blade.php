@@ -57,7 +57,7 @@
 				@foreach($media as $m)
 					@if($m->type()=="image")
 
-					<li>
+					<li id="img-{{$m->id}}">
 						<a href="{{$m->url}}" data-rel="colorbox">
                             <img alt="150x150" src="{{$m->thumbnailURL()}}" width="200px"/>
                             <div class="text">
