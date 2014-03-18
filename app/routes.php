@@ -144,11 +144,6 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             'uses' => 'Agency\Cms\Controllers\PostController@destroy'
         ]);
 
-        Route::post("/post/remove/photo",[
-            'as' => 'cms.post.remove.photo',
-            'uses' => 'Agency\Cms\Controllers\PostController@removePhoto'
-        ]);
-
         Route::post("/post/{id}",[
             'as' => 'cms.post.update',
             'uses' => 'Agency\Cms\Controllers\PostController@update'
