@@ -312,6 +312,15 @@ class PostController extends Controller {
 				$section = $this->section->findBy('alias',Input::get('section'));
 
 				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
+				$deleted_images = Input::get('deleted_images');
+				if($deleted_images!="")
+				{
+					$deleted_images = explode(",", $deleted_images);
+					foreach ($deleted_images as $image) {
+						$this->removePhoto($post,$image);
+					}
+				}
+	
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
@@ -418,14 +427,10 @@ class PostController extends Controller {
 		throw new UnauthorizedException;
 	}
 
-	public function removePhoto()
+	public function removePhoto($post, $photo_id)
 	{
-		$post_id=Input::get('post_id');
-		$photo_id=Input::get('id');
-
 		try {
 
-			$post=$this->post->find($post_id);
 			$this->image->detachImageFromPost($photo_id,$post);
 			$image=$this->image->delete($photo_id);
 
@@ -433,8 +438,6 @@ class PostController extends Controller {
 			return Response::json(['messages'=>$e->getMessages()]);
 		}
 		
-
-
 	}
 
 
