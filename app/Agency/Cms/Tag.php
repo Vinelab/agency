@@ -3,7 +3,7 @@
 class Tag extends \Eloquent  {
 
 	protected $table = "tags";
-	protected $fillable = ["text"];
+	protected $fillable = ["text","slug"];
 	
 	public function posts()
     {
