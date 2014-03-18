@@ -215,3 +215,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
     });
     
 });
+
+Route::group(['prefix' => 'api'], function(){
+
+Route::get('/posts',[
+        'as' => 'api.posts',
+        'uses' => 'Agency\Api\Controllers\PostsController@index'
+    ]);
+
+});
