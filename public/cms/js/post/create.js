@@ -4,6 +4,7 @@ var yt_video_index=0;
 var images=[];
 var croped_images_ul=$("#croped-images-list");
 var image_counter=0;
+var deleted_images = [];
 
 //array to store images
 var files=[];
@@ -280,6 +281,7 @@ function submitForm()
 			formdata.append("images[]", files[i]);
 		}
 
+		formdata.append('deleted_images',deleted_images);
 		formdata.append("title",title);
 		formdata.append("body",body);
 		formdata.append("section",section);
@@ -534,21 +536,25 @@ function deleteImage(id,element)
 
 function removePhotos(id, post_id)
 {
-    var obj = {id: id, post_id: post_id};
-    $.ajax({
-        url: Routes.cms_post_remove_photo,
-        type: "POST",
-        data: obj,
-        success: function(res){
-            location.reload();
-        },
-        error: function(xhr, status, error) {
-            if(xhr.status == 400 || xhr.status == 403 || xhr.status == 408 || xhr.status == 500 || xhr.status == 504)
-            {
-                alert(xhr.statusText);
-            }
-        }
-    });
+    // var obj = {id: id, post_id: post_id};
+    // $.ajax({
+    //     url: Routes.cms_post_remove_photo,
+    //     type: "POST",
+    //     data: obj,
+    //     success: function(res){
+    //         location.reload();
+    //     },
+    //     error: function(xhr, status, error) {
+    //         if(xhr.status == 400 || xhr.status == 403 || xhr.status == 408 || xhr.status == 500 || xhr.status == 504)
+    //         {
+    //             alert(xhr.statusText);
+    //         }
+    //     }
+    // });
+   	
+   	deleted_images.push(id);
+   	$("#img-"+id).hide();
+
 }
 
 
