@@ -16,7 +16,7 @@ interface PostRepositoryInterface {
 
 	public function uniqSlug($slug);
 
-	public function allPublished();
+	public function allPublished($input);
 
 	public function fromSection($posts,$section);
 
