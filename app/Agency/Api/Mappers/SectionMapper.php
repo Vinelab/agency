@@ -8,18 +8,18 @@ class SectionMapper{
 
 	protected $section;
 
-	protected $sectionsCollection;
+	protected $sections_collection;
 
 	
 
 	public function make($sections)
 	{
-		$this->sectionsCollection = new SectionsCollection();
+		$this->sections_collection = new SectionsCollection();
 		foreach ($sections as $section) {
-			$this->sectionsCollection->push($this->parseAndFill($section));
+			$this->sections_collection->push($this->parseAndFill($section));
 		}
 
-		return $this->sectionsCollection;
+		return $this->sections_collection;
 	}
 
 	public function parseAndFill(Section $section)

@@ -8,16 +8,16 @@ class TagMapper{
 
 	protected $tag;
 
-	protected $tagsCollection;
+	protected $tags_collection;
 
 	public function make($tags)
 	{
 		
-		$this->tagsCollection = new TagsCollection();
+		$this->tags_collection = new TagsCollection();
 		foreach ($tags as $tag) {
-			$this->tagsCollection->push($this->parseAndFill($tag));
+			$this->tags_collection->push($this->parseAndFill($tag));
 		}
-		return $this->tagsCollection;
+		return $this->tags_collection;
 	}
 
 	public function parseAndFill($tag)

@@ -8,15 +8,15 @@ class VideoMapper{
 
 	protected $video;
 
-	protected $videosCollection;
+	protected $videos_collection;
 
 	public function make($videos)
 	{
-		$this->videosCollection = new VideosCollection();
+		$this->videos_collection = new VideosCollection();
 		foreach ($videos as $video) {
-			$this->videosCollection->push($this->parseAndFill($video));
+			$this->videos_collection->push($this->parseAndFill($video));
 		}
-		return $this->videosCollection;
+		return $this->videos_collection;
 	}
 
 	public function parseAndFill($video)

@@ -1,6 +1,6 @@
 <?php namespace Agency\Api\Mappers;
 
-use Agency\Api\ImagesCollection;
+use Agency\Api\imagesCollection;
 
 use Agency\Cms\Image;
 
@@ -8,15 +8,15 @@ class ImageMapper{
 
 	protected $image;
 
-	protected $imagesCollection;
+	protected $images_collection;
 
 	public function make($images)
 	{
-		$this->imagesCollection = new ImagesCollection();
+		$this->images_collection = new imagesCollection();
 		foreach ($images as $image) {
-			$this->imagesCollection->push($this->parseAndFill($image));
+			$this->images_collection->push($this->parseAndFill($image));
 		}
-		return $this->imagesCollection;
+		return $this->images_collection;
 	}
 
 	public function parseAndFill($image)
