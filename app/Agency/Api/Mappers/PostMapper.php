@@ -8,7 +8,7 @@ class PostMapper{
 
 	protected $post;
 
-	protected $postsCollection;
+	protected $posts_collection;
 
 	public function __construct()
 	{
@@ -20,15 +20,24 @@ class PostMapper{
 
 	public function make($posts)
 	{
-		$this->postsCollection = new PostsCollection();
-		foreach ($posts as $post) {
-			$this->postsCollection->push($this->parseAndFill($post));
-		}
+		if (get_class($posts)=="Illuminate\Support\Collection"
+			or get_class($posts)=="Illuminate\Database\Eloquent\Collection"
+			or get_class($posts)== "Illuminate\Pagination\Paginator")
+		{
+			$this->posts_collection = new PostsCollection();
 
-		return $this->postsCollection;
+			foreach ($posts as $post) {
+				$this->posts_collection->push($this->parseAndFill($post));
+			}
+
+			 return $this->posts_collection;
+		} elseif (get_class($posts)=="Agency\Cms\Post") {
+
+			return $this->parseAndFill($posts);
+		}
 	}
 
-	public function parseAndFill(Post $post)
+	public function parseAndFill($post)
 	{
 		$this->post['id'] = $post->id;
 		$this->post['title'] = $post->title;
