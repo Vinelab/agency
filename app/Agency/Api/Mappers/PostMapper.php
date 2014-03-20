@@ -36,7 +36,7 @@ class PostMapper{
 		$this->post['images'] = $this->imageMapper->make($post->getAllImages())->toArray();
 		$this->post['videos'] = $this->videoMapper->make($post->getAllVideos())->toArray();
 		$this->post['tags'] = $this->tagMapper->Make($post->tags()->get())->toArray();
-		return $this;
+		return $this->post;
 	}
 
 
