@@ -229,4 +229,14 @@ Route::get('/posts/{slugOrId}',[
         'uses' => 'Agency\Api\Controllers\PostsController@show'
     ]);
 
+Route::get('/categories',[
+        'as' => 'api.categories',
+        'uses' => 'Agency\Api\Controllers\CategoriesController@index'
+    ]);
+
+Route::Get('/tags',[
+        'as' => 'api.tags',
+        'uses' => 'Agency\Api\Controllers\TagsController@index'
+    ]);
+
 });
