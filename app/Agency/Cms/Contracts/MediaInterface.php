@@ -20,7 +20,7 @@ interface MediaInterface {
      */
     public function url();
 
-    public function thumbnailURL();
+    public function presetURL($preset);
 
 
 }

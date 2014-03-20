@@ -5,7 +5,12 @@ class Post extends \Eloquent  {
 	protected $table = "posts";
 	protected $fillable=["title","body","admin_id","section_id","publish_date","publish_state","slug"];
 	
-	protected $thumbnail;	
+	protected $thumbnail;
+
+    public function scopePublished($query)
+    {
+        return $query->where('publish_state','=','published');
+    }
 
 	public function admin()
 	{
@@ -46,7 +51,7 @@ class Post extends \Eloquent  {
                 $media=$this->media()->first()->media;
                 if($media->type()=="image")
                 {
-                    return $media->thumbnailURL();
+                    return $media->presetURL('thumbnail');
                 }else{
                     return $media->thumbnail;
                 }
@@ -55,5 +60,45 @@ class Post extends \Eloquent  {
     		
     	}
     }
+
+    public function getAllImages()
+    {
+        $media = $this->media()->get();
+        $images = [];
+
+        if(!$media->isempty())
+        {
+            foreach ($media as $media_element) {
+                if($media_element->media->type()=="image")
+                {
+                     array_push($images, $media_element->media) ;
+                }
+            }
+        } 
+
+        return $images;
+
+    }
+
+    public function getAllVideos()
+    {
+        $media = $this->media()->get();
+        $videos = [];
+
+        if(!$media->isempty())
+        {
+            foreach ($media as $media_element) {
+                if($media_element->media->type()=="video")
+                {
+                    array_push($videos, $media_element->media);
+                }
+            }
+        } 
+
+        return $videos;
+
+    }
+
+
 
 }

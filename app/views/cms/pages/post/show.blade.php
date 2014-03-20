@@ -59,7 +59,7 @@
 
 					<li id="img-{{$m->id}}">
 						<a href="{{$m->url}}" data-rel="colorbox">
-                            <img alt="150x150" src="{{$m->thumbnailURL()}}" width="200px"/>
+                            <img alt="150x150" src="{{$m->presetURL('thumbnail')}}" width="200px"/>
                             <div class="text">
                                 <div class="inner">Preview</div>
                             </div>

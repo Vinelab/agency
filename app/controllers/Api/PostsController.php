@@ -4,7 +4,12 @@ use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 
-use Input, Response, File;
+use Input, Response, File, DB;
+
+use Agency\Cms\Post;
+use Agency\Cms\Section;
+
+use Agency\Api\Mappers\PostMapper;
 
 class PostsController extends \Controller {
 
@@ -15,47 +20,40 @@ class PostsController extends \Controller {
         $this->post = $post;
         $this->section = $section;
         $this->tag = $tag;
+        $this->postMapper = new PostMapper();
     }
 
     public function index()
     {
-    	$posts = $this->post->all();
+        $posts = $this->post->allPublished();
 
+        if(Input::has('category'))
+        {   
+            $section = $this->section->findBy('alias',Input::get('category'));
+            $posts = $this->post->fromSection($posts,$section);
 
-    	if(isset($_GET['category']))
+            // $posts = $posts->join('cms_sections', 'cms_sections.id','=','posts.section_id')->where('alias','=',Input::get('category'));
+            // return dd($posts->first());
+        }
+
+        if(Input::has('tag'))
+        {
+            $posts=$posts->whereHas('tags',function($q){
+                return $q->where('slug','=',Input::get('tag'));
+            });
+        }
+
+    	if (Input::has('limit'))
     	{
-    		$category = $_GET['category'];
-    		$section = $this->section->findBy('alias',$category);
-    		$posts = $posts->filter(function($post)use($section){
-    			if($post->section_id == $section->id)
-    			{
-    				return $post;
-    			}
-    		});
-    	}
+            $posts = $posts->paginate((int)Input::get('limit'));
+    	}else{
 
-    	if(isset($_GET['tag']))
-    	{
-    		$tag = $_GET['tag'];
-    		$tag = $this->tag->findBy('slug',$tag);
-    		return dd($tag);
-
-    	}
-
-    	if(isset($_GET['limit']))
-    	{
-    		$limit = $_GET['limit'];
-    	}
-
-    	if(isset($_GET['page']))
-    	{
-    		$page = $_GET['page'];
-    	}
+            $posts = $posts->get();
+        }
 
 
 
-
-
+        return dd($this->postMapper->make($posts)->toArray());
 
     }
 }

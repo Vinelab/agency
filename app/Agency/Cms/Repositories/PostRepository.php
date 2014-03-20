@@ -115,6 +115,16 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		}
 	}
 
+	public function allPublished()
+	{
+		return $this->post->published();
+	}
+
+	public function fromSection($posts,$section)
+	{
+		return  $posts->where('section_id','=',$section->id);
+	}
+
 	
 
 }

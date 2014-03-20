@@ -100,7 +100,7 @@
 		                	@if($media_element->type()=="image")
 			                    <li id="img-{{$media_element->id}}">
 			                        <a href="{{$media_element->url}}" data-rel="colorbox">
-			                            <img alt="150x150" src="{{$media_element->thumbnailURL()}}" width="200px" height="200px;"/>
+			                            <img alt="150x150" src="{{$media_element->presetURL('thumbnail')}}" width="200px" height="200px;"/>
 			                            <div class="text">
 			                                <div class="inner">Preview</div>
 			                            </div>
