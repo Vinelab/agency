@@ -2,17 +2,24 @@
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
 use DB;
 use Agency\Cms\Post;
+use Agency\Api\Mappers\PostMapper;
+use Agency\Api\Api;
+
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
 
 	public function __construct(Post $post,
-								ImageRepositoryInterface $image)
+								ImageRepositoryInterface $image,
+								SectionRepositoryInterface $sections)
 	{
 		$this->post = $this->model = $post;
 		$this->image = $image;
+		$this->sections = $sections;
+		$this->postMapper = new PostMapper();
 	}
 
 	protected $section;
@@ -115,11 +122,6 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		}
 	}
 
-	public function allPublished()
-	{
-		return $this->post->published();
-	}
-
 	public function fromSection($posts,$section)
 	{
 		return  $posts->where('section_id','=',$section->id);
@@ -138,6 +140,44 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			}
 			
 		}
+	}
+
+	public function allPublished($input)
+	{
+
+		 $posts = $this->post->published();
+        
+        if(isset($input['category']) and !empty($input['category']))
+        {   
+            $section = $this->sections->findBy('alias',$input['category']);
+            $posts = $this->fromSection($posts,$section);
+
+            // $posts = $posts->join('cms_sections', 'cms_sections.id','=','posts.section_id')->where('alias','=',Input::get('category'));
+            // return dd($posts->first());
+        }
+
+        if(isset($input['tag']) and ! empty($input['tag']))
+        {
+            $posts=$posts->whereHas('tags',function($q){
+                return $q->where('slug','=',$input['category']);
+            });
+        }
+
+    	if (isset($input['limit']) and ! empty($input['limit']))
+    	{
+            $paginated_posts = $posts->paginate((int)$input['limit']);
+    	}else{
+            $paginated_posts = $posts->paginate('200');
+        }
+
+
+        $posts = $this->postMapper->make($paginated_posts);
+
+        $posts->setPage($paginated_posts->getCurrentPage());
+        $posts->setTotal($paginated_posts->count());
+        
+        return $posts;
+       
 	}
 
 	
