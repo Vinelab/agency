@@ -4,12 +4,13 @@ use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 
-use Input, Response, File, DB;
+use Input, Response, File, DB, Lang;
 
 use Agency\Cms\Post;
 use Agency\Cms\Section;
 
 use Agency\Api\Mappers\PostMapper;
+use Agency\Api\PostsCollection;
 
 class PostsController extends \Controller {
 
@@ -21,6 +22,7 @@ class PostsController extends \Controller {
         $this->section = $section;
         $this->tag = $tag;
         $this->postMapper = new PostMapper();
+        $this->postsCollection = new PostsCollection();
     }
 
     public function index()
@@ -55,5 +57,18 @@ class PostsController extends \Controller {
 
         return dd($this->postMapper->make($posts)->toArray());
 
+    }
+
+
+    public function show($idOrSlug)
+    {
+        $post = $this->post->findByIdOrSlug($idOrSlug);
+        if(!is_null($post))
+        {
+            $this->postsCollection->push($post);
+            return dd($this->postMapper->make($this->postsCollection)->first());
+        } else {
+            return Response::json(['status'=>'400','message'=>Lang::get('api/posts.not_found')]);
+        }
     }
 }
