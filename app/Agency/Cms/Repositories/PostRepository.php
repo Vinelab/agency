@@ -3,7 +3,7 @@
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
-use DB;
+use DB,Config;
 use Agency\Cms\Post;
 use Agency\Api\Mappers\PostMapper;
 use Agency\Api\Api;
@@ -167,7 +167,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
     	{
             $paginated_posts = $posts->paginate((int)$input['limit']);
     	}else{
-            $paginated_posts = $posts->paginate('200');
+            $paginated_posts = $posts->paginate(Config::get('api.limit'));
         }
 
 
