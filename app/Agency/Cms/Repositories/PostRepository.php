@@ -125,6 +125,21 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return  $posts->where('section_id','=',$section->id);
 	}
 
+	public function findByIdOrSlug($idOrSlug)
+	{
+		try {
+			return $this->find($idOrSlug);
+		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+
+			try {
+				return $this->findBy('slug',$idOrSlug);
+			} catch (Exception $e) {
+				return dd($e->getMessage());
+			}
+			
+		}
+	}
+
 	
 
 }
