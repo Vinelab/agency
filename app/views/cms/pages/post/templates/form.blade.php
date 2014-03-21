@@ -262,4 +262,8 @@
 		@endif
 	</div>
 
+	<div id="loader-container">
+		<img id="img-loader" src="/cms/images/server.gif">
+	</div>
+
 
