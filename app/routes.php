@@ -17,36 +17,40 @@ Route::get('/', function()
 });
 
 
-Route::get('/cms', [
-        'as'   => 'cms.login',
-        'uses' => 'Agency\Cms\Controllers\LoginController@index'
+Route::group(['prefix'=>'cms'],function(){
+
+    Route::get('/', [
+            'as'   => 'cms.login',
+            'uses' => 'Agency\Cms\Controllers\LoginController@index'
     ]);
 
-Route::get('/cms/login','Agency\Cms\Controllers\LoginController@index');
+    Route::get('/login','Agency\Cms\Controllers\LoginController@index');
 
-Route::post('cms/login', [
-        'as'   => 'cms.login.attempt',
-        'uses' => 'Agency\Cms\Controllers\LoginController@login'
-    ]);
+    Route::post('/login', [
+            'as'   => 'cms.login.attempt',
+            'uses' => 'Agency\Cms\Controllers\LoginController@login'
+        ]);
 
-Route::get('cms/logout', [
-        'as'   => 'cms.logout',
-        'uses' => 'Agency\Cms\Controllers\LoginController@logout'
-    ]);
+    Route::get('/logout', [
+            'as'   => 'cms.logout',
+            'uses' => 'Agency\Cms\Controllers\LoginController@logout'
+        ]);
 
-Route::post('cms/login/password/email', [
-        'as'   => 'cms.login.password.email',
-        'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
-    ]);
+    Route::post('/login/password/email', [
+            'as'   => 'cms.login.password.email',
+            'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
+        ]);
 
-Route::get('/cms/reset/{code}',[
-    'as' => 'cms.login.password.reset',
-    'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
-    ]);
-Route::post('/cms/reset',[
-    'as' => 'cms.login.password.change',
-    'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
-    ]);
+    Route::get('/reset/{code}',[
+        'as' => 'cms.login.password.reset',
+        'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
+        ]);
+    Route::post('/reset',[
+        'as' => 'cms.login.password.change',
+        'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
+        ]);
+});
+
 
 Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
@@ -224,30 +228,37 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         ]);
     });
 
-   
-
 });
 
 Route::group(['prefix' => 'api'], function(){
 
-Route::get('/posts',[
-        'as' => 'api.posts',
-        'uses' => 'Agency\Api\Controllers\PostsController@index'
-    ]);
+    Route::get('/posts',[
+            'as' => 'api.posts',
+            'uses' => 'Agency\Api\Controllers\PostsController@index'
+        ]);
 
-Route::get('/posts/{slugOrId}',[
-        'as' => 'api.posts.show',
-        'uses' => 'Agency\Api\Controllers\PostsController@show'
-    ]);
+    Route::get('/posts/{slugOrId}',[
+            'as' => 'api.posts.show',
+            'uses' => 'Agency\Api\Controllers\PostsController@show'
+        ]);
 
-Route::get('/categories',[
-        'as' => 'api.categories',
-        'uses' => 'Agency\Api\Controllers\CategoriesController@index'
-    ]);
+    Route::get('/categories',[
+            'as' => 'api.categories',
+            'uses' => 'Agency\Api\Controllers\CategoriesController@index'
+        ]);
 
-Route::Get('/tags',[
-        'as' => 'api.tags',
-        'uses' => 'Agency\Api\Controllers\TagsController@index'
-    ]);
+    Route::get('/tags',[
+            'as' => 'api.tags',
+            'uses' => 'Agency\Api\Controllers\TagsController@index'
+        ]);
+
+    Route::post('/code',[
+            'as' => 'api.createCode',
+            'uses' => 'Agency\Api\Controllers\CodesController@code'
+        ]);
+
+    Route::get('/client',function(){
+        return View::make('client');
+    });
 
 });
