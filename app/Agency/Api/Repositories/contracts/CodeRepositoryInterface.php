@@ -1,4 +1,4 @@
-<?php namespace Agency\Api\Repositories\contracts;
+<?php namespace Agency\Api\Repositories\Contracts;
 
 interface CodeRepositoryInterface {
 
