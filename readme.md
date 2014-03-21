@@ -8,5 +8,3 @@ data through an API specifically tailored for web and mobile.
 
 
 ###Issues
-- Multiple Admins support
-- Crope Issue
