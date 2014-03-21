@@ -11,7 +11,7 @@ use Agency\Helper;
 
 
 
-use View,Input,App,Session,Auth,Redirect,Clockwork,Response;
+use View,Input,App,Session,Auth,Redirect,Clockwork,Response,Config;
 
 class ContentController extends Controller {
 
@@ -91,7 +91,7 @@ class ContentController extends Controller {
 						if($section->posts()->count()>0)
 						{
 
-							$posts = $section->posts()->paginate(1);
+							$posts = $section->posts()->paginate(Config::get('posts.number_per_page'));
 
 						}
 
