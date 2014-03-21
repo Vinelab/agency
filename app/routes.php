@@ -213,8 +213,19 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ]
             ]);
 
+         Route::resource('applications', 'Agency\Api\Controllers\ApplicationsController',
+        [
+            'names' => [
+                'index'   => 'cms.configuration.permissions',
+                'store'   => 'cms.configuration.permissions.store',
+                'edit'    => 'cms.configuration.permissions.update',
+                'destroy' => 'cms.configuration.permissions.destroy'
+            ]
+        ]);
     });
-    
+
+   
+
 });
 
 Route::group(['prefix' => 'api'], function(){
