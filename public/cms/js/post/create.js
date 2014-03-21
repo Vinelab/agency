@@ -203,7 +203,7 @@ function filesUploadChange()
 		success: function (res) {
 			temp_images = JSON.parse(res);
 			displayCropView(temp_images);
-			bootbox.hideAll();
+			$("#loader-container").hide();
 		}
 	});
 }
@@ -536,22 +536,7 @@ function deleteImage(id,element)
 
 function removePhotos(id, post_id)
 {
-    // var obj = {id: id, post_id: post_id};
-    // $.ajax({
-    //     url: Routes.cms_post_remove_photo,
-    //     type: "POST",
-    //     data: obj,
-    //     success: function(res){
-    //         location.reload();
-    //     },
-    //     error: function(xhr, status, error) {
-    //         if(xhr.status == 400 || xhr.status == 403 || xhr.status == 408 || xhr.status == 500 || xhr.status == 504)
-    //         {
-    //             alert(xhr.statusText);
-    //         }
-    //     }
-    // });
-   	
+   
    	deleted_images.push(id);
    	$("#img-"+id).hide();
 
@@ -594,9 +579,8 @@ function displayErrorMessage(msg)
 
 function displayLoading()
 {
-	bootbox.dialog({
-		message: "<img src='/cms/images/server.gif'>"
-	});
+	
+	$("#loader-container").show();
 }
 
 function deletePost(slug)
