@@ -2,6 +2,7 @@
 
 use Agency\Api\Repositories\contracts\CodeRepositoryInterface;
 use Agency\Api\Code;
+use Agency\Cms\Repositories\Repository;
 
 class CodeRepository extends Repository implements CodeRepositoryInterface {
 	
