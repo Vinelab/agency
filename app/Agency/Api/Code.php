@@ -1,4 +1,5 @@
 <?php namespace Agency\Api;
+use Eloquent;
 
 class Code extends Eloquent{
 
