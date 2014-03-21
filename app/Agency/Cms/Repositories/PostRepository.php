@@ -3,7 +3,7 @@
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
-use DB,Config;
+use DB,Config, Response;
 use Agency\Cms\Post;
 use Agency\Api\Mappers\PostMapper;
 use Agency\Api\Api;
@@ -150,7 +150,12 @@ class PostRepository extends Repository implements PostRepositoryInterface {
         if(isset($input['category']) and !empty($input['category']))
         {   
             $section = $this->sections->findBy('alias',$input['category']);
-            $posts = $this->fromSection($posts,$section);
+            if(!is_null($section))
+            {
+            	$posts = $this->fromSection($posts,$section);
+            } else {
+            	return Response::Json(['status'=>400,'Message'=>'category not found!']);
+            }
 
             // $posts = $posts->join('cms_sections', 'cms_sections.id','=','posts.section_id')->where('alias','=',Input::get('category'));
             // return dd($posts->first());
@@ -158,8 +163,8 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
         if(isset($input['tag']) and ! empty($input['tag']))
         {
-            $posts=$posts->whereHas('tags',function($q){
-                return $q->where('slug','=',$input['category']);
+            $posts=$posts->whereHas('tags',function($q) use ($input){
+            		return $q->where('slug','=',$input['tag']);
             });
         }
 
