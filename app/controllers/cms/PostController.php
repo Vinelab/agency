@@ -66,39 +66,7 @@ class PostController extends Controller {
 
 	public function index()
 	{
-		// try {
-		// 	$all_posts = $this->post->all();
-
-		// 	$posts=[];
-		// 	foreach ($all_posts as $key => $post) {
-		// 		$thumbnail="";
-		// 		if(!is_null($post->media()->first()))
-		// 		{
-		// 			$media=$post->media()->first()->media;
-		// 			if($media->type()=="image")
-		// 			{
-		// 				$image_id = $post->media()->first()->media->photo_id;
-		// 				$thumbnail =  $this->image->getThumbnail($image_id)->url;
-
-		// 			} else{
-
-		// 			$thumbnail = $media->thumbnail;
-		// 		}
 		
-		// 		}
-
-		// 	array_push($posts, ['data'=>$post,'thumbnail'=>$thumbnail]);
-
-				
-		// 	}
-
-		// 	return View::make('cms.pages.post.index', compact('permissions','posts'));
-
-			
-		// } catch (Exception $e) {
-		// 	return Response::json(['message'=>$e->getMessage()]);
-		// }
-
 	}
 
 	/**
