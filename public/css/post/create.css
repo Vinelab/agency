@@ -91,3 +91,16 @@
 	width: 100%;
 }
 
+#loader-container{
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	display: none;
+}
+
+#img-loader{
+	width: 100%;
+}
+
