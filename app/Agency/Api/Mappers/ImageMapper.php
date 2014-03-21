@@ -1,6 +1,6 @@
 <?php namespace Agency\Api\Mappers;
 
-use Agency\Api\imagesCollection;
+use Agency\Api\ImagesCollection;
 
 use Agency\Cms\Image;
 
