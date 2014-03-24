@@ -1,7 +1,7 @@
 @section('content')
 
 	{{ Form::open([
-	    'url'    => URL::route('cms.profile.udpate') ,
+	    'url'    => URL::route('cms.dashboard.profile.udpate') ,
 	    'class'  => 'form-horizontal',
 	    'role'   =>'form',
 	]) }}

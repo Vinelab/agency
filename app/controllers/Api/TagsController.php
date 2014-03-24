@@ -3,13 +3,13 @@
 use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
-use Input, Response, File, DB, Lang;
+use Input, Response, File, DB, Lang, Controller;
 
 use Agency\Cms\Section;
 
 use Agency\Api\Mappers\TagMapper;
 
-class TagsController extends \Controller {
+class TagsController extends Controller {
 
     public function __construct(    TagRepositoryInterface $tag,
                                     CodeRepositoryInterface $code)

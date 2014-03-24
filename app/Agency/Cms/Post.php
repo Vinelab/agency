@@ -46,7 +46,7 @@ class Post extends \Eloquent  {
 
             $media = $this->media()->get();
             
-            if(!$media->isempty())
+            if(!$media->isEmpty())
             {
                 $media=$this->media()->first()->media;
                 if($media->type()=="image")
@@ -66,7 +66,7 @@ class Post extends \Eloquent  {
         $media = $this->media()->get();
         $images = [];
 
-        if(!$media->isempty())
+        if(!$media->isEmpty())
         {
             foreach ($media as $media_element) {
                 if($media_element->media->type()=="image")
@@ -85,7 +85,7 @@ class Post extends \Eloquent  {
         $media = $this->media()->get();
         $videos = [];
 
-        if(!$media->isempty())
+        if(!$media->isEmpty())
         {
             foreach ($media as $media_element) {
                 if($media_element->media->type()=="video")

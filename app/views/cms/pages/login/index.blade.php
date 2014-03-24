@@ -94,7 +94,7 @@
                                                 Enter your email and to receive instructions
                                             </p>
 
-                                            {{ Form::open(['url' => URL::route('cms.login.password.email'), 'method'=>'POST']) }}
+                                            {{ Form::open(['url' => URL::route('cms.password.email'), 'method'=>'POST']) }}
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
