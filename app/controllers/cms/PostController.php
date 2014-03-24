@@ -184,7 +184,7 @@ class PostController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  string  $slug
 	 * @return Response
 	 */
 	public function show($slug)
@@ -195,7 +195,6 @@ class PostController extends Controller {
 				$post = $this->post->findBy("slug",$slug);
 				$section = $post->section()->first();
 				//get all parent sections
-				
 				$parent_sections = $this->section->parentSection($section);
 				$gallery = $post->media()->get();
 				$media=[];
