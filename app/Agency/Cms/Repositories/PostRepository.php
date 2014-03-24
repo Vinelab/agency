@@ -136,7 +136,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			try {
 				return $this->findBy('slug',$idOrSlug);
 			} catch (Exception $e) {
-				return dd($e->getMessage());
+				return json_encode(['status'=>400,'messages'=>$e->getMessage()]);
 			}
 			
 		}
@@ -145,7 +145,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 	public function allPublished($input)
 	{
 
-		 $posts = $this->post->published();
+		 $posts = $this->post->published()->latest('created_at');
         
         if(isset($input['category']) and !empty($input['category']))
         {   
