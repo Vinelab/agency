@@ -91,8 +91,7 @@ class ContentController extends Controller {
 						if($section->posts()->count()>0)
 						{
 
-							$posts = $section->posts()->paginate(Config::get('posts.number_per_page'));
-
+							$posts = $section->posts()->latest('created_at')->paginate(Config::get('posts.number_per_page'));
 						}
 
 						return View::make("cms.pages.content.posts",compact("posts","parent_sections"));	
