@@ -1,0 +1,23 @@
+.posts-container{
+	list-style-type: none;
+}
+
+.status-container{
+	height: 20px;
+}
+
+.author-status-container{
+	width: 50%;
+	height: 29px;
+	margin-right: 50%;
+	height: 52px;
+}
+
+.publisher-container{
+	float: left;
+}
+
+.post-title{
+	font-size: 16pt;
+	margin-right: 10px;
+}
