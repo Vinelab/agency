@@ -7,7 +7,8 @@
         @show
     </head>
 
-    <body>
+    <body class="rtl">
+        
         <div class="navbar navbar-default" id="navbar">
 
             <script type="text/javascript">

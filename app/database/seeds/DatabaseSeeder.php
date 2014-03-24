@@ -2,7 +2,6 @@
 
 use Agency\Cms\Admin;
 use Agency\Cms\Section;
-use Agency\Cms\Content;
 use Agency\Cms\Authority\Entities\Role;
 use Agency\Cms\Authority\Entities\Permission;
 
@@ -21,7 +20,6 @@ class DatabaseSeeder extends Seeder {
 		$this->call('AdminTableSeeder');
 		$this->call('SectionTableSeeder');
 		$this->call('PermissionTableSeeder');
-		$this->call('ContentSeeder');
 
 		$this->call('RolePermissionsRelationSeeder');
 		$this->call('AdminPrivilegesSeeder');
@@ -66,14 +64,6 @@ class SectionTableSeeder extends Seeder {
 				'is_fertile' => true,
 				'is_roleable'=> true
 			],
-			[
-				'title'      => 'Post',
-				'alias'      => 'post',
-				'icon'       => 'book',
-				'parent_id'  => 0,
-				'is_fertile' => true,
-				'is_roleable'=> true
-			],
 
 			[
 				'title'      => 'Administration',
@@ -91,6 +81,7 @@ class SectionTableSeeder extends Seeder {
 				'is_fertile' => true,
 				'is_roleable'=> false
 			]
+
 		];
 
 		foreach ($sections as $section)
@@ -221,20 +212,5 @@ class AdminPrivilegesSeeder extends Seeder {
 		{
 			Authority::authorize($admin)->admin($section);
 		}
-	}
-}
-
-class ContentSeeder extends Seeder {
-
-
-	public function run()
-	{
-		DB::table('contents')->delete();
-		$home = Content::create([
-			'title' => 'home',
-			'alias' => 'home',
-			'parent_id'=>''
-		]);
-		
 	}
 }

@@ -8,7 +8,7 @@ use Agency\Cms\Authority\Manager as Authority;
 use Agency\Cms\Authority\Contracts\AuthorableInterface;
 use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface
     as AgencySectionRepositoryInterface;
-use Agency\Artists\Cms\Repositories\Contracts\SectionRepositoryInterface
+use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface
     as ArtistSectionRepositoryInterface;
 
 class AdminAuthorizer implements Contracts\AdminAuthorizerInterface {

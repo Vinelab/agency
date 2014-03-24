@@ -8,6 +8,8 @@
 
     @include('cms.pages.configuration.permissions')
 
+    @include('cms.pages.configuration.applications')
+
 @stop
 
 @section('scripts')

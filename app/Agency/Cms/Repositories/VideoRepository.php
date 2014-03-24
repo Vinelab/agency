@@ -1,10 +1,10 @@
 <?php  namespace Agency\Cms\Repositories;
 
-use Agency\Cms\Repositories\Contracts\VideosRepositoryInterface;
+use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
 use DB;
 use Agency\Cms\Video;
 
-class VideoRepository extends Repository implements VideosRepositoryInterface {
+class VideoRepository extends Repository implements VideoRepositoryInterface {
 
 	public function __construct(Video $video)
 	{
@@ -14,7 +14,6 @@ class VideoRepository extends Repository implements VideosRepositoryInterface {
 	public function create($url,$title,$description,$thumbnail)
 	{
 		$this->video=$this->video->create(compact("url","title","description","thumbnail"));
-		$this->video->save();
 		return $this->video;
 	}
 
@@ -41,11 +40,21 @@ class VideoRepository extends Repository implements VideosRepositoryInterface {
     	^(?:https?://)?              # Optional protocol
      	(?:www\.)?                  # Optional subdomain
      	(?:youtube\.com|youtu\.be)  # Mandatory domain name
-     	/watch\?v=([^&]+)           # URI with video id as capture group 1
+     	/embed/([^&]+)           # URI with video id as capture group 1
      	~x';
 
 		$has_match = preg_match($rx, $url, $matches);
 		return $has_match;
+	}
+
+	public function detachAll($post)
+	{
+		$old_videos=$post->media()->where('media_type','=','Agency\Cms\Video')->get();
+		foreach ($old_videos as $key => $video) {
+			$media_id=$video->media_id;
+			$this->video->find($media_id)->delete();
+			$video->delete();
+		}
 	}
 
 

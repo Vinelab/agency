@@ -29,4 +29,15 @@ class AdminRegistrationEmailNotifier implements Contracts\AdminRegistrationNotif
             $message->to($admin->getRegistrationEmail(), $admin->getName())->subject('Welcome!');
         });
     }
+
+    public function sendCode(RegistrableInterface $admin)
+    {
+        $this->mailer->send(
+            'emails.cms.resetPassword',
+            compact('admin'),
+            function($message) use($admin) {
+            $message->to($admin->getRegistrationEmail(), $admin->getName())->subject('Reset Password');
+            }
+        );
+    }
 }
