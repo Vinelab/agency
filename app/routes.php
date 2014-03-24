@@ -31,22 +31,17 @@ Route::group(['prefix'=>'cms'],function(){
             'uses' => 'Agency\Cms\Controllers\LoginController@login'
         ]);
 
-    Route::get('/logout', [
-            'as'   => 'cms.logout',
-            'uses' => 'Agency\Cms\Controllers\LoginController@logout'
-        ]);
-
-    Route::post('/login/password/email', [
-            'as'   => 'cms.login.password.email',
+    Route::post('/password/email', [
+            'as'   => 'cms.password.email',
             'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
         ]);
 
-    Route::get('/reset/{code}',[
-        'as' => 'cms.login.password.reset',
+    Route::get('/password/reset/{code}',[
+        'as' => 'cms.password.reset',
         'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
         ]);
-    Route::post('/reset',[
-        'as' => 'cms.login.password.change',
+    Route::post('/password/reset',[
+        'as' => 'cms.password.change',
         'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
         ]);
 });
@@ -60,35 +55,42 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             'uses' => 'Agency\Cms\Controllers\DashboardController@index'
     ]);
 
-    
-
-
-    Route::get('/dashboard', [
-        'as' => 'cms.dashboard',
-
-        'uses' => 'Agency\Cms\Controllers\DashboardController@index'
+    Route::get('/logout', [
+            'as'   => 'cms.logout',
+            'uses' => 'Agency\Cms\Controllers\LoginController@logout'
     ]);
 
-    Route::get('/dashboard/profile',[
-        'as' => 'cms.profile',
-        'uses' => 'Agency\Cms\Controllers\AdminController@profile'
-    ]);
+    Route::group(['prefix' => '/dashboard'], function(){
 
-    Route::post('/dashboard/profile',[
-        'as' => 'cms.profile.udpate',
-        'uses' => 'Agency\Cms\Controllers\AdminController@updateProfile'
-    ]);
+        Route::get('/', [
+            'as' => 'cms.dashboard',
+            'uses' => 'Agency\Cms\Controllers\DashboardController@index'
+        ]);
 
-    Route::post("/tmp",[
-        "as" => "cms.post.tmp",
-        "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
-    ]);
+        Route::get('/profile',[
+            'as' => 'cms.dashboard.profile',
+            'uses' => 'Agency\Cms\Controllers\AdminController@profile'
+        ]);
 
-    Route::post("/tmp/delete",[
-        "as" => "cms.delete.tmp",
-        "uses" => "Agency\Cms\Controllers\TempsController@deletePhoto"
+        Route::post('/profile',[
+            'as' => 'cms.dashboard.profile.udpate',
+            'uses' => 'Agency\Cms\Controllers\AdminController@updateProfile'
+        ]);
 
-    ]);
+        Route::get('/password',[
+            'as' => 'cms.dashboard.password',
+            'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
+        ]);
+
+        Route::post('/dashboard/password',[
+            'as' => 'cms.dashboard.password.update',
+            'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
+        ]);
+
+    });
+
+
+   
    
 
 
@@ -114,46 +116,54 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::group(['prefix' => '/content'], function(){
 
-        Route::resource('/post/tag', 'Agency\Cms\Controllers\TagController',
+        Route::resource('/posts', 'Agency\Cms\Controllers\PostController',
         [
             'names' => [
-                'index'   => 'cms.tag',
-                'create'  => 'cms.tag.create',
-                'store'   => 'cms.tag.store',
-                'edit'    => 'cms.tag.edit',
-                'update'  => 'cms.tag.update',
-                'destroy' => 'cms.tag.destroy'
+                'index'   => 'cms.content.posts',
+                'create'  => 'cms.content.posts.create',
+                'store'   => 'cms.content.posts.store',
+                'edit'    => 'cms.content.posts.edit',
+                'show'    => 'cms.content.posts.show',
             ],
-            'except' => ['show']
+            'except' => ['destroy','update']
         ]);
 
-        Route::get("/post/tag/all",[
-            'as'=>'cms.tags',
-            'uses'=>'Agency\Cms\Controllers\TagController@all'
-        ]);
+        Route::group(['prefix'=>'/posts'],function(){
 
-         Route::resource('/post', 'Agency\Cms\Controllers\PostController',
-                [
-                    'names' => [
-                        'index'   => 'cms.post',
-                        'create'  => 'cms.post.create',
-                        'store'   => 'cms.post.store',
-                        'show'    => 'cms.post.show',
-                        'edit'    => 'cms.post.edit'
-                    ],
-                    'except' => ['destroy','update']
-        ]);
+            Route::resource('/tags', 'Agency\Cms\Controllers\TagController',
+            [
+                'names' => [
+                    'index'   => 'cms.content.posts.tags',
+                    'create'  => 'cms.content.posts.tags.create',
+                    'store'   => 'cms.content.posts.tags.store',
+                    'edit'    => 'cms.content.posts.tags.edit',
+                    'update'  => 'cms.content.posts.tags.update',
+                    'destroy' => 'cms.content.posts.tags.destroy'
+                ],
+                'except' => ['show']
+            ]);
 
-        Route::get("/post/delete/{id}",[
-            'as' => 'cms.post.destroy',
-            'uses' => 'Agency\Cms\Controllers\PostController@destroy'
-        ]);
+            Route::get("/delete/{id}",[
+                'as' => 'cms.content.posts.destroy',
+                'uses' => 'Agency\Cms\Controllers\PostController@destroy'
+            ]);
 
-        Route::post("/post/{id}",[
-            'as' => 'cms.post.update',
-            'uses' => 'Agency\Cms\Controllers\PostController@update'
-        ]);
+            Route::post("/{id}",[
+                'as' => 'cms.content.posts.update',
+                'uses' => 'Agency\Cms\Controllers\PostController@update'
+            ]);
 
+            Route::post("/photos",[
+                "as" => "cms.content.posts.photos",
+                "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
+            ]);
+
+            Route::post("/photos/delete",[
+                "as" => "cms.content.posts.photos.delete",
+                "uses" => "Agency\Cms\Controllers\TempsController@deletePhoto"
+            ]);
+
+        });
 
         Route::get("/",[
             'as'=>'cms.content',
@@ -161,17 +171,6 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         ]);
 
     });
-
-    Route::get('/dashboard/password',[
-        'as' => 'cms.administration.password',
-        'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
-    ]);
-
-    Route::post('/dashboard/password',[
-        'as' => 'cms.administration.updatePassword',
-        'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
-    ]);
-
 
 
     Route::group(['prefix' => 'configuration'], function() {
@@ -182,48 +181,48 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
         ]);
 
         Route::resource('sections', 'Agency\Cms\Controllers\SectionController',
-            [
-                'names' => [
-                    'index'   => 'cms.configuration.sections',
-                    'create'  => 'cms.configuration.sections.create',
-                    'store'   => 'cms.configuration.sections.store',
-                    'show'    => 'cms.configuration.sections.show',
-                    'edit'    => 'cms.configuration.sections.update',
-                    'destroy' => 'cms.configuration.sections.destroy'
-                ]
-            ]);
+        [
+            'names' => [
+                'index'   => 'cms.configuration.sections',
+                'create'  => 'cms.configuration.sections.create',
+                'store'   => 'cms.configuration.sections.store',
+                'show'    => 'cms.configuration.sections.show',
+                'edit'    => 'cms.configuration.sections.update',
+                'destroy' => 'cms.configuration.sections.destroy'
+            ]
+        ]);
 
         Route::resource('roles', 'Agency\Cms\Controllers\RoleController',
-            [
-                'names' => [
-                    'index'   => 'cms.configuration.roles',
-                    'create'  => 'cms.configuration.roles.create',
-                    'store'   => 'cms.configuration.roles.store',
-                    'show'    => 'cms.configuration.roles.show',
-                    'edit'    => 'cms.configuration.roles.update',
-                    'destroy' => 'cms.configuration.roles.destroy'
-                ]
-            ]);
+        [
+            'names' => [
+                'index'   => 'cms.configuration.roles',
+                'create'  => 'cms.configuration.roles.create',
+                'store'   => 'cms.configuration.roles.store',
+                'show'    => 'cms.configuration.roles.show',
+                'edit'    => 'cms.configuration.roles.update',
+                'destroy' => 'cms.configuration.roles.destroy'
+            ]
+        ]);
 
         Route::resource('permissions', 'Agency\Cms\Controllers\PermissionController',
-            [
-                'names' => [
-                    'index'   => 'cms.configuration.permissions',
-                    'create'  => 'cms.configuration.permissions.create',
-                    'store'   => 'cms.configuration.permissions.store',
-                    'show'    => 'cms.configuration.permissions.show',
-                    'edit'    => 'cms.configuration.permissions.update',
-                    'destroy' => 'cms.configuration.permissions.destroy'
-                ]
-            ]);
-
-         Route::resource('applications', 'Agency\Api\Controllers\ApplicationsController',
         [
             'names' => [
                 'index'   => 'cms.configuration.permissions',
+                'create'  => 'cms.configuration.permissions.create',
                 'store'   => 'cms.configuration.permissions.store',
+                'show'    => 'cms.configuration.permissions.show',
                 'edit'    => 'cms.configuration.permissions.update',
                 'destroy' => 'cms.configuration.permissions.destroy'
+            ]
+        ]);
+
+        Route::resource('applications', 'Agency\Api\Controllers\ApplicationsController',
+        [
+            'names' => [
+                'index'   => 'cms.configuration.applications',
+                'store'   => 'cms.configuration.applications.store',
+                'edit'    => 'cms.configuration.applications.update',
+                'destroy' => 'cms.configuration.applications.destroy'
             ]
         ]);
     });
@@ -253,8 +252,8 @@ Route::group(['prefix' => 'api'], function(){
         ]);
 
     Route::post('/code',[
-            'as' => 'api.createCode',
-            'uses' => 'Agency\Api\Controllers\CodesController@code'
+            'as' => 'api.code.create',
+            'uses' => 'Agency\Api\Controllers\CodesController@create'
         ]);
 
     Route::get('/client',function(){
