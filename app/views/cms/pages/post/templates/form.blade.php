@@ -57,7 +57,7 @@
 		{{--Tags Input--}}
 		<div class="form-group">
 			
-			<label class="col-sm-3 control-label input-lg no-padding-right" for="form-field-tags">Tag input</label>
+			<label class="col-sm-3 control-label input-lg no-padding-right" for="form-field-tags">{{Lang::get('posts/form.tag_input')}}</label>
 
 			<div class="col-sm-9">
 				@if($updating and (sizeof($tags)>0))
@@ -75,7 +75,7 @@
 					</div>
 
 				@else
-					<input type="text" name="tags" id="form-field-tags"  placeholder="Enter tags ..." style="display: none;">
+					<input type="text" name="tags" id="form-field-tags" style="display: none;">
 
 				@endif
 			</div>
@@ -102,7 +102,7 @@
 			                        <a href="{{$media_element->url}}" data-rel="colorbox">
 			                            <img alt="150x150" src="{{$media_element->presetURL('thumbnail')}}" width="200px" height="200px;"/>
 			                            <div class="text">
-			                                <div class="inner">Preview</div>
+			                                <div class="inner">{{Lang::get("posts/form.preview")}}</div>
 			                            </div>
 			                        </a>
 			                        @if ($admin_permissions->has('delete'))
