@@ -229,7 +229,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
 });
 
-Route::group(['prefix' => 'api'], function(){
+Route::group(['prefix' => 'api','before'=>'code'], function(){
 
     Route::get('/posts',[
             'as' => 'api.posts',
