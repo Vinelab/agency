@@ -61,7 +61,7 @@
 						<a href="{{$m->url}}" data-rel="colorbox">
                             <img alt="150x150" src="{{$m->presetURL('thumbnail')}}" width="200px"/>
                             <div class="text">
-                                <div class="inner">Preview</div>
+                                <div class="inner">{{Lang::get('posts/form.preview')}}</div>
                             </div>
 			            </a>
 			        </li>
