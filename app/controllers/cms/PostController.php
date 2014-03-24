@@ -102,14 +102,14 @@ class PostController extends Controller {
 		{
 			$input = Input::all();
 
-
 			if($this->postValidator->validate($input))
 			{
 
 			  	$slug = $this->post->uniqSlug( Helper::slugify(Input::get('title')) );
-
 				$body = Helper::cleanHtml(Input::get('body'));
+				
 				$section = $this->section->findBy('alias',Input::get('section'));
+
 				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
 
 				$tags = input::get('tags');
@@ -173,8 +173,7 @@ class PostController extends Controller {
 				return Response::json($post);
 
 			} else {
-				//display error
-
+				return Response::json('status'=>400,"message"=>$this->postValidator->messages());
 			}
 
 		}
