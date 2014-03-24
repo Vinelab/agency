@@ -8,6 +8,8 @@ use Agency\Cms\Post;
 use Agency\Api\Mappers\PostMapper;
 use Agency\Api\Api;
 
+use Exception;
+
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
@@ -175,13 +177,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
             $paginated_posts = $posts->paginate(Config::get('api.limit'));
         }
 
-
-        $posts = $this->postMapper->make($paginated_posts);
-
-        $posts->setPage($paginated_posts->getCurrentPage());
-        $posts->setTotal($paginated_posts->count());
-        
-        return $posts;
+        	return $paginated_posts;
        
 	}
 
