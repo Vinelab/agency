@@ -26,5 +26,7 @@ return [
     'scheduled_at' => "Scheduled At",
     'author' => "Author",
     'edit' => 'Edit',
-    'agency_cms'=> "Agency CMS"
+    'agency_cms'=> "Agency CMS",
+    'tags_input' => "Tag Input",
+    'preview' => 'Preview'
 ];
