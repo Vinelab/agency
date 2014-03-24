@@ -4,7 +4,7 @@
 			<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 				<!-- add the user image here -->
 				<span class="user-info">
-					<small>Welcome</small>
+					<small>{{Lang::get('navbar.welcome')}}</small>
 					<!-- add the username here -->
 					{{ Auth::user()->name }}
 				</span>
