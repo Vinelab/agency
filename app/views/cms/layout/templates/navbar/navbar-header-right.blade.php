@@ -12,14 +12,14 @@
 			</a>
 			<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 				<li>
-					<a href="{{URL::route('cms.administration.password')}}">
+					<a href="{{URL::route('cms.dashboard.password')}}">
 						<i class="icon-cog"></i>
 						{{Lang::get('navbar.change_password')}}
 					</a>
 				</li>
 
 				<li>
-					<a href="{{URL::route('cms.profile')}}">
+					<a href="{{URL::route('cms.dashboard.profile')}}">
 						<i class="icon-user"></i>
 						{{Lang::get('navbar.profile')}}
 					</a>
