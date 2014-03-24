@@ -173,7 +173,7 @@ class PostController extends Controller {
 				return Response::json($post);
 
 			} else {
-				return Response::json('status'=>400,"message"=>$this->postValidator->messages());
+				return Response::json(['status'=>400,"message"=>$this->postValidator->messages()]);
 			}
 
 		}
@@ -192,27 +192,24 @@ class PostController extends Controller {
 		if($this->admin_permissions->has("read"))
 		{
 			try {
+
 				$post = $this->post->findBy("slug",$slug);
+
 				$section = $post->section()->first();
+
 				//get all parent sections
 				$parent_sections = $this->section->parentSection($section);
+
 				$gallery = $post->media()->get();
+				
 				$media=[];
 				foreach ($gallery as $value) {
-					if($value->media->type()=="image")
-					{
-						array_push($media, $value->media);
-
-					}else{
-						array_push($media, $value->media);
-					}
+					array_push($media, $value->media);					
 				}
-
+				
 				$tags = $post->tags()->get();
 
 				return View::make('cms.pages.post.show',compact('post','media','parent_sections','tags'));
-
-				
 
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
