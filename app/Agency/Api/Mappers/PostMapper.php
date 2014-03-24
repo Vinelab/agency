@@ -12,9 +12,9 @@ class PostMapper{
 
 	public function __construct()
 	{
-		$this->imageMapper = new ImageMapper();
-		$this->videoMapper = new VideoMapper();
-		$this->tagMapper = new TagMapper();
+		$this->image_mapper = new ImageMapper();
+		$this->video_mapper = new VideoMapper();
+		$this->tag_mapper = new TagMapper();
 
 	}
 
@@ -42,9 +42,9 @@ class PostMapper{
 		$this->post['id'] = $post->id;
 		$this->post['title'] = $post->title;
 		$this->post['slug'] = $post->slug;
-		$this->post['images'] = $this->imageMapper->make($post->getAllImages())->toArray();
-		$this->post['videos'] = $this->videoMapper->make($post->getAllVideos())->toArray();
-		$this->post['tags'] = $this->tagMapper->Make($post->tags()->get())->toArray();
+		$this->post['images'] = $this->image_mapper->make($post->getAllImages())->toArray();
+		$this->post['videos'] = $this->video_mapper->make($post->getAllVideos())->toArray();
+		$this->post['tags'] = $this->tag_mapper->Make($post->tags()->get())->toArray();
 		return $this->post;
 	}
 
