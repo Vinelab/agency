@@ -3,5 +3,6 @@
 return [
 	'change_password' => 'Change Password',
 	'profile' => 'Profile',
-	'logout' => 'Logout'
+	'logout' => 'Logout',
+	'welcome'=> "Welcome"
 ];
