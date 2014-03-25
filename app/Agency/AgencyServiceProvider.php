@@ -19,17 +19,15 @@ class AgencyServiceProvider extends ServiceProvider {
         // register Api Service Provider
         $this->app->register('Agency\Api\ApiServiceProvider');
 
-        // admin
-        $this->app->bind(
-            'Agency\Repositories\Contracts\AdminRepositoryInterface',
-            'Agency\Repositories\AdminRepository');
-
-        $this->app->bind('Agency\Contracts\AdminInterface', 'Agency\Admin');
-
         // images
         $this->app->bind(
             'Agency\Repositories\Contracts\ImageRepositoryInterface',
             'Agency\Repositories\ImageRepository');
         $this->app->bind('Agency\Contracts\ImageInterface', 'Agency\Image');
+
+        // sections
+        $this->app->bind(
+            'Agency\Repositories\Contracts\SectionRepositoryInterface',
+            'Agency\Repositories\SectionRepository');
     }
 }
