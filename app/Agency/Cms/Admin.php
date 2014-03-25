@@ -1,4 +1,4 @@
-<?php namespace Agency;
+<?php namespace Agency\Cms;
 
 use Eloquent;
 

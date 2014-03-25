@@ -10,7 +10,7 @@ class AdminRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mAdmin = M::mock('Agency\Contracts\AdminInterface');
+        $this->mAdmin = M::mock('Agency\Cms\Contracts\AdminInterface');
 
         $this->admins = new AdminRepository($this->mAdmin);
     }
@@ -32,7 +32,7 @@ class AdminRepositoryTest extends TestCase {
 
         $admin = $this->admins->create($name, $email);
 
-        $this->assertInstanceOf('Agency\Contracts\AdminInterface', $admin);
+        $this->assertInstanceOf('Agency\Cms\Contracts\AdminInterface', $admin);
         $this->assertObjectNotHasAttribute('password', $admin);
         $this->assertObjectHasAttribute('raw_password', $admin);
         $this->assertNotNull($admin->raw_password);
@@ -97,7 +97,7 @@ class AdminRepositoryTest extends TestCase {
         $this->mAdmin->shouldReceive('save')->once()->andReturn($this->mAdmin);
 
         $admin = $this->admins->changePassword($id, $pass);
-        $this->assertInstanceOf('Agency\Contracts\AdminInterface', $admin);
+        $this->assertInstanceOf('Agency\Cms\Contracts\AdminInterface', $admin);
     }
 
 }

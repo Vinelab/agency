@@ -6,7 +6,7 @@
 
 use Hash, Str;
 
-use Agency\Contracts\AdminInterface;
+use Agency\Cms\Contracts\AdminInterface;
 
 class AdminRepository extends Repository implements Contracts\AdminRepositoryInterface {
 
