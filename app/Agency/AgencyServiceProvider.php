@@ -14,9 +14,11 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->register('Agency\Media\MediaServiceProvider');
 
         // register Cms Service Provider
-        $this->app->register('Agency\Cms\CmsServiceProvider'); 
+        $this->app->register('Agency\Cms\CmsServiceProvider');
 
-        // register Api Service Provider  
-        $this->app->register('Agency\Api\ApiServiceProvider');   
+        // register Api Service Provider
+        $this->app->register('Agency\Api\ApiServiceProvider');
+
+        $this->app->bind('Agency\Contracts\AdminInterface', 'Agency\Admin');
     }
 }
