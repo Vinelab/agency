@@ -3,7 +3,7 @@
 use Eloquent;
 
 use Illuminate\Auth\UserInterface;
-use Agency\Contracts\AdminInterface;
+use Agency\Cms\Contracts\AdminInterface;
 use Agency\Cms\Contracts\RegistrableInterface;
 
 use Agency\Cms\Authority\Contracts\AuthorableInterface;

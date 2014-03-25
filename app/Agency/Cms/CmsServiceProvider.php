@@ -19,8 +19,10 @@ class CmsServiceProvider extends ServiceProvider {
         });
 
         $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\SectionRepositoryInterface',
-            'Agency\Cms\Repositories\SectionRepository');
+            'Agency\Cms\Repositories\Contracts\AdminRepositoryInterface',
+            'Agency\Cms\Repositories\AdminRepository');
+
+        $this->app->bind('Agency\Cms\Contracts\AdminInterface', 'Agency\Cms\Admin');
 
         $this->app->bind(
             'Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface',
