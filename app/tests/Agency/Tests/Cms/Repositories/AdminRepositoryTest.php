@@ -22,6 +22,15 @@ class AdminRepositoryTest extends TestCase {
         // M::close();
     }
 
+    public function test_admin_provider_bindings()
+    {
+        $admin_repo = $this->app->make('Agency\Cms\Repositories\Contracts\AdminRepositoryInterface');
+        $this->assertInstanceOf('Agency\Cms\Repositories\AdminRepository', $admin_repo);
+
+        $admin = $this->app->make('Agency\Cms\Contracts\AdminInterface');
+        $this->assertInstanceOf('Agency\Cms\Admin', $admin);
+    }
+
     public function test_creating_admin()
     {
         $name = 'Battouta';
