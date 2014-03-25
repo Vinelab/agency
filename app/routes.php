@@ -132,13 +132,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ],
                 'except' => ['show']
             ]);
-
-            // Route::get("/delete/{id}",[
-            //     'as' => 'cms.content.posts.destroy',
-            //     'uses' => 'Agency\Cms\Controllers\PostController@destroy'
-            // ]);
-
-           
+                       
 
             Route::post("/photos",[
                 "as" => "cms.content.posts.photos",
