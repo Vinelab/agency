@@ -1,4 +1,4 @@
-<?php namespace Agency\Tests\Cms\Repositories;
+<?php namespace Agency\Tests\Repositories;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
