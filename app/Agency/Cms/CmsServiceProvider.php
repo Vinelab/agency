@@ -23,20 +23,12 @@ class CmsServiceProvider extends ServiceProvider {
             'Agency\Cms\Repositories\SectionRepository');
 
         $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\AdminRepositoryInterface',
-            'Agency\Cms\Repositories\AdminRepository');
-
-        $this->app->bind(
             'Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface',
             'Agency\Cms\Authentication\AdminAuthorizer');
 
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\PostRepositoryInterface',
             'Agency\Cms\Repositories\PostRepository');
-
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\ImageRepositoryInterface',
-            'Agency\Cms\Repositories\ImageRepository');
 
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\VideoRepositoryInterface',
@@ -83,7 +75,7 @@ class CmsServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\PermissionRepositoryInterface',
             'Agency\Cms\Repositories\PermissionRepository');
-        
+
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\TagRepositoryInterface',
             'Agency\Cms\Repositories\TagRepository');
