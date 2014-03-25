@@ -258,7 +258,10 @@
 	    	{{Lang::get("posts/form.cancel")}} <i class="icon-spinner icon-spin orange bigger-125" id="spinner"></i>
 	    </button>
 	    @if($updating)
-			{{ Form::submit('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost('$edit_post->slug')"]) }}
+	    	{{Form::open(['route' => ['cms.content.posts.destroy',$edit_post->slug],'id'=>'delete-post-form'])}}
+	    		{{ Form::hidden('_method', 'DELETE') }}
+				{{ Form::button('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost()"]) }}
+			{{Form::close()}}
 		@endif
 	</div>
 
