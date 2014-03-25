@@ -194,7 +194,6 @@ class PostController extends Controller {
 			try {
 
 				$post = $this->post->findBy("slug",$slug);
-
 				$section = $post->section()->first();
 
 				//get all parent sections
@@ -287,7 +286,9 @@ class PostController extends Controller {
 
 				$tags = Input::get('tags');
 				$tags = explode(", ", $tags);
-				if(!empty($post->tags()->get()))
+
+
+				if(!($post->tags()->get()->isEmpty()))
 				{
 					$post->tags()->detach();
 				}
