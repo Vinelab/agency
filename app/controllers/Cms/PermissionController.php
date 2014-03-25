@@ -2,7 +2,7 @@
 
 use Input;
 
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface as Sections;
+use Agency\Repositories\Contracts\SectionRepositoryInterface as Sections;
 use Agency\Cms\Repositories\Contracts\PermissionRepositoryInterface as Permissions;
 use Agency\Cms\Validators\Contracts\PermissionValidatorInterface as PermissionValidator;
 

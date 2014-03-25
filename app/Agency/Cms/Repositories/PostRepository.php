@@ -2,7 +2,7 @@
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use DB,Config, Response;
 use Agency\Cms\Post;
 use Agency\Api\Mappers\PostMapper;

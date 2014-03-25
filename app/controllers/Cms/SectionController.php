@@ -10,7 +10,7 @@ use Agency\Cms\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
 use Agency\Cms\Repositories\Contracts\ArtistRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 
 class SectionController extends Controller {
 

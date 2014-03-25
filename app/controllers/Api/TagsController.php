@@ -5,7 +5,7 @@ use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
 use Input, Response, File, DB, Lang, Controller;
 
-use Agency\Cms\Section;
+use Agency\Section;
 
 use Agency\Api\Mappers\TagMapper;
 

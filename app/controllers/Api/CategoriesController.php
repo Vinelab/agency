@@ -1,11 +1,11 @@
 <?php namespace Agency\Api\Controllers;
 
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
 use Input, Response, File, DB, Lang, Controller;
 
-use Agency\Cms\Section;
+use Agency\Section;
 
 use Agency\Api\Mappers\SectionMapper;
 use Agency\Api\SectionsCollection;

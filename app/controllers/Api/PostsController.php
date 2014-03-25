@@ -1,14 +1,14 @@
 <?php namespace Agency\Api\Controllers;
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
 use Input, Response, File, DB, Lang, Controller;
 
 use Agency\Cms\Post;
-use Agency\Cms\Section;
+use Agency\Section;
 
 use Agency\Api\Api;
 

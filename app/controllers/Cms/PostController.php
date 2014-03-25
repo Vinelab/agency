@@ -6,7 +6,7 @@ use Agency\Cms\Exceptions\UnauthorizedException;
 use Agency\Cms\Validators\Contracts\PostValidatorInterface;
 use Agency\Cms\Validators\Contracts\TagValidatorInterface;
 
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
