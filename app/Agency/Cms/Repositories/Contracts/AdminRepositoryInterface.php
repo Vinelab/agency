@@ -6,6 +6,4 @@ interface AdminRepositoryInterface {
 
 	public function changePassword($admin,$password);
 
-	public function updateProfile($admin,$input);
-    
 }
