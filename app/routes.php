@@ -116,18 +116,7 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
     Route::group(['prefix' => '/content'], function(){
 
-        Route::resource('/posts', 'Agency\Cms\Controllers\PostController',
-        [
-            'names' => [
-                'index'   => 'cms.content.posts',
-                'create'  => 'cms.content.posts.create',
-                'store'   => 'cms.content.posts.store',
-                'edit'    => 'cms.content.posts.edit',
-                'show'    => 'cms.content.posts.show',
-                'destroy' => 'cms.content.posts.destroy'
-            ],
-            'except' => ['update']
-        ]);
+        
 
         Route::group(['prefix'=>'/posts'],function(){
 
@@ -149,22 +138,32 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
             //     'uses' => 'Agency\Cms\Controllers\PostController@destroy'
             // ]);
 
-            Route::post("/{id}",[
-                'as' => 'cms.content.posts.update',
-                'uses' => 'Agency\Cms\Controllers\PostController@update'
-            ]);
+           
 
             Route::post("/photos",[
                 "as" => "cms.content.posts.photos",
                 "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
             ]);
 
-            Route::post("/photos/delete",[
-                "as" => "cms.content.posts.photos.delete",
-                "uses" => "Agency\Cms\Controllers\TempsController@deletePhoto"
+            Route::post("/{id}",[
+                'as' => 'cms.content.posts.update',
+                'uses' => 'Agency\Cms\Controllers\PostController@update'
             ]);
 
         });
+
+        Route::resource('/posts', 'Agency\Cms\Controllers\PostController',
+        [
+            'names' => [
+                'index'   => 'cms.content.posts',
+                'create'  => 'cms.content.posts.create',
+                'store'   => 'cms.content.posts.store',
+                'edit'    => 'cms.content.posts.edit',
+                'show'    => 'cms.content.posts.show',
+                'destroy' => 'cms.content.posts.destroy'
+            ],
+            'except' => ['update']
+        ]);
 
         Route::get("/",[
             'as'=>'cms.content',
@@ -252,13 +251,13 @@ Route::group(['prefix' => 'api','before'=>'code'], function(){
             'uses' => 'Agency\Api\Controllers\TagsController@index'
         ]);
 
-    Route::post('/code',[
-            'as' => 'api.code.create',
-            'uses' => 'Agency\Api\Controllers\CodesController@create'
-        ]);
-
-    Route::get('/client',function(){
-        return View::make('client');
-    });
-
 });
+
+    Route::post('/api/code',[
+                'as' => 'api.code.create',
+                'uses' => 'Agency\Api\Controllers\CodesController@create'
+            ]);
+
+     Route::get('/client',function(){
+            return View::make('client');
+        });
