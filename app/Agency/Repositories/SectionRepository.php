@@ -1,11 +1,11 @@
-<?php namespace Agency\Cms\Repositories;
+<?php namespace Agency\Repositories;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Cms\Section;
 use DB;
+use Agency\Section;
 
 class SectionRepository extends Repository implements Contracts\SectionRepositoryInterface {
 
@@ -82,40 +82,34 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
         return $this->section->whereIn('alias', array_merge($this->defaults,$additional))->get();
     }
 
-
-    public function children()
+    public function children($alias)
     {
-        return $this->section->sections()->get();
+        return $this->section->with('sections')
+            ->where('alias', $alias)->first();
     }
 
-    //Get all infertile sections
-    public function infertile()
+    public function infertile($alias)
     {
-        $section = $this->findBy("alias","content");
-
-        $infertile = $this->section->where("is_fertile","=",false)->get();
-
-        return $infertile;
-
+        $section = $this->findBy('alias', $alias);
+        return $this->section->where('is_fertile', false)->get();
     }
 
-    public function set($section)
+    public function parentSections($alias)
     {
-        $this->section = $this->model =$section;
-    }
+        $section = $this->findByAlias($alias);
 
-    public function parentSection($section)
-    {
-        $parent_sections = [];
-
-        $content_section = $this->section->where('alias','=','content')->first();
-
-        while($section->parent_id!=$content_section->id)
+        if ($section)
         {
-            array_push($parent_sections, $section);
-            $section=$this->section->find($section->parent_id);
+            $parent_sections = [];
+
+            $content_section = $this->section->where('alias', $alias)->first();
+
+            do {
+                $section = $this->section->find($section->parent_id);
+                array_push($parent_sections, $section);
+            } while($section->parent_id != $content_section->id);
+
+            return  array_reverse($parent_sections);
         }
-        array_push($parent_sections, $section);
-        return  array_reverse($parent_sections);
     }
 }
