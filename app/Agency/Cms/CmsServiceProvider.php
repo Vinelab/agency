@@ -79,10 +79,6 @@ class CmsServiceProvider extends ServiceProvider {
             'Agency\Cms\Repositories\PermissionRepository');
 
         $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\TagRepositoryInterface',
-            'Agency\Cms\Repositories\TagRepository');
-
-        $this->app->bind(
             'Agency\Cms\Validators\Contracts\PermissionValidatorInterface', function() {
                 return new \Agency\Cms\Validators\PermissionValidator($this->app->make('validator'));
             });
