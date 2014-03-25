@@ -124,8 +124,9 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 'store'   => 'cms.content.posts.store',
                 'edit'    => 'cms.content.posts.edit',
                 'show'    => 'cms.content.posts.show',
+                'destroy' => 'cms.content.posts.destroy'
             ],
-            'except' => ['destroy','update']
+            'except' => ['update']
         ]);
 
         Route::group(['prefix'=>'/posts'],function(){
@@ -143,10 +144,10 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 'except' => ['show']
             ]);
 
-            Route::get("/delete/{id}",[
-                'as' => 'cms.content.posts.destroy',
-                'uses' => 'Agency\Cms\Controllers\PostController@destroy'
-            ]);
+            // Route::get("/delete/{id}",[
+            //     'as' => 'cms.content.posts.destroy',
+            //     'uses' => 'Agency\Cms\Controllers\PostController@destroy'
+            // ]);
 
             Route::post("/{id}",[
                 'as' => 'cms.content.posts.update',
