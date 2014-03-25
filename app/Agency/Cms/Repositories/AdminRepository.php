@@ -6,7 +6,7 @@
 
 use Hash, Str;
 
-use Agency\Cms\Admin;
+use Agency\Contracts\AdminInterface;
 
 class AdminRepository extends Repository implements Contracts\AdminRepositoryInterface {
 
@@ -17,7 +17,7 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
      */
     protected $admin;
 
-    public function __construct(Admin $admin)
+    public function __construct(AdminInterface $admin)
     {
         $this->model = $this->admin = $admin;
     }
@@ -37,7 +37,10 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
 
         $admin = $this->admin->create(compact('name', 'email', 'password'));
 
-        $admin->raw_password = $raw;
+        if ($admin)
+        {
+            $admin->raw_password = $raw;
+        }
 
         return $admin;
     }
@@ -65,7 +68,7 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
      *
      * @return string
      */
-    protected function generatePassword()
+    public function generatePassword()
     {
         return uniqid();
     }
@@ -77,22 +80,19 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
         $admin->code = $code;
         $admin->save();
 
-        return $admin; 
+        return $admin;
 
     }
 
-    public function changePassword($admin,$password)
+    public function changePassword($id,$new_password)
     {
-        $admin->password=Hash::make($password);
-        return $admin->save();
+        $admin = $this->find($id);
+        $admin->password = Hash::make($new_password);
+
+        if ($admin->save())
+        {
+            return $admin;
+        }
     }
 
-    public function updateProfile($admin, $input)
-    {
-        
-        $admin->name = $input['name'];
-        $admin->email = $input['email'];
-        return $admin->save();
-
-    }
 }
