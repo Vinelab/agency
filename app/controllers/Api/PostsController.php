@@ -2,7 +2,7 @@
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
 use Input, Response, File, DB, Lang, Controller;
