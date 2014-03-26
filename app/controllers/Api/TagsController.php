@@ -1,6 +1,6 @@
 <?php namespace Agency\Api\Controllers;
 
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
 
 use Input, Response, File, DB, Lang, Controller;
