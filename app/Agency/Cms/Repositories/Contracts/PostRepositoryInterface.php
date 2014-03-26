@@ -20,4 +20,6 @@ interface PostRepositoryInterface {
 
 	public function fromSection($posts,$section);
 
+	public function detachImageFromPost($post_id,$image_id);
+
 }
