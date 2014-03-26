@@ -39,5 +39,11 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Repositories\Contracts\VideoRepositoryInterface',
             'Agency\Repositories\VideoRepository');
+
+        // posts
+        $this->app->bind(
+            'Agency\Repositories\Contracts\PostRepositoryInterface',
+            'Agency\Repositories\PostRepository');
+
     }
 }
