@@ -48,10 +48,8 @@ class ContentController extends Controller {
 
 		if($this->admin_permissions->has("create"))
 		{
-			$content = $this->section->findBy("alias","content");
-			$this->section->set($content);
-			$sections = $this->section->children();
-
+			$section = $this->cms_sections['current'];
+			$sections = $this->section->children($section->alias)->sections()->get();
 			return View::make('cms.pages.content.home', compact('sections'));
 		}
 
@@ -67,21 +65,22 @@ class ContentController extends Controller {
 	public function show($alias)
 	{
 		try {
+
 			$section = $this->section->findBy("alias",$alias);
 
+			$current_parent_section = $this->cms_sections['current']; 
+
 			//get parent section
-			$parent_sections = $this->section->parentSection($section);
+			$parent_sections = $this->section->parentSections($section->alias,$current_parent_section->id);
 
 			if(!is_null($section))
 			{
 
-				$this->section->set($section);
-				//check if section is fertile
 				if($section->is_fertile)
 				{
 					//get its children
 					$section_posts=[];
-					$sub_sections = $this->section->children();
+					$sub_sections = $this->section->children($section->alias)->sections()->get();
 
 					return View::make("cms.pages.content.index",compact("sub_sections","parent_sections"));
 				
