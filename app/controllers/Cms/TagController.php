@@ -4,7 +4,7 @@ use Input, Response, Redirect, Lang;
 
 use Agency\Cms\Repositories\Contracts\RoleRepositoryInterface as Roles;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Cms\Validators\Contracts\RoleValidatorInterface as RoleValidator;
 
 use Agency\Cms\Exceptions\UnauthorizedException;
