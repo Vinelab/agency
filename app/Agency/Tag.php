@@ -1,10 +1,12 @@
-<?php  namespace Agency\Cms;
+<?php  namespace Agency;
 
-class Tag extends \Eloquent  {
+use Eloquent;
+
+class Tag extends Eloquent  {
 
 	protected $table = "tags";
 	protected $fillable = ["text","slug"];
-	
+
 	public function posts()
     {
         return $this->belongsToMany("Agency\Cms\Post");

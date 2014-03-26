@@ -1,5 +1,9 @@
 <?php namespace Agency\Tests\Cms\Repositories;
 
+/**
+ * @author Abed Halawi <abed.halawi@vinelab.com>
+ */
+
 use TestCase, Mockery as M;
 
 use Agency\Cms\Repositories\AdminRepository;
