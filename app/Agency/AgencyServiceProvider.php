@@ -56,5 +56,10 @@ class AgencyServiceProvider extends ServiceProvider {
                 return new \Agency\Validators\PostValidator($this->app->make('validator'));
             });
 
+        $this->app->bind(
+            'Agency\Validators\Contracts\TagValidatorInterface', function() {
+                return new \Agency\Validators\TagValidator($this->app->make('validator'));
+            });
+
     }
 }

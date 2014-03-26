@@ -45,6 +45,4 @@ class InvalidVideoException extends CmsException {}
 
 class InvalidRoleException extends CmsException {}
 
-class InvalidTagException extends CmsException {}
-
 class InvalidPermissionException extends CmsException {}
