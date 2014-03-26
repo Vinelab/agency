@@ -4,7 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Validators\Validator
+use Agency\Validators\Validator;
 use Agency\Cms\Exceptions\InvalidAdminException;
 
 class AdminValidator extends Validator implements Contracts\AdminValidatorInterface {
