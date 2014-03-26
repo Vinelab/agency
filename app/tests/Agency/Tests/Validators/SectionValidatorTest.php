@@ -20,6 +20,12 @@ class SectionValidatorTest extends TestCase {
         ];
     }
 
+    public function test_section_validator_binding()
+    {
+        $validator = $this->app->make('Agency\Validators\SectionValidator');
+        $this->assertInstanceOf('Agency\Validators\SectionValidator', $validator);
+    }
+
     public function test_passing_validation()
     {
         $this->assertTrue($this->validator->validate($this->attributes));
