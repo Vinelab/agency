@@ -19,12 +19,4 @@ interface MediaInterface {
      * @return string
      */
     public function url();
-
-    /**
-     * return the image URL according to a preset
-     *
-     * @param {string} $preset must be one of Agency\Image::presets
-     * @return string
-     */
-    public function presetUrl($preset);
 }
