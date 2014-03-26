@@ -6,13 +6,17 @@
 
 interface RepositoryInterface {
 
-	public function find($id);
+    public function first();
 
-	public function findBy($attribute, $value);
+    public function all();
 
-	public function fill($attributes);
+    public function find($id);
 
-	public function fillAndSave($attributes);
+    public function findBy($attribute, $value, $relations = null);
 
-	public function delete($id);
+    public function fill($attributes);
+
+    public function fillAndSave($attributes);
+
+    public function remove($id);
 }
