@@ -1,10 +1,11 @@
-<?php namespace Agency\Cms\Validators;
+<?php namespace Agency\Validators;
 
-use Agency\Cms\Exceptions\InvalidPostException;
+use Agency\Exceptions\InvalidPostException;
 
 class PostValidator extends Validator implements Contracts\PostValidatorInterface {
 
     protected $rules = [
+        'title' => 'required|max:255'
     ];
 
     public function validate($attributes)

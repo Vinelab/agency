@@ -51,5 +51,10 @@ class AgencyServiceProvider extends ServiceProvider {
                 return new \Agency\Validators\ImageValidator($this->app->make('validator'));
             });
 
+        $this->app->bind(
+            'Agency\Validators\Contracts\PostValidatorInterface', function() {
+                return new \Agency\Validators\PostValidator($this->app->make('validator'));
+            });
+
     }
 }

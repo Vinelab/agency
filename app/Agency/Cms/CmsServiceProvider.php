@@ -51,11 +51,6 @@ class CmsServiceProvider extends ServiceProvider {
                 return new \Agency\Cms\Validators\RoleValidator($this->app->make('validator'));
             });
 
-        $this->app->bind(
-            'Agency\Cms\Validators\Contracts\PostValidatorInterface', function() {
-                return new \Agency\Cms\Validators\PostValidator($this->app->make('validator'));
-            });
-
          $this->app->bind(
             'Agency\Cms\Validators\Contracts\VideoValidatorInterface', function() {
                 return new \Agency\Cms\Validators\VideoValidator($this->app->make('validator'));
