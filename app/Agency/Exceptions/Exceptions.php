@@ -40,3 +40,5 @@ class InvalidPostException extends AgencyException {}
 class InvalidTagException extends AgencyException {}
 
 class InvalidSectionException extends AgencyException {}
+
+class InvalidVideoException extends AgencyException {}

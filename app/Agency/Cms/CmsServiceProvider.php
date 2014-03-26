@@ -28,10 +28,6 @@ class CmsServiceProvider extends ServiceProvider {
             'Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface',
             'Agency\Cms\Authentication\AdminAuthorizer');
 
-        $this->app->bind('Agency\Cms\Validators\SectionValidator', function(){
-            return new \Agency\Cms\Validators\SectionValidator($this->app->make('validator'));
-        });
-
         $this->app->bind('Agency\Cms\Validators\Contracts\AdminValidatorInterface', function(){
             return new \Agency\Cms\Validators\AdminValidator($this->app->make('validator'));
         });
@@ -49,11 +45,6 @@ class CmsServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Cms\Validators\Contracts\RoleValidatorInterface', function() {
                 return new \Agency\Cms\Validators\RoleValidator($this->app->make('validator'));
-            });
-
-         $this->app->bind(
-            'Agency\Cms\Validators\Contracts\VideoValidatorInterface', function() {
-                return new \Agency\Cms\Validators\VideoValidator($this->app->make('validator'));
             });
 
         $this->app->bind(

@@ -61,5 +61,14 @@ class AgencyServiceProvider extends ServiceProvider {
                 return new \Agency\Validators\TagValidator($this->app->make('validator'));
             });
 
+        $this->app->bind('Agency\Validators\SectionValidator', function(){
+            return new \Agency\Validators\SectionValidator($this->app->make('validator'));
+        });
+
+        $this->app->bind(
+           'Agency\Validators\Contracts\VideoValidatorInterface', function() {
+               return new \Agency\Validators\VideoValidator($this->app->make('validator'));
+           });
+
     }
 }
