@@ -29,7 +29,7 @@ class Post extends \Eloquent  {
 
 	public function tags()
     {
-        return $this->belongsToMany("Agency\Cms\Tag");
+        return $this->belongsToMany("Agency\Tag");
     }
 
     public function setThumbnail($thumbnail)
