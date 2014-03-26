@@ -13,7 +13,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 
 	protected $table = 'images';
 
-	protected $fillable = ['url','preset','photo_id'];
+	protected $fillable = ['url','preset','guid'];
 
 	protected $presets = [
 		'original'  => 'original',
@@ -29,7 +29,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 	 */
 	public function posts()
     {
-        return $this->morphMany('Agency\Media', 'media');
+        return $this->morphMany('Agency\Cms\Media', 'media');
     }
 
     /**
@@ -65,5 +65,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 	{
 		return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
 	}
+
+   
 
 }
