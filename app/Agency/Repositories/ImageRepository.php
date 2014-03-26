@@ -60,7 +60,16 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
             ->where('guid', '=', $guid)
             ->where('preset', '=', $this->image->presetType('thumbnail'))
             ->first();
-
 	}
+
+	 public function getByGuid($guid)
+    {
+        return $this->image->where('guid','=',$guid)->get();
+    }
+
+    public function groupDelete($images_id)
+    {
+    	return $this->image->destroy($images_id);
+    }
 
 }
