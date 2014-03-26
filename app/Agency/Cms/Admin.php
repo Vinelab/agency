@@ -3,11 +3,12 @@
 use Eloquent;
 
 use Illuminate\Auth\UserInterface;
+use Agency\Cms\Contracts\AdminInterface;
 use Agency\Cms\Contracts\RegistrableInterface;
 
 use Agency\Cms\Authority\Contracts\AuthorableInterface;
 
-class Admin extends Eloquent implements AuthorableInterface, UserInterface, RegistrableInterface {
+class Admin extends Eloquent implements AdminInterface, AuthorableInterface, UserInterface, RegistrableInterface {
 
     protected $table = 'admins';
 
@@ -60,5 +61,10 @@ class Admin extends Eloquent implements AuthorableInterface, UserInterface, Regi
     public function posts()
     {
         return $this->hasMany("Agency\Cms\Post");
+    }
+
+    public function dbTable()
+    {
+        return $this->table;
     }
 }

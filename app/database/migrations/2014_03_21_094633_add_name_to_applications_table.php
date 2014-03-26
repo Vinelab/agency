@@ -14,7 +14,7 @@ class AddNameToApplicationsTable extends Migration {
 	{
 		Schema::table('applications', function(Blueprint $table)
 		{
-			$table->string('name');
+			$table->string('name')->default('');
 		});
 	}
 
