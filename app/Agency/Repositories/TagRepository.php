@@ -1,13 +1,19 @@
-<?php  namespace Agency\Cms\Repositories;
+<?php  namespace Agency\Repositories;
 
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 use DB;
-use Agency\Cms\Tag;
+use Agency\Tag;
 use Agency\Helper;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 
 
 class TagRepository extends Repository implements TagRepositoryInterface {
 
+	/**
+	 * the tag model
+	 *
+	 * @var Agency\Tag
+	 */
+	protected $tag;
 
 	public function __construct(Tag $tag)
 	{
@@ -20,5 +26,5 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 		$this->tag = $this->tag->firstOrCreate(compact("text","slug"));
 		return $this->tag;
 	}
-	
+
 }

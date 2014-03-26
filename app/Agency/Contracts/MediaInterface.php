@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Contracts;
+<?php namespace Agency\Contracts;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -19,8 +19,4 @@ interface MediaInterface {
      * @return string
      */
     public function url();
-
-    public function presetURL($preset);
-
-
 }

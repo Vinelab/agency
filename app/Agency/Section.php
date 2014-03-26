@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms;
+<?php namespace Agency;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>

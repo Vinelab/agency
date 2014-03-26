@@ -19,28 +19,14 @@ class CmsServiceProvider extends ServiceProvider {
         });
 
         $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\SectionRepositoryInterface',
-            'Agency\Cms\Repositories\SectionRepository');
-
-        $this->app->bind(
             'Agency\Cms\Repositories\Contracts\AdminRepositoryInterface',
             'Agency\Cms\Repositories\AdminRepository');
+
+        $this->app->bind('Agency\Cms\Contracts\AdminInterface', 'Agency\Cms\Admin');
 
         $this->app->bind(
             'Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface',
             'Agency\Cms\Authentication\AdminAuthorizer');
-
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\PostRepositoryInterface',
-            'Agency\Cms\Repositories\PostRepository');
-
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\ImageRepositoryInterface',
-            'Agency\Cms\Repositories\ImageRepository');
-
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\VideoRepositoryInterface',
-            'Agency\Cms\Repositories\VideoRepository');
 
         $this->app->bind('Agency\Cms\Validators\SectionValidator', function(){
             return new \Agency\Cms\Validators\SectionValidator($this->app->make('validator'));
@@ -83,10 +69,6 @@ class CmsServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Cms\Repositories\Contracts\PermissionRepositoryInterface',
             'Agency\Cms\Repositories\PermissionRepository');
-        
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\TagRepositoryInterface',
-            'Agency\Cms\Repositories\TagRepository');
 
         $this->app->bind(
             'Agency\Cms\Validators\Contracts\PermissionValidatorInterface', function() {
