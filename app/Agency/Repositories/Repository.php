@@ -54,10 +54,23 @@ class Repository implements Contracts\RepositoryInterface {
      *
      * @param  string $attribute
      * @param  string $value
+     * @param array $relations
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function findBy($attribute, $value)
+    public function findBy($attribute, $value, $relations = null)
     {
+        if ($relations and is_array($relations))
+        {
+            $query = $this->model->where($attribute, $value);
+
+            foreach($relations as $relation)
+            {
+                $query->with($relation);
+            }
+
+            return $query->first();
+        }
+
         return $this->model->where($attribute, $value)->first();
     }
 

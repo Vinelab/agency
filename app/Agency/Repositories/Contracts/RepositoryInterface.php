@@ -12,7 +12,7 @@ interface RepositoryInterface {
 
     public function find($id);
 
-    public function findBy($attribute, $value);
+    public function findBy($attribute, $value, $relations = null);
 
     public function fill($attributes);
 

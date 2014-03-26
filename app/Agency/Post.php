@@ -1,10 +1,18 @@
-<?php  namespace Agency\Cms; 
+<?php  namespace Agency;
 
-class Post extends \Eloquent  {
+/**
+ * @author Ibrahim Fleifel <ibrahim@vinelab.com>
+ * @author Abed Halawi <abed.halawi@vinelab.com>
+ */
 
-	protected $table = "posts";
-	protected $fillable=["title","body","admin_id","section_id","publish_date","publish_state","slug"];
-	
+use Eloquent;
+
+class Post extends Eloquent  {
+
+	protected $table = 'posts';
+
+	protected $fillable=['title','body','admin_id','section_id','publish_date','publish_state','slug'];
+
 	protected $thumbnail;
 
     public function scopePublished($query)
@@ -14,12 +22,12 @@ class Post extends \Eloquent  {
 
 	public function admin()
 	{
-		return $this->belongsTo("Agency\Cms\Admin");
+		return $this->belongsTo('Agency\Cms\Admin');
 	}
 
 	public function media()
 	{
-		return $this->hasMany("Agency\Cms\Media");
+		return $this->hasMany('Agency\Media');
 	}
 
 	public function section()
@@ -45,19 +53,21 @@ class Post extends \Eloquent  {
     	} else {
 
             $media = $this->media()->get();
-            
+
             if(!$media->isEmpty())
             {
                 $media=$this->media()->first()->media;
-                if($media->type()=="image")
+
+                if($media->type() == 'image')
                 {
                     return $media->presetURL('thumbnail');
                 }else{
                     return $media->thumbnail;
                 }
+
                 return $this->media()->first()->media->url;
             }
-    		
+
     	}
     }
 
@@ -69,12 +79,12 @@ class Post extends \Eloquent  {
         if(!$media->isEmpty())
         {
             foreach ($media as $media_element) {
-                if($media_element->media->type()=="image")
+                if($media_element->media->type() == "image")
                 {
                      array_push($images, $media_element->media) ;
                 }
             }
-        } 
+        }
 
         return $images;
 
@@ -93,7 +103,7 @@ class Post extends \Eloquent  {
                     array_push($videos, $media_element->media);
                 }
             }
-        } 
+        }
 
         return $videos;
 

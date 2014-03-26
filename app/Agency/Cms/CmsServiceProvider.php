@@ -28,10 +28,6 @@ class CmsServiceProvider extends ServiceProvider {
             'Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface',
             'Agency\Cms\Authentication\AdminAuthorizer');
 
-        $this->app->bind(
-            'Agency\Cms\Repositories\Contracts\PostRepositoryInterface',
-            'Agency\Cms\Repositories\PostRepository');
-
         $this->app->bind('Agency\Cms\Validators\SectionValidator', function(){
             return new \Agency\Cms\Validators\SectionValidator($this->app->make('validator'));
         });
