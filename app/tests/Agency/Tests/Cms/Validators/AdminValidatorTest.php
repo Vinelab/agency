@@ -4,22 +4,17 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Artisan, TestCase, Mockery as M;
+use Agency\Cms\Admin;
+use DB, Artisan, TestCase, Mockery as M;
 use Agency\Cms\Validators\AdminValidator;
 
 class AdminValidatorTest extends TestCase {
-
-    // public function __construct()
-    // {
-    //     $this->mock = M::mock('Eloquent');
-    // }
 
     public function setUp()
     {
         parent::setUp();
 
         Artisan::call('migrate');
-        $this->seed();
 
         $this->mValidatorFactory = $this->app->make('Illuminate\Validation\Factory');
         $this->validator = new AdminValidator($this->mValidatorFactory);
@@ -102,12 +97,18 @@ class AdminValidatorTest extends TestCase {
     /**
      * @depends test_passing_validation
      * @expectedException Agency\Cms\Exceptions\InvalidAdminException
-     *
-     * NOTE: MAKE SURE TO HAVE THIS EMAIL SET IN THE SEEDS
      */
     public function test_fails_with_duplicate_email()
     {
-        $this->validator->validate(['name' => 'Some Name', 'email' => 'bob.fleifel@gmail.com']);
+        // add admin to make sure it's there when we check for it
+        DB::table((new Admin)->dbTable())->insert(['name' => 'some name',
+             'email' => 'chuck.norris@batal.zib',
+             'password'=>'death',
+             'created_at' => date(time()),
+             'updated_at' => date(time())
+        ]);
+
+        $this->validator->validate(['name' => 'Some Name', 'email' => 'chuck.norris@batal.zib']);
     }
 
 }
