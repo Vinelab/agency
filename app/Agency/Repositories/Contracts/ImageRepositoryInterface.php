@@ -21,4 +21,9 @@ interface ImageRepositoryInterface {
 
 	public function getThumbnail($guid);
 
+	public function getByGuid($guid);
+
+    public function groupDelete($images_id);
+
+
 }
