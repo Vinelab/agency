@@ -181,6 +181,40 @@ class PostRepository extends Repository implements PostRepositoryInterface {
        
 	}
 
+	public function detachImageFromPost($post_id,$image_id)
+	{
+		try {
+
+			$post = $this->find($post_id);
+
+			$image = $post->media()->where('media_type','=','Agency\Image')->where('media_id','=',$image_id)->first();
+			
+			$images = $this->image->getByGuid($image->media->guid);
+			
+			$images_ids = $images->lists('id');
+			$this->image->groupDelete($images_ids);
+			
+			$image->delete();
+			
+			return true;
+
+		} catch (Exception $e) {
+
+			return $e->getMessage();
+		}
+	}
+
+	public function detachAllVideos($post_id)
+	{
+		$post = $this->find($post_id);
+		$videos=$post->media()->where('media_type','=','Agency\Video')->get();
+		$videos->each(function($video){
+			return $video->delete();
+		});
+		
+
+	}
+
 	
 
 }
