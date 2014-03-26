@@ -22,16 +22,6 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 		'small'     => 'small'
 	];
 
-	/**
-	 * get the post that this image belongs to
-	 *
-	 * @return Illuminate\Database\Eloquent\Collection of Agency\Post
-	 */
-	public function posts()
-    {
-        return $this->morphMany('Agency\Media', 'media');
-    }
-
     /**
      * Get Image type
      * @return string

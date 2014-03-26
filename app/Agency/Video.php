@@ -9,11 +9,6 @@ class Video extends Eloquent implements MediaInterface  {
 
 	protected $fillable = ['url', 'title', 'description', 'thumbnail'];
 
-	public function post()
-    {
-        return $this->morphMany('Agency\Cms\Media', 'media');
-    }
-
     public function type()
     {
     	return 'video';
@@ -22,11 +17,6 @@ class Video extends Eloquent implements MediaInterface  {
     public function url()
     {
     	return $this->url;
-    }
-
-    public function presetURL($preset)
-    {
-
     }
 
 }
