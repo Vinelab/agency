@@ -38,3 +38,5 @@ class InvalidImageException extends AgencyException {}
 class InvalidPostException extends AgencyException {}
 
 class InvalidTagException extends AgencyException {}
+
+class InvalidSectionException extends AgencyException {}

@@ -33,8 +33,6 @@ class CmsException extends RuntimeException {
     }
 }
 
-class InvalidSectionException extends CmsException {}
-
 class UnauthorizedException extends CmsException {}
 
 class InvalidAdminException extends CmsException {}
