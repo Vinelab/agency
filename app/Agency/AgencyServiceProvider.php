@@ -29,5 +29,15 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Repositories\Contracts\SectionRepositoryInterface',
             'Agency\Repositories\SectionRepository');
+
+        // post tags
+        $this->app->bind(
+            'Agency\Repositories\Contracts\TagRepositoryInterface',
+            'Agency\Repositories\TagRepository');
+
+        // videos
+        $this->app->bind(
+            'Agency\Repositories\Contracts\VideoRepositoryInterface',
+            'Agency\Repositories\VideoRepository');
     }
 }
