@@ -1,11 +1,11 @@
-<?php namespace Agency\Cms\Validators;
+<?php namespace Agency\Validators;
 
-use Agency\Cms\Exceptions\InvalidImageException;
+use Agency\Exceptions\InvalidImageException;
 
 class ImageValidator extends Validator implements Contracts\ImageValidatorInterface {
 
     protected $rules = [
-    	"url"=>"required"
+    	'url'=>'required|url'
     ];
 
     public function validate($attributes)
