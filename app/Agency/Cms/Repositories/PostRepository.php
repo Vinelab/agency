@@ -1,7 +1,7 @@
 <?php  namespace Agency\Cms\Repositories;
 
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
+use Agency\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use DB,Config, Response;
 use Agency\Cms\Post;

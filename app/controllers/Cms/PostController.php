@@ -8,7 +8,7 @@ use Agency\Cms\Validators\Contracts\TagValidatorInterface;
 
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\ImageRepositoryInterface;
+use Agency\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
 
