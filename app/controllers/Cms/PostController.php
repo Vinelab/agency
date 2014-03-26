@@ -9,12 +9,13 @@ use Agency\Cms\Validators\Contracts\TagValidatorInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Repositories\Contracts\ImageRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\VideoRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Repositories\Contracts\VideoRepositoryInterface;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 
 use Agency\Media\Photos\UploadedPhoto;
 use Agency\Media\Photos\UploadedPhotosCollection;
 use Agency\Media\Photos\Contracts\ManagerInterface;
+use Agency\Media\Photos\Contracts\StoreInterface;
 
 use Agency\Cms\Post;
 
@@ -49,7 +50,8 @@ class PostController extends Controller {
     							VideoRepositoryInterface $video,
     							TagRepositoryInterface $tag,
     							TagValidatorInterface $tagValidator,
-    							PostValidatorInterface $postValidator)
+    							PostValidatorInterface $postValidator,
+    							StoreInterface $store)
     {
         parent::__construct($sections);
 
@@ -60,8 +62,9 @@ class PostController extends Controller {
 		$this->video            = $video;
 		$this->postValidator    = $postValidator;
 		$this->section          = $sections;
-		$this->tag 				= $tag;
+		$this->tag              = $tag;
 		$this->tagValidator     = $tagValidator;
+		$this->store            = $store;
     }
 
 	public function index()
@@ -82,7 +85,7 @@ class PostController extends Controller {
 
 			$edit_post=null;
 
-			$contents = $this->section->infertile();
+			$contents = $this->section->infertile($this->cms_sections['current']->alias);
 
 			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
@@ -101,7 +104,6 @@ class PostController extends Controller {
 		if($this->admin_permissions->has("create"))
 		{
 			$input = Input::all();
-
 			if($this->postValidator->validate($input))
 			{
 
@@ -144,25 +146,33 @@ class PostController extends Controller {
 						$aws_response = $this->manager->upload($photos,'artists/webs');
 
 						$aws_response = $aws_response->toArray();
-						foreach ($aws_response as $response) {
-							$image = $this->image->create($response);
 
-							$image->post()->create(["post_id"=>$post->id]);
+
+						foreach ($aws_response as $response) {
+							$image = $this->image->create(	$response['original'],
+															$response['thumbnail'],
+															$response['small'],
+															$response['square']);
+
+							$image->posts()->create(["post_id"=>$post->id]);
 						}
 
-						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
-							$this->image->deleteTemp($crop_sizes[$i]->name);
+
+
+						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) {
+							$this->store->remove($crop_sizes[$i]->name);
 						}
 
 				 	}
 				}
+
 
 				if(isset($input["videos"]))
 				{
 					$videos = json_decode($input["videos"]);
 
 					foreach ($videos as $video) {
-						if($this->video->validate_url($video->url))
+						if($this->video->validateYoutubeUrl($video->url))
 						{
 							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
 							$v->post()->create(["post_id"=>$post->id]);
@@ -205,7 +215,7 @@ class PostController extends Controller {
 				foreach ($gallery as $value) {
 					array_push($media, $value->media);					
 				}
-				
+
 				$tags = $post->tags()->get();
 
 				return View::make('cms.pages.post.show',compact('post','media','parent_sections','tags'));
@@ -241,7 +251,7 @@ class PostController extends Controller {
 
 				$tags = $post->tags()->get()->fetch('text')->toArray();
 
-				$contents = $this->section->infertile();
+				$contents = $this->section->infertile($this->cms_sections['current']->alias);
 				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'media'=>$media_array]);
 
 				
@@ -279,7 +289,7 @@ class PostController extends Controller {
 				{
 					$deleted_images = explode(",", $deleted_images);
 					foreach ($deleted_images as $image) {
-						$this->removePhoto($post,$image);
+						$this->removePhoto($post->id,$image);
 					}
 				}
 	
@@ -326,15 +336,20 @@ class PostController extends Controller {
 
 						$aws_response = $aws_response->toArray();
 
+
 						foreach ($aws_response as $response) {
+							$image = $this->image->create(	$response['original'],
+															$response['thumbnail'],
+															$response['small'],
+															$response['square']);
 
-							$image = $this->image->create($response);
+							$image->posts()->create(["post_id"=>$post->id]);
 
-							$image->post()->create(["post_id"=>$post->id]);
+
 						}
 
 						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
-							$this->image->deleteTemp($crop_sizes[$i]->name);
+							$this->store->remove($crop_sizes[$i]->name);
 						}
 
 				 	}
@@ -344,13 +359,13 @@ class PostController extends Controller {
 				
 					$videos = json_decode(Input::get('videos'));
 
-					$this->video->detachAll($post);
+					$this->post->detachAllVideos($post->id);
 
 					
 
 
 					foreach ($videos as $video) {
-						if($this->video->validate_url($video->url))
+						if($this->video->validateYoutubeUrl($video->url))
 						{
 							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
 							$v->post()->create(["post_id"=>$post->id]);
@@ -391,11 +406,10 @@ class PostController extends Controller {
 		throw new UnauthorizedException;
 	}
 
-	public function removePhoto($post, $photo_id)
+	public function removePhoto($post_id, $photo_id)
 	{
 		try {
-
-			$this->image->detachImageFromPost($photo_id,$post);
+			$this->post->detachImageFromPost($post_id,$photo_id);
 			$image=$this->image->delete($photo_id);
 
 		} catch (Exception $e) {
