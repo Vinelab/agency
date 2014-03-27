@@ -85,6 +85,7 @@ interface PostRepositoryInterface {
 	 */
 	public function published($input = array());
 
+	 * delete an image from a post
 
 
 }
