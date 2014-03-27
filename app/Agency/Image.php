@@ -29,7 +29,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 	 */
 	public function posts()
     {
-        return $this->morphMany('Agency\Cms\Media', 'media');
+        return $this->morphToMany('Agency\Post');
     }
 
     /**
