@@ -7,7 +7,7 @@ use Agency\Cms\Validators\Contracts\PostValidatorInterface;
 use Agency\Cms\Validators\Contracts\TagValidatorInterface;
 
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
+use Agency\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Repositories\Contracts\VideoRepositoryInterface;
 use Agency\Repositories\Contracts\TagRepositoryInterface;
@@ -17,7 +17,7 @@ use Agency\Media\Photos\UploadedPhotosCollection;
 use Agency\Media\Photos\Contracts\ManagerInterface;
 use Agency\Media\Photos\Contracts\StoreInterface;
 
-use Agency\Cms\Post;
+use Agency\Post;
 
 use Agency\Cms\Tag;
 
@@ -35,34 +35,26 @@ class PostController extends Controller {
 	 * @return Response
 	 */
 	
-	/**
-     * The section validator instance.
-     *
-     * @var Agency\Cms\Validators\SectionValidator
-     */
-    protected $sectionValidator;
 
     public function __construct(SectionRepositoryInterface $sections,
-    							SectionValidator $sectionValidator,
     							PostRepositoryInterface $post,
     							ImageRepositoryInterface $image,
     							ManagerInterface $manager,
     							VideoRepositoryInterface $video,
-    							TagRepositoryInterface $tag,
+    							TagRepositoryInterface $tags,
     							TagValidatorInterface $tagValidator,
-    							PostValidatorInterface $postValidator,
+    							PostValidatorInterface $validator,
     							StoreInterface $store)
     {
         parent::__construct($sections);
 
-		$this->sectionValidator = $sectionValidator;
-		$this->post             = $post;
+		$this->posts             = $post;
 		$this->manager          = $manager;
-		$this->image            = $image;
+		$this->images           = $image;
 		$this->video            = $video;
-		$this->postValidator    = $postValidator;
-		$this->section          = $sections;
-		$this->tag              = $tag;
+		$this->validator    	= $validator;
+		$this->sections         = $sections;
+		$this->tags              = $tags;
 		$this->tagValidator     = $tagValidator;
 		$this->store            = $store;
     }
@@ -85,7 +77,7 @@ class PostController extends Controller {
 
 			$edit_post=null;
 
-			$contents = $this->section->infertile($this->cms_sections['current']->alias);
+			$contents = $this->sections->infertile($this->cms_sections['current']->alias);
 
 			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
@@ -103,87 +95,23 @@ class PostController extends Controller {
 	{
 		if($this->admin_permissions->has("create"))
 		{
-			$input = Input::all();
-			if($this->postValidator->validate($input))
+			if($this->validator->validate(Input::all()))
 			{
-
-			  	$slug = $this->post->uniqSlug( Helper::slugify(Input::get('title')) );
+			  	$slug = $this->posts->uniqSlug( Input::get('title') );
 				$body = Helper::cleanHtml(Input::get('body'));
 				
-				$section = $this->section->findBy('alias',Input::get('section'));
-
-				$post = $this->post->create(Input::get('title'),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
-
-				$tags = input::get('tags');
-				if($tags!="")
-				{
-					$tags = explode(", ", $tags);
-					array_map(function($tag)use($post){
-
-						$result = $this->tag->create($tag);
-						$post->tags()->save($result);
-					}, $tags);
-				}
-
-				if(isset($input['croped_images_array']))
-				{
-					$photos = new UploadedPhotosCollection;
-
-				 	$crop_sizes = json_decode($input['croped_images_array']);
-
-				 	if(isset($input['images']))
-				 	{
-				 		$images = $input['images'];
-
-				 		foreach ($images as $key=>$image) {
-				 			$image= new UploadedFile(public_path()."/tmp/$image",$image);
-							$crop_size = get_object_vars($crop_sizes[$key]);
-						 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
-		        			$photos->push($photo);
-
-						}
-
-						$aws_response = $this->manager->upload($photos,'artists/webs');
-
-						$aws_response = $aws_response->toArray();
+				$section = $this->sections->findBy('alias',Input::get('section'));
 
 
-						foreach ($aws_response as $response) {
-							$image = $this->image->create(	$response['original'],
-															$response['thumbnail'],
-															$response['small'],
-															$response['square']);
+				$post = $this->posts->create(Input::get('title'),$slug,$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'));
 
-							$image->posts()->create(["post_id"=>$post->id]);
-						}
+				$this->save($post->id);
 
-
-
-						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) {
-							$this->store->remove($crop_sizes[$i]->name);
-						}
-
-				 	}
-				}
-
-
-				if(isset($input["videos"]))
-				{
-					$videos = json_decode($input["videos"]);
-
-					foreach ($videos as $video) {
-						if($this->video->validateYoutubeUrl($video->url))
-						{
-							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
-							$v->post()->create(["post_id"=>$post->id]);
-
-						}
-					}
-				}
+			
 				return Response::json($post);
 
 			} else {
-				return Response::json(['status'=>400,"message"=>$this->postValidator->messages()]);
+				return Response::json(['status'=>400,"message"=>$this->validator->messages()]);
 			}
 
 		}
@@ -203,18 +131,18 @@ class PostController extends Controller {
 		{
 			try {
 
-				$post = $this->post->findBy("slug",$slug);
+				$post = $this->posts->findBy("slug",$slug);
 				$section = $post->section()->first();
 
 				//get all parent sections
-				$parent_sections = $this->section->parentSection($section);
-
+				$parent_sections = $this->sections->parentSections($section->alias,$this->cms_sections['current']->id);
 				$gallery = $post->media()->get();
 				
 				$media=[];
 				foreach ($gallery as $value) {
 					array_push($media, $value->media);					
 				}
+
 
 				$tags = $post->tags()->get();
 
@@ -242,7 +170,7 @@ class PostController extends Controller {
 
 			try {
 
-				$post=$this->post->findBy("slug",$slug);
+				$post=$this->posts->findBy("slug",$slug);
 				$media = $post->media()->get();
 				$media_array=[];
 				foreach ($media as $value) {
@@ -251,7 +179,7 @@ class PostController extends Controller {
 
 				$tags = $post->tags()->get()->fetch('text')->toArray();
 
-				$contents = $this->section->infertile($this->cms_sections['current']->alias);
+				$contents = $this->sections->infertile($this->cms_sections['current']->alias);
 				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'media'=>$media_array]);
 
 				
@@ -274,103 +202,44 @@ class PostController extends Controller {
 	{
 		if($this->admin_permissions->has("update"))
 		{
-			$input = Input::all();
 
-			if($this->postValidator->validate($input))
+			if($this->validator->validate(Input::all()))
 			{
 				$body = Helper::cleanHtml(Input::get('body'));
-				$slug = $this->post->uniqSlug( Helper::slugify(Input::get('title')) );
 
-				$section = $this->section->findBy('alias',Input::get('section'));
+				$slug = $this->posts->uniqSlug(Input::get('title'));
 
-				$post = $this->post->update($id,Input::get("title"),$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'),$slug);
-				$deleted_images = Input::get('deleted_images');
-				if($deleted_images!="")
+				$section = $this->sections->findBy('alias', Input::get('section'));
+
+				if ($section)
 				{
-					$deleted_images = explode(",", $deleted_images);
-					foreach ($deleted_images as $image) {
-						$this->removePhoto($post->id,$image);
-					}
-				}
-	
 
-				$tags = Input::get('tags');
-				$tags = explode(", ", $tags);
+					$updated = $this->posts->update($id,
+												Input::get("title"),
+												$slug,
+												$body,
+												Auth::user()->id,
+												$section->id,
+												Input::get('publish_date'),
+												Input::get('publish_state'));
 
+					if ($updated)
+					{
+						$deleted_images = Input::get('deleted_images');
 
-				if(!($post->tags()->get()->isEmpty()))
-				{
-					$post->tags()->detach();
-				}
-
-				//remove empty string from tags array
-				$tags = array_filter($tags);
-
-				array_map(function($tag)use($post){
-					
-					$result = $this->tag->create($tag);
-					$post->tags()->save($result);
-					
-				}, $tags);
-
-
-				if(isset($input['croped_images_array']))
-				{
-					$photos = new UploadedPhotosCollection;
-
-				 	$crop_sizes = json_decode($input['croped_images_array']);
-
-				 	if(isset($input['images']))
-				 	{
-				 		$images = $input['images'];
-
-				 		foreach ($images as $key=>$image) {
-				 			$image= new UploadedFile(public_path()."/tmp/$image",$image);
-							$crop_size = get_object_vars($crop_sizes[$key]);
-						 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
-		        			$photos->push($photo);
-
-						}
-
-						$aws_response = $this->manager->upload($photos,'artists/webs');
-
-						$aws_response = $aws_response->toArray();
-
-
-						foreach ($aws_response as $response) {
-							$image = $this->image->create(	$response['original'],
-															$response['thumbnail'],
-															$response['small'],
-															$response['square']);
-
-							$image->posts()->create(["post_id"=>$post->id]);
-
-
-						}
-
-						for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
-							$this->store->remove($crop_sizes[$i]->name);
-						}
-
-				 	}
-				}
-
-
-				
-					$videos = json_decode(Input::get('videos'));
-
-					$this->post->detachAllVideos($post->id);
-
-					
-
-
-					foreach ($videos as $video) {
-						if($this->video->validateYoutubeUrl($video->url))
+						if( ! empty($deleted_images))
 						{
-							$v = $this->video->create($video->url,$video->title,$video->desc,$video->src);
-							$v->post()->create(["post_id"=>$post->id]);
+							$deleted_images = explode(',', $deleted_images);
+
+							$this->images->remove($deleted_images);
+							$this->posts->detachImages($deleted_images);
 						}
+
+						$this->save($id);
+
+						
 					}
+				}
 			
 				return Response::json($post);
 			} else {
@@ -394,9 +263,16 @@ class PostController extends Controller {
 		if($this->admin_permissions->has("delete"))
 		{
 			try {
-				$section=$this->post->section($slug);
-				if($this->post->delete($slug))
+
+				$post = $this->posts->findByIdOrSlug($slug);
+
+				$section = $post->section()->get()->first();
+
+				if($this->posts->remove($post->id))
+				{
 					return Redirect::route("cms.content.show",$section->alias);	
+				}
+
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
@@ -406,16 +282,96 @@ class PostController extends Controller {
 		throw new UnauthorizedException;
 	}
 
-	public function removePhoto($post_id, $photo_id)
+	public function removeImage($post_id, $image_id)
 	{
 		try {
-			$this->post->detachImageFromPost($post_id,$photo_id);
-			$image=$this->image->delete($photo_id);
+
+			$this->posts->detachImage($post_id, $image_id);
+
+			$image = $this->images->delete($image_id);
 
 		} catch (Exception $e) {
-			return Response::json(['messages'=>$e->getMessages()]);
+
+			return Response::json(['messages' => $e->getMessages()]);
 		}
 		
+	}
+
+	public function save($post_id)
+	{
+
+		$tags = explode(', ', Input::get('tags'));
+		// filter empty tags
+		$tags = array_filter($tags);
+		// get tags ids
+		$tags = $this->tags->splitFound($tags);
+		
+		// add new tags to post
+		$new_tags = $this->posts->addTags($post_id, $tags['new'], $tags['existing']);
+
+		
+
+
+		// upload images
+		if(Input::has('croped_images_array'))
+		{
+			$photos = new UploadedPhotosCollection;
+
+		 	$crop_sizes = json_decode(Input::get('croped_images_array'));
+
+		 	if(Input::has('images'))
+		 	{
+		 		$images = Input::get('images');
+
+		 		foreach ($images as $key => $image) {
+
+		 			$image = new UploadedFile(public_path()."/tmp/$image", $image);
+					$crop_size = get_object_vars($crop_sizes[$key]);
+
+				 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
+        			$photos->push($photo);
+				}
+
+				$response = $this->manager->upload($photos,'artists/webs');
+
+				$response = $response->toArray();
+
+				$images = $this->images->prepareToStore($response);
+
+
+				$this->posts->addImages($post_id, $images);
+
+				// foreach ($response as $response) {
+
+				// 	$image = $this->images->create(	$response['original'],
+				// 									$response['thumbnail'],
+				// 									$response['small'],
+				// 									$response['square']);
+
+				// 	$image->media()->create(["post_id"=>$post_id]);
+
+
+				// }
+
+				// for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
+				// 	$this->store->remove($crop_sizes[$i]->name);
+				// }
+
+		 	}
+		}
+
+		$videos = json_decode(Input::get('videos'));
+
+		$this->posts->detachAllVideos($post_id);
+
+		foreach ($videos as $video) {
+			if($this->video->validateYoutubeUrl($video->url))
+			{
+				$v = $this->video->create($video->title,$video->url,$video->desc,$video->src);
+				$v->posts()->create(["post_id"=>$post->id]);
+			}
+		}
+
 	}
 
 
