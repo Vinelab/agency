@@ -31,26 +31,28 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 	{
 		// generate slugs
 		$tags = array_map(function($text) {
-			$slug = Helper::slugify($text);
+			$slug = Helper::slugify($text, $this->tag);
 			return compact('text', 'slug');
 		}, $tags);
 
 		// extract existing tags
-		$slugs = array_map(function($tag){ 
-			return $tag['slug']; 
+		$slugs = array_map(function($tag){
+			return $tag['slug'];
 		}, $tags);
 
 		$existing = $this->tag->whereIn('slug', $slugs)->get();
 		$existing_slugs = $existing->lists('slug');
 
-		$new = array_filter($tags, function($tag) use($existing_slugs) {
+
+		$new_tags = array_filter($tags, function($tag) use($existing_slugs) {
 			return ! in_array($tag['slug'], $existing_slugs);
 		});
 
 		// create tag models out of the new ones
-		$new = array_map(function($tag){
+		$new_tags = array_map(function($tag){
 			return new Tag($tag);
-		}, $new);
+		}, $new_tags);
+
 
 		$existing = $existing->lists('id');
 
