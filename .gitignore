@@ -2,13 +2,9 @@
 /vendor
 /public/tmp
 composer.phar
-composer.lock
 .env.local.php
 .env.php
 .DS_Store
 Thumbs.db
-public/tmp/*
-app/*
-public/*
 
 app/config/local/aws.php
