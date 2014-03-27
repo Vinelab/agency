@@ -62,4 +62,9 @@ class Admin extends Eloquent implements AdminInterface, AuthorableInterface, Use
     {
         return $this->hasMany("Agency\Post");
     }
+
+    public function dbTable()
+    {
+        return $this->table;
+    }
 }

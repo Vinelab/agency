@@ -47,5 +47,30 @@ class AgencyServiceProvider extends ServiceProvider {
             'Agency\Repositories\Contracts\PostRepositoryInterface',
             'Agency\Repositories\PostRepository');
 
+        // validators
+        $this->app->bind(
+            'Agency\Validators\Contracts\ImageValidatorInterface', function() {
+                return new \Agency\Validators\ImageValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind(
+            'Agency\Validators\Contracts\PostValidatorInterface', function() {
+                return new \Agency\Validators\PostValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind(
+            'Agency\Validators\Contracts\TagValidatorInterface', function() {
+                return new \Agency\Validators\TagValidator($this->app->make('validator'));
+            });
+
+        $this->app->bind('Agency\Validators\SectionValidator', function(){
+            return new \Agency\Validators\SectionValidator($this->app->make('validator'));
+        });
+
+        $this->app->bind(
+           'Agency\Validators\Contracts\VideoValidatorInterface', function() {
+               return new \Agency\Validators\VideoValidator($this->app->make('validator'));
+           });
+
     }
 }

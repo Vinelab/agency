@@ -1,11 +1,11 @@
-<?php namespace Agency\Cms\Validators;
+<?php namespace Agency\Validators;
 
-use Agency\Cms\Exceptions\InvalidVideoException;
+use Agency\Exceptions\InvalidVideoException;
 
 class VideoValidator extends Validator implements Contracts\VideoValidatorInterface {
 
     protected $rules = [
-        "url"=>"required"
+        'url' => 'required|url|max:255'
     ];
 
     public function validate($attributes)

@@ -14,7 +14,7 @@ class AddSlugToTagsTable extends Migration {
 	{
 		Schema::table('tags', function(Blueprint $table)
 		{
-			$table->string('slug');
+			$table->string('slug')->default('');
 		});
 	}
 

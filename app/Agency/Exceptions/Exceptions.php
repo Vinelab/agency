@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Exceptions;
+<?php namespace Agency\Exceptions;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -6,7 +6,7 @@
 
 use RuntimeException;
 
-class CmsException extends RuntimeException {
+class AgencyException extends RuntimeException {
 
     /**
      * The error messages to pass.
@@ -33,12 +33,12 @@ class CmsException extends RuntimeException {
     }
 }
 
-class UnauthorizedException extends CmsException {}
+class InvalidImageException extends AgencyException {}
 
-class InvalidAdminException extends CmsException {}
+class InvalidPostException extends AgencyException {}
 
-class InvalidContentException extends CmsException {}
+class InvalidTagException extends AgencyException {}
 
-class InvalidRoleException extends CmsException {}
+class InvalidSectionException extends AgencyException {}
 
-class InvalidPermissionException extends CmsException {}
+class InvalidVideoException extends AgencyException {}
