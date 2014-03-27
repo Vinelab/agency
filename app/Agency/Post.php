@@ -30,6 +30,18 @@ class Post extends Eloquent  {
 		return $this->hasMany('Agency\Media');
 	}
 
+    public function images()
+    {
+        return $this->morphedByMany('Agency\Image', 'media');
+            
+    }
+
+    public function videos()
+    {
+        return $this->morphedByMany('Agency\Image', 'media');
+           
+    }
+
 	public function section()
 	{
 		return $this->belongsTo("Agency\Section");
