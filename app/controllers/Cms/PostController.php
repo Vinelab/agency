@@ -346,22 +346,6 @@ class PostController extends Controller {
 
 				$this->posts->addImages($post_id, $images);
 
-				// foreach ($response as $response) {
-
-				// 	$image = $this->images->create(	$response['original'],
-				// 									$response['thumbnail'],
-				// 									$response['small'],
-				// 									$response['square']);
-
-				// 	$image->media()->create(["post_id"=>$post_id]);
-
-
-				// }
-
-				// for ($i=0 ; $i < sizeof($crop_sizes) ; $i++ ) { 
-				// 	$this->store->remove($crop_sizes[$i]->name);
-				// }
-
 		 	}
 		}
 
