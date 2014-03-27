@@ -2,7 +2,7 @@
 
 use Agency\Api\PostsCollection;
 
-use Agency\Cms\Post;
+use Agency\Post;
 
 class PostMapper{
 
@@ -31,7 +31,7 @@ class PostMapper{
 			}
 
 			 return $this->posts_collection;
-		} elseif (get_class($posts)=="Agency\Cms\Post") {
+		} elseif (get_class($posts)=="Agency\Post") {
 
 			return $this->parseAndFill($posts);
 		}
