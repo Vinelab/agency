@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPresetAndPhotoIdToImagesTable extends Migration {
+class AddPresetAndGuidToImagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -15,7 +15,7 @@ class AddPresetAndPhotoIdToImagesTable extends Migration {
 		Schema::table("images", function($table)
 		{
 			$table->enum('preset',['original', 'small', 'thumbnail', 'square'])->default('original');
-			$table->string('photo_id')->default('');
+			$table->string('guid')->default('');
 		});
 	}
 
@@ -27,7 +27,7 @@ class AddPresetAndPhotoIdToImagesTable extends Migration {
 	public function down()
 	{
 		Schema::table('images', function(Blueprint $table){
-			$table->dropColumn('preset','photo_id');
+			$table->dropColumn('preset','guid');
 		});
 	}
 
