@@ -14,7 +14,7 @@ class AddCodeToAdminsTable extends Migration {
 	{
 		Schema::table('admins', function(Blueprint $table)
 		{
-			$table->string('code');
+			$table->string('code')->default('');
 		});
 	}
 

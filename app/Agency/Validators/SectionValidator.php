@@ -1,10 +1,10 @@
-<?php namespace Agency\Cms\Validators;
+<?php namespace Agency\Validators;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Cms\Exceptions\InvalidSectionException;
+use Agency\Exceptions\InvalidSectionException;
 
 class SectionValidator extends Validator {
 

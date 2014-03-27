@@ -1,11 +1,12 @@
-<?php namespace Agency\Cms\Validators;
+<?php namespace Agency\Validators;
 
-use Agency\Cms\Exceptions\InvalidTagException;
+use Agency\Validators\Validator;
+use Agency\Exceptions\InvalidTagException;
 
 class TagValidator extends Validator implements Contracts\TagValidatorInterface {
 
     protected $rules = [
-        "text"=>"required|unique:tags"
+        'text' => 'required|unique:tags|max:255'
     ];
 
     public function validate($attributes)
@@ -14,8 +15,7 @@ class TagValidator extends Validator implements Contracts\TagValidatorInterface 
 
         if ( ! $validation->passes())
         {
-           // throw new InvalidTagException($validation->messages()->all());
-           return false;
+           throw new InvalidTagException($validation->messages()->all());
         }
 
         return true;

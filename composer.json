@@ -1,7 +1,7 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
-	"keywords": ["framework", "laravel"],
+	"name": "vinelab/agency",
+	"description": "A backend content management system built with smart tools and compelling UI includes an API built with mobile in mind.",
+	"keywords": ["cms", "api", "laravel", "aws", "alc"],
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
