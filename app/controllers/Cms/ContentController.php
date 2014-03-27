@@ -5,7 +5,7 @@ use Agency\Cms\Exceptions\UnauthorizedException;
 
 
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\PostRepositoryInterface;
+use Agency\Repositories\Contracts\PostRepositoryInterface;
 
 use Agency\Helper;
 
