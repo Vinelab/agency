@@ -28,7 +28,7 @@ interface PostRepositoryInterface {
 	 * @param DateTime $publish_date
 	 * @param string $publish_state values must be specified at the model level and mapped to an enum
 	 */
-	public function update($id,$title,$body,$user_id,$section,$publish_date,$publish_state,$slug);
+	public function update($id, $title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
 
 	/**
 	 * get a collection of posts
@@ -85,7 +85,44 @@ interface PostRepositoryInterface {
 	 */
 	public function published($input = array());
 
+	/**
 	 * delete an image from a post
+	 * according to the post id and
+	 * the image id parameters
+	 *
+	 * @param integer $post_id
+	 * @param integer $image_id
+	 * @return boolean true if success 
+	 * @return Exception in case of error
+	 */
+	public function detachImages($post_id, $image_guids);
+
+	/**
+	 * delete all videos from a post
+	 * according to the post id
+	 * @return boolean true if success 
+	 * @return Exception in case of error
+	 */
+	public function detachAllVideos($post_id);
+
+	/**
+	 * Add tags to post
+	 * @param integer $id           	post id
+	 * @param array $new_tags 			array of CMS\Tag
+	 * @param array $existing_tags		array of integers representing the
+	 *                              	the ids of the existing tags
+	 */
+	public function addTags($id,$new_tags,$existing_tags);
+
+	/**
+	 * Add images to post
+	 * @param integer $id     post id
+	 * @param array $images  array of images
+	 */
+	public function addImages($id,$images);
+
+
+
 
 
 }
