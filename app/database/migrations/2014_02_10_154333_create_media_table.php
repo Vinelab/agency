@@ -12,7 +12,7 @@ class CreateMediaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('media', function($table) 
+		Schema::create('medias', function($table) 
 		{
 			$table -> increments ('id') -> unsigned();
 			$table -> integer ('post_id') -> unsigned();
@@ -31,7 +31,7 @@ class CreateMediaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('media');
+		Schema::drop('medias');
 	}
 
 }
