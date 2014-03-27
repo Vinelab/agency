@@ -23,7 +23,15 @@ interface ImageRepositoryInterface {
 
 	public function getByGuid($guid);
 
-    public function groupDelete($images_id);
+    public function remove($images_id);
+    /**
+     * it takes an array of attributes and return an array of their model
+     * @param  array $response 
+     * @return array  Agency\Image
+     */
+    public function prepareToStore($response);	
+
+
 
 
 }
