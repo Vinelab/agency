@@ -14,9 +14,8 @@ class AddPublishDateAndPublishStateToPostsTable extends Migration {
 	{
 		Schema::table('posts', function(Blueprint $table)
 		{
-			
-			$table->dateTime('publish_date');
-			$table->enum('publish_state',['editing', 'published', 'scheduled']);
+			$table->dateTime('publish_date')->default(date(time()));
+			$table->enum('publish_state',['editing', 'published', 'scheduled'])->default('editing');
 		});
 	}
 
@@ -29,7 +28,7 @@ class AddPublishDateAndPublishStateToPostsTable extends Migration {
 	{
 		Schema::table('posts', function(Blueprint $table)
 		{
-			
+
 			$table->dropColumn('publish_date','publish_state');
 		});
 	}

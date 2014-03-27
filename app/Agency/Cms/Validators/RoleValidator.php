@@ -1,5 +1,6 @@
 <?php namespace Agency\Cms\Validators;
 
+use Agency\Validators\Validator;
 use Agency\Cms\Exceptions\InvalidRoleException;
 
 class RoleValidator extends Validator implements Contracts\RoleValidatorInterface {

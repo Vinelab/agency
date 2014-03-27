@@ -15,4 +15,12 @@ interface AdminInterface {
      * @return string
      */
     public function getCode();
+
+    /**
+     * return the database table name
+     * that holds the admins
+     *
+     * @return string
+     */
+    public function dbTable();
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Agency\Cms\Admin;
-use Agency\Cms\Section;
+use Agency\Section;
 use Agency\Cms\Authority\Entities\Role;
 use Agency\Cms\Authority\Entities\Permission;
 

@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Validators\Contracts;
+<?php namespace Agency\Validators\Contracts;
 
 interface ValidatorInterface {
 

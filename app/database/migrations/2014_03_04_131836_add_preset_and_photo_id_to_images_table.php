@@ -12,10 +12,10 @@ class AddPresetAndPhotoIdToImagesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table("images", function($table) 
+		Schema::table("images", function($table)
 		{
-			$table->enum('preset',['original', 'small', 'thumbnail', 'square']);
-			$table->string('photo_id');
+			$table->enum('preset',['original', 'small', 'thumbnail', 'square'])->default('original');
+			$table->string('photo_id')->default('');
 		});
 	}
 
