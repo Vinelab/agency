@@ -1,10 +1,10 @@
 <?php namespace Agency\Cms\Controllers;
 
-use Agency\Cms\Validators\SectionValidator;
+use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
-use Agency\Cms\Validators\Contracts\PostValidatorInterface;
-use Agency\Cms\Validators\Contracts\TagValidatorInterface;
+use Agency\Validators\Contracts\PostValidatorInterface;
+use Agency\Validators\Contracts\TagValidatorInterface;
 
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Repositories\Contracts\PostRepositoryInterface;
@@ -303,11 +303,16 @@ class PostController extends Controller {
 		$tags = explode(', ', Input::get('tags'));
 		// filter empty tags
 		$tags = array_filter($tags);
-		// get tags ids
-		$tags = $this->tags->splitFound($tags);
+
+		if(!empty($tags))
+		{
+			// get tags ids
+			$tags = $this->tags->splitFound($tags);
+			// add new tags to post
+			$new_tags = $this->posts->addTags($post_id, $tags['new'], $tags['existing']);
+
+		}
 		
-		// add new tags to post
-		$new_tags = $this->posts->addTags($post_id, $tags['new'], $tags['existing']);
 
 		
 
