@@ -45,17 +45,25 @@ class TagRepositoryTest extends TestCase {
     public function test_creating_multiple_tags()
     {
         $tags = ['my tag', 'another tag', 'some tag here'];
+        $slugs = ['my-tag', 'another-tag', 'some-tag-here'];
         $coll = M::mock('Illuminate\Database\Eloquent\Collection');
+
+        $coll->shouldReceive('lists')->once()->with('id')->andReturn($coll)
+          ->shouldReceive('lists')->once()->with('slug')->andReturn(['some-slug']);
 
         $this->mTag
             ->shouldReceive('whereRaw')->times(count($tags))->andReturn($this->mTag)
             ->shouldReceive('count')->times(count($tags))->andReturn(0)
-            ->shouldReceive('saveMany')->with(M::type('array'))
-                ->times(count($tags))
-                ->andReturn($this->mTag)
-            ->shouldReceive('list')->once()->with('id')->andReturn($coll);
+            ->shouldReceive('whereIn')->once()->with('slug',$slugs)->andReturn($this->mTag)
+            ->shouldReceive('get')->once()->andReturn($coll)
+            ->shouldReceive('lists')->once()->with('id')->andReturn([])
+            ->shouldReceive('lists')->once()->with('slug')->andReturn([]);
 
-        $saved = $this->tags->createMany($tags);
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $saved);
+        $saved = $this->tags->splitFound($tags);
+
+
+        $this->assertArrayHasKey('new', $saved);
+        $this->assertArrayHasKey('existing', $saved);
+
     }
 }
