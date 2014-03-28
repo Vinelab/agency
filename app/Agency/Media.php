@@ -4,13 +4,13 @@ use Eloquent;
 
 class Media extends Eloquent  {
 
-	protected $table = 'media';
+	protected $table = 'medias';
 
 	protected $fillable = ['post_id','media_id','media_type'];
 
 	public function posts()
 	{
-		return $this->belongsTo('Agency\Cms\Post');
+		return $this->morphedByMany('Agency\Post','media');
 	}
 
 	public function media()

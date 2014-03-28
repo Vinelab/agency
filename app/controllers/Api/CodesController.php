@@ -25,7 +25,7 @@ class CodesController extends Controller {
 		$this->encryptorValidator = $encryptorValidator;
 	}
 
-	public function code()
+	public function create()
 	{	
 		$key = Input::get('key');
 		try {

@@ -1,7 +1,7 @@
 @section('content')
 
 	{{ Form::open([
-	    'url'    => URL::route('cms.administration.updatePassword') ,
+	    'url'    => URL::route('cms.dashboard.password.update') ,
 	    'class'  => 'form-horizontal',
 	    'role'   =>'form',
 	]) }}

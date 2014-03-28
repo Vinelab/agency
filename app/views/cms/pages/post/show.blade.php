@@ -15,7 +15,7 @@
 	<div id="post-container">
 		@if ($admin_permissions->has('update'))
 			<div id="edit-post-container">
-				<a href="{{URL::route('cms.post.edit',$post->slug)}}" class="btn btn-primary no-radius">
+				<a href="{{URL::route('cms.content.posts.edit',$post->slug)}}" class="btn btn-primary no-radius">
 					<i class="icon-edit bigger-230"></i>
 					{{Lang::get('posts/form.edit')}}
 				</a>

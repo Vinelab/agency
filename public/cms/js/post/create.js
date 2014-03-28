@@ -583,7 +583,7 @@ function displayLoading()
 	$("#loader-container").show();
 }
 
-function deletePost(slug)
+function deletePost()
 {
 	bootbox.dialog({
 		message: "<span class='bigger-110'>"+Lang['conf_messasge_delete_post']+"</span>",
@@ -594,7 +594,6 @@ function deletePost(slug)
 				"label" : Lang['cancel'],
 				"className" : "btn-sm btn-grey",
 				"callback": function() {
-					//Example.show("great success");
 				}
 			},
 			"danger" :
@@ -602,7 +601,7 @@ function deletePost(slug)
 				"label" : "<i class='icon-trash'></i>"+Lang['delete']+"!",
 				"className" : "btn-sm btn-danger",
 				"callback": function() {
-					top.location=Routes.cms_post_destroy+"/"+slug
+					$("#delete-post-form").submit();
 				}
 			}
 		}

@@ -21,4 +21,17 @@ interface ImageRepositoryInterface {
 
 	public function getThumbnail($guid);
 
+	public function getByGuid($guid);
+
+    public function remove($images_id);
+    /**
+     * it takes an array of attributes and return an array of their model
+     * @param  array $response 
+     * @return array  Agency\Image
+     */
+    public function prepareToStore($response);	
+
+
+
+
 }

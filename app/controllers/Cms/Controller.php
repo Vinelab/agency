@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Controller as BaseController;
 
 use Agency\Cms\Exceptions\UnauthorizedException;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 
 class Controller extends BaseController {
 

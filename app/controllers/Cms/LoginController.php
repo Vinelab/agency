@@ -6,7 +6,7 @@
 
 
 use Agency\Cms\Authentication\Contracts\AuthenticatorInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Repositories\Contracts\AdminRepositoryInterface;
 use Agency\Cms\Notifications\Contracts\AdminRegistrationNotifierInterface;
 
@@ -86,7 +86,7 @@ class LoginController extends Controller {
         {
             try {
                 $admin = $this->admin->findBy('code',Input::get('code'));
-                $this->admin->changePassword($admin,Input::get('password')); 
+                $this->admin->changePassword($admin->id,Input::get('password')); 
                 Session::flash('success',[Lang::get('resetPassword.password_updated_successfully')]);
                 return View::make('cms.pages.login.index');
             } catch (Exception $e) {

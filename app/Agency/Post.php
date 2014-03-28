@@ -30,14 +30,26 @@ class Post extends Eloquent  {
 		return $this->hasMany('Agency\Media');
 	}
 
+    public function images()
+    {
+        return $this->morphedByMany('Agency\Image', 'media');
+            
+    }
+
+    public function videos()
+    {
+        return $this->morphedByMany('Agency\Image', 'media');
+           
+    }
+
 	public function section()
 	{
-		return $this->belongsTo('Agency\Section');
+		return $this->belongsTo("Agency\Section");
 	}
 
 	public function tags()
     {
-        return $this->belongsToMany('Agency\Tag');
+        return $this->belongsToMany("Agency\Tag");
     }
 
     public function setThumbnail($thumbnail)
@@ -54,7 +66,7 @@ class Post extends Eloquent  {
 
             $media = $this->media()->get();
 
-            if(!$media->isempty())
+            if(!$media->isEmpty())
             {
                 $media=$this->media()->first()->media;
 
@@ -76,7 +88,7 @@ class Post extends Eloquent  {
         $media = $this->media()->get();
         $images = [];
 
-        if(!$media->isempty())
+        if(!$media->isEmpty())
         {
             foreach ($media as $media_element) {
                 if($media_element->media->type() == "image")
@@ -95,7 +107,7 @@ class Post extends Eloquent  {
         $media = $this->media()->get();
         $videos = [];
 
-        if(!$media->isempty())
+        if(!$media->isEmpty())
         {
             foreach ($media as $media_element) {
                 if($media_element->media->type()=="video")

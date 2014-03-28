@@ -2,17 +2,17 @@
     <div class="dd-handle">
     	<div class="pull-left action-buttons">
             @if ($admin_permissions->has('update'))
-                <a class="blue" href="{{URL::route('cms.post.edit',$post->slug)}}">
+                <a class="blue" href="{{URL::route('cms.content.posts.edit',$post->slug)}}">
                     <i class="icon-pencil bigger-130"></i>
                 </a>
             @endif
         </div>
-        <a href="{{URL::route('cms.post.show',$post->slug)}}">
+        <a href="{{URL::route('cms.content.posts.show',$post->slug)}}">
             <img src="{{$post->thumbnailURL()}}">
         </a>
         
 
-        {{HTML::link(URL::route('cms.post.show',$post->slug),$post->title,['class'=>'post-title'])}}
+        {{HTML::link(URL::route('cms.content.posts.show',$post->slug),$post->title,['class'=>'post-title'])}}
         <div class="author-status-container">
             <div class="status-container">
                 @if($post->publish_state == 'published')

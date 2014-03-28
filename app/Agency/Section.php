@@ -48,12 +48,12 @@ class Section extends Eloquent implements PrivilegableInterface {
 
     public function sections()
     {
-        return $this->hasMany('Agency\Cms\Section', 'parent_id');
+        return $this->hasMany('Agency\Section', 'parent_id');
     }
 
     public function posts()
     {
-        return $this->hasMany('Agency\Cms\Post');
+        return $this->hasMany('Agency\Post');
     }
 
     public function alias()
