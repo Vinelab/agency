@@ -1,4 +1,7 @@
 ## Agency
+
+[![Build Status](https://travis-ci.org/Vinelab/agency.svg?branch=develop)](https://travis-ci.org/Vinelab/agency)
+
 A backend for dedicated products implementing an easy to use content management system and exposes
 data through an API specifically tailored for web and mobile.
 
