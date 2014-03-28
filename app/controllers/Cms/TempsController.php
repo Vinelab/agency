@@ -1,12 +1,12 @@
 <?php namespace Agency\Cms\Controllers;
 
-use Agency\Media\Temp\Contracts\TemporaryInterface;
+use Agency\Media\Photos\Contracts\StoreInterface;
 
 use Input, Response,File;
 
 class TempsController extends \Controller {
 
-    public function __construct(TemporaryInterface $temp)
+    public function __construct(StoreInterface $temp)
     {
         $this->temp = $temp;
     }
@@ -18,7 +18,7 @@ class TempsController extends \Controller {
         $images = $input["images"];
         $tempImages = [];
         foreach ($images as $key => $image) {
-           array_push($tempImages, $this->temp->storeImage($image));
+           array_push($tempImages, $this->temp->put($image));
         }
 
         return json_encode($tempImages);

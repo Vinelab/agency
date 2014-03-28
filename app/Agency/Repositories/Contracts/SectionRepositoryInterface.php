@@ -76,5 +76,5 @@ interface SectionRepositoryInterface {
     /**
      *
      */
-    public function parentSections($alias);
+    public function parentSections($alias,$current_parent_section_id);
 }

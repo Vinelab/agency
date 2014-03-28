@@ -13,7 +13,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 
 	protected $table = 'images';
 
-	protected $fillable = ['url','preset','photo_id'];
+	protected $fillable = ['url','preset','guid'];
 
 	protected $presets = [
 		'original'  => 'original',
@@ -21,6 +21,16 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 		'square'    => 'square',
 		'small'     => 'small'
 	];
+
+	/**
+	 * get the post that this image belongs to
+	 *
+	 * @return Illuminate\Database\Eloquent\Collection of Agency\Post
+	 */
+	public function posts()
+    {
+        return $this->morphToMany('Agency\Post');
+    }
 
     /**
      * Get Image type
@@ -55,5 +65,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 	{
 		return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
 	}
+
+   
 
 }

@@ -19,10 +19,12 @@ class PostRepositoryTest extends TestCase {
         parent::setUp();
 
         $this->mPost = M::mock('Agency\Post');
+        $this->mImage = M::mock('Agency\Contracts\ImageInterface');
+        $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
         $this->images = M::mock('Agency\Repositories\Contracts\ImageRepositoryInterface');
         $this->sections = M::mock('Agency\Repositories\Contracts\SectionRepositoryInterface');
 
-        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections);
+        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo);
     }
 
     public function test_posts_provider_binding()

@@ -6,18 +6,18 @@
 
 use View, Response, Input, Auth, Authority, Lang;
 
-use Agency\Cms\Validators\SectionValidator;
+use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
 use Agency\Cms\Repositories\Contracts\ArtistRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 
 class SectionController extends Controller {
 
     /**
      * The section validator instance.
      *
-     * @var Agency\Cms\Validators\SectionValidator
+     * @var Agency\Validators\SectionValidator
      */
     protected $validator;
 

@@ -10,7 +10,7 @@ class Tag extends Eloquent  {
 
 	public function posts()
     {
-        return $this->belongsToMany('Agency\Cms\Post');
+        return $this->belongsToMany("Agency\Post");
     }
 
 	public function dbTable()

@@ -39,7 +39,7 @@
         	{{Lang::get('resetPassword.enter_your_new_password')}}
         </p>
 
-        {{ Form::open(['url' => URL::route('cms.login.password.change'), 'method'=>'POST']) }}
+        {{ Form::open(['url' => URL::route('cms.password.change'), 'method'=>'POST']) }}
             <fieldset>
                 <label class="block clearfix">
                     <span class="block input-icon input-icon-right">

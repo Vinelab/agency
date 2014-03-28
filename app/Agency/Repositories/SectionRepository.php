@@ -94,21 +94,27 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
         return $this->section->where('is_fertile', false)->get();
     }
 
-    public function parentSections($alias)
+    public function parentSections($alias,$current_parent_section_id)
     {
         $section = $this->findByAlias($alias);
-
         if ($section)
         {
             $parent_sections = [];
 
-            $content_section = $this->section->where('alias', $alias)->first();
+            $content_section = $this->find($current_parent_section_id);
 
-            do {
-                $section = $this->section->find($section->parent_id);
+            // do {
+            //     $section = $this->section->find($section->parent_id);
+            //     array_push($parent_sections, $section);
+            // } while($section->parent_id != $content_section->id);
+            
+            array_push($parent_sections,$section);
+
+            while($section->parent_id != $content_section->id)
+            {
+                 $section = $this->section->find($section->parent_id);
                 array_push($parent_sections, $section);
-            } while($section->parent_id != $content_section->id);
-
+            }
             return  array_reverse($parent_sections);
         }
     }

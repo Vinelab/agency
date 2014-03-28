@@ -3,7 +3,7 @@
 use Agency\Cms\Controllers\Controller;
 
 use Agency\Api\Repositories\Contracts\ApplicationRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Api\Validators\ApplicationValidator;
 
 use Str,Response,Input;

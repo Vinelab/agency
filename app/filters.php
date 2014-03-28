@@ -78,3 +78,11 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+ Route::filter('code',function(){
+    if(is_null(Input::get('code')))
+    {
+    	return Response::json(['status'=>400,'messages'=>Lang::get("messages.invalid_code")]);
+    }
+});

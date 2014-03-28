@@ -15,9 +15,9 @@ class MediaServiceProvider extends ServiceProvider {
             'Agency\Media\Photos\InterventionPhotoEditor');
 
         $this->app->bind(
-            'Agency\Media\Temp\Contracts\TemporaryInterface',
-            'Agency\Media\Temp\Temporary');
-
+            'Agency\Media\Photos\Contracts\StoreInterface',
+            'Agency\Media\Photos\Store');
+        
         $this->app->bind(
             'Agency\Media\Photos\Contracts\PhotoUploaderInterface', function(){
                 return new AwsPhotoUploader(App::make('config'));

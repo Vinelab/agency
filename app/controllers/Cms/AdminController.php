@@ -13,7 +13,7 @@ use Agency\Cms\Exceptions\InvalidAdminException;
 
 use Agency\Cms\Authority\Contracts\AuthorableInterface;
 use Agency\Cms\Repositories\Contracts\AdminRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface;
 use Agency\Cms\Notifications\Contracts\AdminRegistrationNotifierInterface;
 use Agency\Cms\Authority\Repositories\Contracts\RoleRepositoryInterface;
@@ -313,7 +313,7 @@ class AdminController extends Controller {
             {
                 if(Input::get('new_password')!="")
                 {
-                    $this->admins->changePassword($admin,Input::get('new_password'));
+                    $this->admins->changePassword($admin->id,Input::get('new_password'));
                     Session::flash('success',[Lang::get('resetPassword.password_updated_successfully')]);
                     Auth::logout();
                     return Redirect::route('cms.login');

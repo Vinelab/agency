@@ -3,7 +3,7 @@
 
         @if ($admin_permissions->has('create'))
         <div class="row">
-            <a href="{{ URL::route('cms.post.create') }}" class="btn btn-primary">
+            <a href="{{ URL::route('cms.content.posts.create') }}" class="btn btn-primary">
                 <span class="icon-plus"></span>
                 {{Lang::get('posts/form.new_post')}}
             </a>
@@ -19,18 +19,18 @@
                     <li>
                         <div class="dd-handle">
                             <img src="{{$post['thumbnail']}}">
-                            {{HTML::link(URL::route('cms.post.show',$post['data']->slug),$post['data']->title)}}
+                            {{HTML::link(URL::route('cms.content.posts.show',$post['data']->slug),$post['data']->title)}}
                             <div class="pull-right action-buttons">
 
                                 @if ($admin_permissions->has('update'))
 
-                                    <a class="blue" href="{{URL::route('cms.post.edit',$post['data']->slug)}}">
+                                    <a class="blue" href="{{URL::route('cms.content.posts.edit',$post['data']->slug)}}">
                                         <i class="icon-pencil bigger-130"></i>
                                     </a>
                                 @endif
                                 
                                 @if ($admin_permissions->has('delete'))
-                                    <a class="red" href="{{URL::route('cms.post.destroy',$post['data']->slug)}}">
+                                    <a class="red" href="{{URL::route('cms.content.posts.destroy',$post['data']->slug)}}">
                                         <i class="icon-trash bigger-130"></i>
                                     </a>
                                 @endif

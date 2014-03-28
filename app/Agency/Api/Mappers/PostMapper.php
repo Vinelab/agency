@@ -2,7 +2,7 @@
 
 use Agency\Api\PostsCollection;
 
-use Agency\Cms\Post;
+use Agency\Post;
 
 class PostMapper{
 
@@ -12,9 +12,9 @@ class PostMapper{
 
 	public function __construct()
 	{
-		$this->imageMapper = new ImageMapper();
-		$this->videoMapper = new VideoMapper();
-		$this->tagMapper = new TagMapper();
+		$this->image_mapper = new ImageMapper();
+		$this->video_mapper = new VideoMapper();
+		$this->tag_mapper = new TagMapper();
 
 	}
 
@@ -31,7 +31,7 @@ class PostMapper{
 			}
 
 			 return $this->posts_collection;
-		} elseif (get_class($posts)=="Agency\Cms\Post") {
+		} elseif (get_class($posts)=="Agency\Post") {
 
 			return $this->parseAndFill($posts);
 		}
@@ -42,9 +42,9 @@ class PostMapper{
 		$this->post['id'] = $post->id;
 		$this->post['title'] = $post->title;
 		$this->post['slug'] = $post->slug;
-		$this->post['images'] = $this->imageMapper->make($post->getAllImages())->toArray();
-		$this->post['videos'] = $this->videoMapper->make($post->getAllVideos())->toArray();
-		$this->post['tags'] = $this->tagMapper->Make($post->tags()->get())->toArray();
+		$this->post['images'] = $this->image_mapper->make($post->getAllImages())->toArray();
+		$this->post['videos'] = $this->video_mapper->make($post->getAllVideos())->toArray();
+		$this->post['tags'] = $this->tag_mapper->make($post->tags()->get())->toArray();
 		return $this->post;
 	}
 

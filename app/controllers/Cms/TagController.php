@@ -3,8 +3,8 @@
 use Input, Response, Redirect, Lang;
 
 use Agency\Cms\Repositories\Contracts\RoleRepositoryInterface as Roles;
-use Agency\Cms\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Cms\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Cms\Validators\Contracts\RoleValidatorInterface as RoleValidator;
 
 use Agency\Cms\Exceptions\UnauthorizedException;
@@ -27,7 +27,7 @@ class TagController extends Controller {
 	 */
 	public function index()
 	{
-		return Redirect::route('cms.dashboard');
+		return Response::json(['tags'=>$this->tag->all()->fetch('text')->toJson()]);
 	}
 
 	/**
@@ -58,7 +58,7 @@ class TagController extends Controller {
 	 */
 	public function show($id)
 	{
-		return dd($id);
+
 	}
 
 	/**
@@ -94,10 +94,5 @@ class TagController extends Controller {
 		//
 	}
 
-
-	public function all()
-	{
-		return Response::json(['tags'=>$this->tag->all()->fetch('text')->toJson()]);
-	}
 
 }

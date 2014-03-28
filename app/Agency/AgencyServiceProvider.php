@@ -23,7 +23,9 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Repositories\Contracts\ImageRepositoryInterface',
             'Agency\Repositories\ImageRepository');
+
         $this->app->bind('Agency\Contracts\ImageInterface', 'Agency\Image');
+        $this->app->bind('Agency\Contracts\VideoInterface', 'Agency\Video');
 
         // sections
         $this->app->bind(
