@@ -26,10 +26,9 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('ibrahims-mbp.lan',
-					'ibrahims-mbp.cloud5.com',
-					'Ibrahims-MacBook-Pro.local',
-					'ibrahims-mbp')
+	'local' => array('flay.local'),
+
+	'development' => array('agency-develop') // as set in vinelab/agency-deployment-provisioning
 
 ));
 
