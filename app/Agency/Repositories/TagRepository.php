@@ -56,7 +56,10 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 
 		$existing = $existing->lists('id');
 
-		return compact('new','existing');
+		return [
+			'new' => $new_tags,
+			'existing' => $existing
+		];
 	}
 
 }
