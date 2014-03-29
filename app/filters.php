@@ -33,9 +33,9 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
+Route::filter('cms.auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) return Redirect::route('cms.login');
 });
 
 
