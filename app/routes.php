@@ -138,12 +138,12 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
 
             Route::post("/photos",[
                 "as" => "cms.content.posts.photos.store",
-                "uses" => "Agency\Cms\Controllers\TempsController@store"
+                "uses" => "Agency\Cms\Controllers\MediaController@store"
             ]);
 
             Route::post("/photos/delete",[
                 "as" => "cms.content.posts.photos.destroy",
-                "uses" => "Agency\Cms\Controllers\TempsController@destroy"
+                "uses" => "Agency\Cms\Controllers\MediaController@destroy"
             ]);
 
             Route::resource('/tags', 'Agency\Cms\Controllers\TagController',
