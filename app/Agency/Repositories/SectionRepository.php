@@ -38,11 +38,6 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
      */
     public function create($title, $alias = '', $icon, $parent_id, $is_fertile = false, $is_roleable = false)
     {
-        if(! isset($alias) or empty($alias))
-        {
-            $alias = $this->helper->aliasify($title);
-        }
-
         return $this->section->create(compact('title', 'alias', 'icon', 'parent_id', 'is_fertile', 'is_roleable'));
     }
 
@@ -59,12 +54,6 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
     {
         // find the record (fails with an exception when not found)
         $section = $this->find($id);
-
-        if(! isset($alias) or empty($alias))
-        {
-            $alias = $this->helper->aliasify($alias,$this->model);
-        }
-
         // fill the attributes - NB: Everything you fill in here must be set in the 'fillable'
         $section->fill(compact('title', 'alias', 'icon', 'parent_id', 'is_fertile', 'is_roleable'));
         // save modifications
