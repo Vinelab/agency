@@ -7,6 +7,7 @@
 
 use Agency\Video;
 use Agency\Repositories\Contracts\VideoRepositoryInterface;
+use Agency\Repositories\Contracts\PostRepositoryInterface;
 
 class VideoRepository extends Repository implements VideoRepositoryInterface {
 
@@ -48,5 +49,16 @@ class VideoRepository extends Repository implements VideoRepositoryInterface {
 
 		return (boolean) preg_match($pattern, $url, $matches);
 	}
+
+	/**
+	 * @override
+	 *
+	 * @param {array|int|string} $videos_ids
+	 * @return boolean
+	 */
+    public function remove($videos_ids)
+    {
+    	return $this->video->destroy($videos_ids);
+    }
 
 }
