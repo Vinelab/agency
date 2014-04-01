@@ -4,7 +4,9 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-class Helper {
+use Agency\Contracts\HelperInterface;
+
+class Helper implements HelperInterface {
 
     /**
      * Transforms a camelCase string to
@@ -96,6 +98,11 @@ class Helper {
         }
 
         return $slug;
+    }
+
+    public function getUniqueId()
+    {
+        return uniqid();
     }
 
 }
