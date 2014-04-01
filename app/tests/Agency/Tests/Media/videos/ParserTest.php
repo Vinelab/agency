@@ -30,7 +30,7 @@ class ParserTest extends TestCase {
         $this->mVideo->thumbnail = "thumbnail";
 
         $videos = [$this->mVideo, $this->mVideo, $this->mVideo];
-        $this->mVideo_validator->shouldReceive('validate')->with($this->mVideo->url)->andReturn(true);
+        $this->mVideo_validator->shouldReceive('validate')->with(['url' => $this->mVideo->url])->andReturn(true);
 
         $result = $this->parser->make($videos);
 
