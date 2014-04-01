@@ -78,7 +78,48 @@ class ImageRepositoryTest extends TestCase {
         $this->mImage->shouldReceive('first')->once()->andReturn($this->mImage);
 
         $this->assertInstanceOf('Agency\Contracts\ImageInterface', $this->images->getThumbnail($guid));
+    }
+
+    public function test_store()
+    {
+        $mPhoto = M::mock('Agency\Media\Photos\Photo');
+
+        
+
+        $photos_without_original =[];
+
+        array_push($photos_without_original,[
+                'url' => "https://s3.amazonaws.com/awsfacebookapp%2Fartists%2Fwebs/53398439beb34.thumb.jpeg",
+                'preset' => 'thumbnail',
+                'guid' => "uniqueid"
+
+            ]);
+
+        array_push($photos_without_original,[
+                'url' => "https://s3.amazonaws.com/awsfacebookapp%2Fartists%2Fwebs/53398439beb34.thumb.jpeg",
+                'preset' => 'small',
+                'guid' => "uniqueid"
+            ]);
+        
+        array_push($photos_without_original,[
+                'url' => "https://s3.amazonaws.com/awsfacebookapp%2Fartists%2Fwebs/53398439beb34.thumb.jpeg",
+                'preset' => 'square',
+                'guid' => "uniqueid"
+            ]);
+
+
+        $this->mImage->shouldReceive('insert')->with($photos_without_original)->once()
+             ->andReturn(true);
+
+
+        
+        $original_photo = $this->images->store($photos_without_original);
+
+        $this->assertTrue($original_photo);
 
     }
+
+
+
 
 }
