@@ -6,6 +6,7 @@
 
  use Str, TestCase, Mockery as M;
  use Agency\Repositories\PostRepository;
+ use Agency\Contracts\HelperInterface;
 
 class PostRepositoryTest extends TestCase {
 
@@ -23,8 +24,8 @@ class PostRepositoryTest extends TestCase {
         $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
         $this->images = M::mock('Agency\Repositories\Contracts\ImageRepositoryInterface');
         $this->sections = M::mock('Agency\Repositories\Contracts\SectionRepositoryInterface');
-
-        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo);
+        $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
+        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo,$this->mHelper);
     }
 
     public function test_posts_provider_binding()
@@ -158,11 +159,8 @@ class PostRepositoryTest extends TestCase {
         $title = 'My tItlE iS BuTTifuLL';
         $slug = 'my-title-is-buttifull';
 
-        $this->mPost->shouldReceive('whereRaw')->once()
-                ->with("slug REGEXP '^{$slug}(-[0-9]*)?$'")
-                ->andReturn($this->mPost)
-            ->shouldReceive('count')->withNoArgs()->once()
-            ->andReturn(0);
+        $this->mHelper->shouldReceive('slugify')->with($title,$this->mPost)
+                        ->andReturn($slug);
 
         $uniq_slug = $this->posts->uniqSlug($title);
 
@@ -174,10 +172,8 @@ class PostRepositoryTest extends TestCase {
         $title = 'My tItlE iS BuTTifuLL';
         $slug  = 'my-title-is-buttifull';
 
-        $this->mPost->shouldReceive('whereRaw')->once()
-                ->with("slug REGEXP '^{$slug}(-[0-9]*)?$'")
-                ->andReturn($this->mPost)
-            ->shouldReceive('count')->withNoArgs()->once()->andReturn(10);
+        $this->mHelper->shouldReceive('slugify')->with($title,$this->mPost)
+                        ->andReturn("$slug-10");
 
         $uniq_slug = $this->posts->uniqSlug($title);
 
