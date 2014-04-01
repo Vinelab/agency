@@ -16,6 +16,8 @@ use Agency\Media\Photos\UploadedPhoto;
 use Agency\Media\Photos\UploadedPhotosCollection;
 use Agency\Media\Photos\Contracts\ManagerInterface;
 use Agency\Media\Photos\Contracts\StoreInterface;
+use Agency\Media\Photos\Contracts\FilterResponseInterface;
+use Agency\Media\Videos\Contracts\ParserInterface;
 
 use Agency\Post;
 
@@ -44,19 +46,23 @@ class PostController extends Controller {
     							TagRepositoryInterface $tags,
     							TagValidatorInterface $tagValidator,
     							PostValidatorInterface $validator,
-    							StoreInterface $store)
+    							StoreInterface $store,
+    							FilterResponseInterface $filter_response,
+    							ParserInterface $parser_interface)
     {
         parent::__construct($sections);
 
 		$this->posts             = $post;
 		$this->manager          = $manager;
 		$this->images           = $image;
-		$this->video            = $video;
+		$this->videos            = $video;
 		$this->validator    	= $validator;
 		$this->sections         = $sections;
 		$this->tags              = $tags;
 		$this->tagValidator     = $tagValidator;
 		$this->store            = $store;
+		$this->filter_response  = $filter_response;
+		$this->parser_interface = $parser_interface;
     }
 
 	public function index()
@@ -202,7 +208,6 @@ class PostController extends Controller {
 	{
 		if($this->admin_permissions->has("update"))
 		{
-
 			if($this->validator->validate(Input::all()))
 			{
 				$body = Helper::cleanHtml(Input::get('body'));
@@ -210,7 +215,6 @@ class PostController extends Controller {
 				$slug = $this->posts->uniqSlug(Input::get('title'));
 
 				$section = $this->sections->findBy('alias', Input::get('section'));
-
 				if ($section)
 				{
 
@@ -231,13 +235,24 @@ class PostController extends Controller {
 						{
 							$deleted_images = explode(',', $deleted_images);
 
+							$this->posts->detachImages($id,$deleted_images);
 							$this->images->remove($deleted_images);
-							$this->posts->detachImages($deleted_images);
 						}
 
-						$this->save($id);
+						$deleted_videos =Input::get('deleted_videos');
+						if( ! empty($deleted_videos))
+						{
+							$deleted_videos = explode(',', $deleted_videos);
+							$this->posts->detachVideos($id,$deleted_videos);
+							$this->videos->remove($deleted_videos);
+						}
 
-						
+
+						$this->posts->detachAllVideos($id);
+		
+						$this->videos->removeAll($id);
+
+						$post = $this->save($id);	
 					}
 				}
 			
@@ -300,12 +315,16 @@ class PostController extends Controller {
 	public function save($post_id)
 	{
 
+		//detach all tags
+		$this->posts->detachTags($post_id);
+
 		$tags = explode(', ', Input::get('tags'));
 		// filter empty tags
 		$tags = array_filter($tags);
 
 		if(!empty($tags))
 		{
+			
 			// get tags ids
 			$tags = $this->tags->splitFound($tags);
 			// add new tags to post
@@ -313,10 +332,6 @@ class PostController extends Controller {
 
 		}
 		
-
-		
-
-
 		// upload images
 		if(Input::has('croped_images_array'))
 		{
@@ -341,25 +356,21 @@ class PostController extends Controller {
 
 				$response = $response->toArray();
 
-				$images = $this->images->prepareToStore($response);
+				$images = $this->filter_response->make($response);
 
+				$this->images->store($images['without_original']);
 
-				$this->posts->addImages($post_id, $images);
+				$this->posts->addImages($post_id, $images['originals']);
 
 		 	}
 		}
 
 		$videos = json_decode(Input::get('videos'));
 
-		$this->posts->detachAllVideos($post_id);
+		$videos = $this->parser_interface->make($videos);
 
-		foreach ($videos as $video) {
-			if($this->video->validateYoutubeUrl($video->url))
-			{
-				$v = $this->video->create($video->title,$video->url,$video->desc,$video->src);
-				$v->posts()->create(["post_id"=>$post->id]);
-			}
-		}
+		$this->posts->addVideos($post_id,$videos);
+
 
 	}
 
