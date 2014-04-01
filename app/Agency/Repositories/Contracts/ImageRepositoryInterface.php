@@ -29,7 +29,7 @@ interface ImageRepositoryInterface {
      * @param  array $response 
      * @return array  Agency\Image
      */
-    public function prepareToStore($response);	
+    public function store($response);	
 
 
 
