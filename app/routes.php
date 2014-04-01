@@ -132,12 +132,36 @@ Route::group([ 'before' => 'cms.auth', 'prefix' => 'cms'], function(){
                 ],
                 'except' => ['show']
             ]);
+
+
                        
 
             Route::post("/photos",[
-                "as" => "cms.content.posts.photos",
-                "uses" => "Agency\Cms\Controllers\TempsController@storePhotos"
+                "as" => "cms.content.posts.photos.store",
+                "uses" => "Agency\Cms\Controllers\TempsController@store"
             ]);
+
+            Route::post("/photos/delete",[
+                "as" => "cms.content.posts.photos.destroy",
+                "uses" => "Agency\Cms\Controllers\TempsController@destroy"
+            ]);
+
+            Route::resource('/tags', 'Agency\Cms\Controllers\TagController',
+            [
+                'names' => [
+                    'index'   => 'cms.content.posts.tags',
+                    'create'  => 'cms.content.posts.tags.create',
+                    'store'   => 'cms.content.posts.tags.store',
+                    'edit'    => 'cms.content.posts.tags.edit',
+                    'update'  => 'cms.content.posts.tags.update',
+                    'destroy' => 'cms.content.posts.tags.destroy'
+                ],
+                'except' => ['show']
+            ]);
+
+            
+
+
 
             Route::post("/{id}",[
                 'as' => 'cms.content.posts.update',
