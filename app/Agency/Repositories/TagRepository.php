@@ -31,7 +31,7 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 	{
 		// generate slugs
 		$tags = array_map(function($text) {
-			$slug = Helper::slugify($text, $this->tag);
+			$slug = Helper::slugify($text);
 			return compact('text', 'slug');
 		}, $tags);
 
