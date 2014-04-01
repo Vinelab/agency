@@ -74,49 +74,14 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 	 * @param {array|int|string} $image_ids
 	 * @return boolean
 	 */
-    public function remove($images_id)
+    public function remove($image_ids)
     {
-    	return $this->image->destroy($images_id);
+    	return $this->image->destroy($image_ids);
     }
 
-    public function prepareToStore($response)
+    public function store($images_without_original)
     {
-    	$images_without_original = [];
-    	$original_images = [];
-    	foreach ($response as $image) {
-
-    		$unique_id = uniqid();
-
-			array_push($images_without_original,[
-													'url' => $image['thumbnail']->url,
-													'preset' => 'thumbnail',
-													'guid' => $unique_id,
-												]);
-
-			array_push($images_without_original,[
-													'url' => $image['small']->url,
-													'preset' => 'small',
-													'guid' => $unique_id,
-									    		]);
-
-			array_push($images_without_original,[
-									    			'url' => $image['square']->url,
-													'preset' => 'square',
-													'guid' => $unique_id,
-												]);
-
-    		array_push($original_images, new Image([
-							    			'url' => $image['original']->url,
-											'preset' => 'original',
-											'guid' => $unique_id,
-							    		])
-    				);
-    	}
-
-    	$this->image->insert($images_without_original);
-
-
-    	return $original_images;
+    	return $this->image->insert($images_without_original);
     }
 
 
