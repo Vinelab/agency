@@ -247,11 +247,6 @@ class PostController extends Controller {
 							$this->videos->remove($deleted_videos);
 						}
 
-
-						$this->posts->detachAllVideos($id);
-		
-						$this->videos->removeAll($id);
-
 						$post = $this->save($id);	
 					}
 				}
@@ -370,7 +365,6 @@ class PostController extends Controller {
 		$videos = $this->parser_interface->make($videos);
 
 		$this->posts->addVideos($post_id,$videos);
-
 
 	}
 
