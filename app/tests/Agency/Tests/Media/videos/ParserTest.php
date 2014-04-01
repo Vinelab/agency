@@ -2,13 +2,15 @@
 
 use TestCase, Mockery as M;
 use Agency\Media\Videos\Parser;
+use Agency\Validators\Contracts\VideoValidatorInterface;
 
-class FilterResponseTest extends TestCase {
+class ParserTest extends TestCase {
 
     public function setUp()
     {
         parent::setUp();
-        $this->parser = new parser();
+        $this->mVideo_validator = M::mock('Agency\Validators\Contracts\VideoValidatorInterface');
+        $this->parser = new parser($this->mVideo_validator);
         $this->mVideo = M::mock('Agency\Video');
 
     }
@@ -28,32 +30,12 @@ class FilterResponseTest extends TestCase {
         $this->mVideo->thumbnail = "thumbnail";
 
         $videos = [$this->mVideo, $this->mVideo, $this->mVideo];
+        $this->mVideo_validator->shouldReceive('validate')->with($this->mVideo->url)->andReturn(true);
 
         $result = $this->parser->make($videos);
 
         $this->assertInstanceOf('Agency\Video',$result[0]);
 
-    }
-
-    public function test_validating_youtube_video_url()
-    {
-        // with protocol
-        $this->assertTrue($this->parser->validateYoutubeUrl('http://youtu.be/MMnvNtjPr-4'));
-        $this->assertTrue($this->parser->validateYoutubeUrl('http://www.youtube.com/embed/Abbs7Jmd-4'));
-        $this->assertTrue($this->parser->validateYoutubeUrl('https://www.youtube.com/watch?v=yVcePxjFujs'));
-
-        // same as previous without protocol
-        $this->assertTrue($this->parser->validateYoutubeUrl('youtu.be/MMnvNtjPr-4'));
-        $this->assertTrue($this->parser->validateYoutubeUrl('www.youtube.com/embed/Abbs7Jmd-4'));
-        $this->assertTrue($this->parser->validateYoutubeUrl('www.youtube.com/watch?v=yVcePxjFujs'));
-
-        // not youtube
-        $this->assertFalse($this->parser->validateYoutubeUrl('http://youtb.be/asdhflkjh'));
-        $this->assertFalse($this->parser->validateYoutubeUrl('https://www.youtube.net'));
-        $this->assertFalse($this->parser->validateYoutubeUrl('https://youtube.net'));
-        $this->assertFalse($this->parser->validateYoutubeUrl('https://video.com/lol'));
-        $this->assertFalse($this->parser->validateYoutubeUrl(''));
-        $this->assertFalse($this->parser->validateYoutubeUrl(null));
     }
 
 
