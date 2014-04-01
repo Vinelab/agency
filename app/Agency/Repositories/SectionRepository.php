@@ -6,7 +6,6 @@
 
 use DB;
 use Agency\Section;
-use Agency\Contracts\HelperInterface;
 
 class SectionRepository extends Repository implements Contracts\SectionRepositoryInterface {
 
@@ -19,11 +18,9 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
      */
     protected $defaults = ['dashboard'];
 
-    public function __construct(Section $section,
-                                HelperInterface $helper)
+    public function __construct(Section $section)
     {
         $this->model = $this->section = $section;
-        $this->helper = $helper;
     }
 
     /**
