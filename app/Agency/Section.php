@@ -23,7 +23,7 @@ class Section extends Eloquent implements PrivilegableInterface {
 
             if ( ! isset($model->alias) or empty($model->alias))
             {
-                $model->alias = Helper::aliasify($model->title);
+                $model->alias = Helper::slugify($model->title,static::$this);
             }
 
         });
