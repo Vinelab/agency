@@ -17,6 +17,10 @@ class MediaServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Media\Photos\Contracts\StoreInterface',
             'Agency\Media\Photos\Store');
+
+        $this->app->bind(
+            'Agency\Media\Videos\Contracts\ParserInterface',
+            'Agency\Media\Videos\Parser');
         
         $this->app->bind(
             'Agency\Media\Photos\Contracts\PhotoUploaderInterface', function(){
@@ -34,5 +38,8 @@ class MediaServiceProvider extends ServiceProvider {
 
         $this->app->bind(
             'Agency\Media\Photos\Contracts\UploadInterface','Agency\Media\Photos\AwsUpload');
+
+        $this->app->bind(
+            'Agency\Media\Photos\Contracts\FilterResponseInterface','Agency\Media\Photos\FilterResponse');
     }
 }
