@@ -4,7 +4,7 @@ use DB;
 use Agency\Tag;
 use Agency\Helper;
 use Agency\Repositories\Contracts\TagRepositoryInterface;
-
+use Agency\Contracts\HelperInterface;
 
 class TagRepository extends Repository implements TagRepositoryInterface {
 
@@ -15,14 +15,16 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 	 */
 	protected $tag;
 
-	public function __construct(Tag $tag)
+	public function __construct(Tag $tag,
+								HelperInterface $helper)
 	{
 		$this->tag = $this->model = $tag;
+		$this->helper = $helper;
 	}
 
 	public function create($text)
 	{
-		$slug = Helper::slugify($text, $this->tag);
+		$slug = $this->helper->slugify($text, $this->tag);
 		$this->tag = $this->tag->firstOrCreate(compact("text","slug"));
 		return $this->tag;
 	}
@@ -31,7 +33,7 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 	{
 		// generate slugs
 		$tags = array_map(function($text) {
-			$slug = Helper::slugify($text);
+			$slug = $this->helper->slugify($text);
 			return compact('text', 'slug');
 		}, $tags);
 

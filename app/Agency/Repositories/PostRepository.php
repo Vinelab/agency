@@ -16,6 +16,7 @@ use Agency\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 
+use Agency\Contracts\HelperInterface;
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
@@ -38,13 +39,15 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 								ImageRepositoryInterface $images,
 								SectionRepositoryInterface $sections,
 								ImageInterface $image,
-								VideoInterface $video)
+								VideoInterface $video,
+								HelperInterface $helper)
 	{
 		$this->post = $this->model = $post;
 		$this->images = $image;
 		$this->sections = $sections;
 		$this->image = $image;
 		$this->video = $video;
+		$this->helper = $helper;
 	}
 
 	protected $section;
@@ -83,7 +86,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function uniqSlug($title)
 	{
-		return Helper::slugify($title, $this->post);
+		return $this->helper->slugify($title, $this->post);
 	}
 
 	public function forSection($section_id)

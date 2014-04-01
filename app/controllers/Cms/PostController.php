@@ -24,7 +24,7 @@ use Agency\Post;
 use Agency\Cms\Tag;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Agency\Helper;
+use Agency\Contracts\HelperInterface;
 
 
 use View,Input,App,Session,Auth,Response,Redirect;
@@ -48,7 +48,8 @@ class PostController extends Controller {
     							PostValidatorInterface $validator,
     							StoreInterface $store,
     							FilterResponseInterface $filter_response,
-    							ParserInterface $parser_interface)
+    							ParserInterface $parser_interface,
+    							HelperInterface $helper)
     {
         parent::__construct($sections);
 
@@ -63,6 +64,7 @@ class PostController extends Controller {
 		$this->store            = $store;
 		$this->filter_response  = $filter_response;
 		$this->parser_interface = $parser_interface;
+		$this->helper 			= $helper;
     }
 
 	public function index()
@@ -104,7 +106,7 @@ class PostController extends Controller {
 			if($this->validator->validate(Input::all()))
 			{
 			  	$slug = $this->posts->uniqSlug( Input::get('title') );
-				$body = Helper::cleanHtml(Input::get('body'));
+				$body = $this->helper->cleanHtml(Input::get('body'));
 				
 				$section = $this->sections->findBy('alias',Input::get('section'));
 
@@ -210,7 +212,7 @@ class PostController extends Controller {
 		{
 			if($this->validator->validate(Input::all()))
 			{
-				$body = Helper::cleanHtml(Input::get('body'));
+				$body = $this->helper->cleanHtml(Input::get('body'));
 
 				$slug = $this->posts->uniqSlug(Input::get('title'));
 
