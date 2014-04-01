@@ -1,13 +1,19 @@
 <?php namespace Agency\Media\Videos;
-
+use Agency\Validators\Contracts\VideoValidatorInterface;
 use Agency\Video;
 
 class Parser implements Contracts\ParserInterface {
 
+    public function __construct(VideoValidatorInterface $video_validator)
+    {
+        $this->video_validator = $video_validator;
+    }
+
 	public function make($videos)
 	{
-		return array_map(function($video){
-            if($this->validateYoutubeUrl($video->url))
+        $video_validator = $this->video_validator;
+		return array_map(function($video) use($video_validator){
+            if($video_validator->validate(["url"=>$video->url]))
             {
                 return new Video([
                     'url'=>$video->url,
@@ -19,15 +25,4 @@ class Parser implements Contracts\ParserInterface {
     	}, $videos);
 	}
 
-    public function validateYoutubeUrl($url)
-    {
-        $pattern = '~
-            ^(?:https?://)?              # Optional protocol
-            (?:www\.)?                  # Optional subdomain
-            (?:youtube\.com|youtu\.be)  # Mandatory domain name
-            (/embed/([^&]+))?           # URI with video id as capture group 1
-            ~x';
-
-        return (boolean) preg_match($pattern, $url, $matches);
-    }
 }
