@@ -4,8 +4,9 @@ use Aws\S3\S3Client as S3;
 use Intervention\Image\Image;
 use Illuminate\Config\Repository as Config;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
+use Agency\Media\Photos\Contracts\PhotoUploaderInterface;
 
-class AwsPhotoUploader implements Contracts\PhotoUploaderInterface {
+class AwsPhotoUploader implements PhotoUploaderInterface {
 
     /**
      * Create a new AWS Photo Uploader instance.
