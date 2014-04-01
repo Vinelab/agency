@@ -38,17 +38,7 @@ class VideoRepository extends Repository implements VideoRepositoryInterface {
 		return $id;
 	}
 
-	public function validateYoutubeUrl($url)
-	{
-		$pattern = '~
-	    	^(?:https?://)?              # Optional protocol
-	     	(?:www\.)?                  # Optional subdomain
-	     	(?:youtube\.com|youtu\.be)  # Mandatory domain name
-	     	(/embed/([^&]+))?           # URI with video id as capture group 1
-	     	~x';
-
-		return (boolean) preg_match($pattern, $url, $matches);
-	}
+	
 
 	/**
 	 * @override
