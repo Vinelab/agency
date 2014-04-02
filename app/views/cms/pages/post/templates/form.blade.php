@@ -261,7 +261,7 @@
 	    @if($updating)
 	    	{{Form::open(['route' => ['cms.content.posts.destroy',$edit_post->slug],'id'=>'delete-post-form'])}}
 	    		{{ Form::hidden('_method', 'DELETE') }}
-				{{ Form::button('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost()"]) }}
+				{{ Form::button(Lang::get('posts/form.delete'),['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost()"]) }}
 			{{Form::close()}}
 		@endif
 	</div>
