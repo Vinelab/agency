@@ -53,7 +53,7 @@ class LoginController extends Controller {
             return Redirect::intended(URL::route('cms.dashboard'));
         }
 
-        $errors = [Lang::get('errors.authentication_failed')];
+        $errors = [Lang::get('login.authentication_failed')];
 
         return Redirect::back()->with(compact('errors'))->withInput();
     }
