@@ -7,6 +7,7 @@
 use TestCase, Mockery as M;
 use Agency\Tag;
 use Agency\Repositories\TagRepository;
+use Agency\Contracts\HelperInterface;
 
 class TagRepositoryTest extends TestCase {
 
@@ -20,7 +21,8 @@ class TagRepositoryTest extends TestCase {
         parent::setUp();
 
         $this->mTag = M::mock('Agency\Tag');
-        $this->tags = new TagRepository($this->mTag);
+        $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
+        $this->tags = new TagRepository($this->mTag,$this->mHelper);
     }
 
     public function test_tag_provider_bindings()
@@ -37,6 +39,9 @@ class TagRepositoryTest extends TestCase {
         $this->mTag->shouldReceive('count')->once()->andReturn(0);
         $this->mTag->shouldReceive('firstOrCreate')->once()
             ->with(compact('text', 'slug'))->andReturn($this->mTag);
+
+        $this->mHelper->shouldReceive('slugify')->with($text,$this->mTag)->andReturn($slug);
+
         $tag = $this->tags->create($text);
 
         $this->assertInstanceOf('Agency\Tag', $tag);
@@ -58,6 +63,11 @@ class TagRepositoryTest extends TestCase {
             ->shouldReceive('get')->once()->andReturn($coll)
             ->shouldReceive('lists')->once()->with('id')->andReturn([])
             ->shouldReceive('lists')->once()->with('slug')->andReturn([]);
+
+        $this->mHelper->shouldReceive('slugify')->with('my tag')->andReturn('my-tag');
+        $this->mHelper->shouldReceive('slugify')->with('another tag')->andReturn('another-tag');
+        $this->mHelper->shouldReceive('slugify')->with('some tag here')->andReturn('some-tag-here');
+
 
         $saved = $this->tags->splitFound($tags);
 

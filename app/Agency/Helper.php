@@ -4,7 +4,9 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-class Helper {
+use Agency\Contracts\HelperInterface;
+
+class Helper implements HelperInterface {
 
     /**
      * Transforms a camelCase string to
@@ -13,17 +15,9 @@ class Helper {
      * @param  string $string
      * @return string
      */
-    public static function aliasify($string)
+    public function aliasify($string)
     {
-        preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
-
-        $ret = $matches[0];
-
-        foreach ($ret as &$match) {
-            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
-        }
-
-        return implode('-', $ret);
+        return $this->aliasOrSlug($string);
     }
 
        /**
@@ -34,20 +28,20 @@ class Helper {
      * @param  string $html
      * @return string
      */
-    public static function cleanHTML($html)
+    public function cleanHTML($html)
     {
 
         $text = preg_replace('~</(p|div|h[0-9])>~', '</$1><br />', $html);
 
         if(strpos($html, '<div>'))
         {
-            $text = Helper::div2br($text);
-            $text = Helper::br2nl($text);
+            $text = $this->div2br($text);
+            $text = $this->br2nl($text);
         }
 
         $text = strip_tags($text, '<a><br><b><strike><u><i>');
 
-        $text = Helper::br2nl($text);
+        $text = $this->br2nl($text);
 
         // remove tag attributes except <a>
         $text = preg_replace('~<(?!a\s)([a-z][a-z0-9]*)[^>]*?(/?)>~i', '<$1$2>', $text);
@@ -65,7 +59,7 @@ class Helper {
      * @param  string $html
      * @return string
      */
-    public static function br2nl($html)
+    public function br2nl($html)
     {
         return preg_replace('~<br />|<br>~', "\n", $html);
     }
@@ -76,18 +70,15 @@ class Helper {
      * @param  string $html
      * @return string
      */
-    public static function div2br($html)
+    public function div2br($html)
     {
         return preg_replace('~<div>~', "<br>", $html);
     }
 
-    public static function slugify($title, $model = null)
+    public function slugify($title, $model = null)
     {
-        $seo_st    = str_replace(' ', '-', $title);
-        $seo_alm   = str_replace('--', '-', $seo_st);
-        $title_seo = str_replace(' ', '', $seo_alm);
-
-        $slug = mb_strtolower($title_seo, 'UTF-8');
+        
+        $slug = $this->aliasOrSlug($title);
 
         if ($model)
         {
@@ -96,6 +87,21 @@ class Helper {
         }
 
         return $slug;
+    }
+
+    public function aliasOrSlug($title)
+    {
+        $seo_st    = str_replace(' ', '-', $title);
+        $seo_alm   = str_replace('--', '-', $seo_st);
+        $title_seo = str_replace(' ', '', $seo_alm);
+
+        return  mb_strtolower($title_seo, 'UTF-8');
+
+    }
+
+    public function getUniqueId()
+    {
+        return uniqid();
     }
 
 }

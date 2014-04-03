@@ -29,13 +29,6 @@ interface VideoRepositoryInterface {
 	 */
 	public function extractYoutubeId($url);
 
-	/**
-	 * validate the passed URL for being
-	 * a youtube URL or not
-	 *
-	 * @param {string} $url
-	 * @return boolean
-	 */
-	public function validateYoutubeUrl($url);
+	
 
 }

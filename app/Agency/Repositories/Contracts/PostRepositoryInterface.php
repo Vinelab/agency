@@ -95,7 +95,7 @@ interface PostRepositoryInterface {
 	 * @return boolean true if success 
 	 * @return Exception in case of error
 	 */
-	public function detachImages($post_id, $image_guids);
+	public function detachImages($post_id, $image_ids);
 
 	/**
 	 * delete all videos from a post
@@ -103,7 +103,7 @@ interface PostRepositoryInterface {
 	 * @return boolean true if success 
 	 * @return Exception in case of error
 	 */
-	public function detachAllVideos($post_id);
+	public function detachVideos($post_id, $videos_ids);
 
 	/**
 	 * Add tags to post
@@ -120,6 +120,9 @@ interface PostRepositoryInterface {
 	 * @param array $images  array of images
 	 */
 	public function addImages($id,$images);
+
+
+	public function detachTags($id);
 
 
 

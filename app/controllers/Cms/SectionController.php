@@ -11,6 +11,7 @@ use Agency\Cms\Exceptions\UnauthorizedException;
 
 use Agency\Cms\Repositories\Contracts\ArtistRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
+use Agency\Contracts\HelperInterface;
 
 class SectionController extends Controller {
 
@@ -21,11 +22,14 @@ class SectionController extends Controller {
      */
     protected $validator;
 
-    public function __construct(SectionRepositoryInterface $sections, SectionValidator $validator)
+    public function __construct(SectionRepositoryInterface $sections,
+                                SectionValidator $validator,
+                                HelperInterface $helper)
     {
         parent::__construct($sections);
 
         $this->validator = $validator;
+        $this->helper = $helper;
     }
 
     /**

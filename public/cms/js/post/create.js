@@ -5,6 +5,7 @@ var images=[];
 var croped_images_ul=$("#croped-images-list");
 var image_counter=0;
 var deleted_images = [];
+var deleted_videos = [];
 
 //array to store images
 var files=[];
@@ -218,7 +219,7 @@ function displayCropView(temp_images)
 		files.push(temp_images[i]);
 		templateHTML=$('#image_item').html();
 	    template=Handlebars.compile(templateHTML);
-	    compiledHtml=template({data:temp_images[i],index:image_counter+i});
+	    compiledHtml=template({data:temp_images[i],index:image_counter+i,url:Routes.cms_post_photos_destroy+"/"+temp_images[i]});
 	    croped_images_ul.append(compiledHtml);
 
 		$("#croped-img-"+(image_counter+i)).Jcrop({
@@ -282,6 +283,7 @@ function submitForm()
 		}
 
 		formdata.append('deleted_images',deleted_images);
+		formdata.append('deleted_videos',deleted_videos);
 		formdata.append("title",title);
 		formdata.append("body",body);
 		formdata.append("section",section);
@@ -407,7 +409,6 @@ function getYoutubeId(url)
 
 function appendVideo(yt_data,url)
 {
-	console.log(yt_data);
 
 	var title = yt_data.entry.title.$t;
 	var description = yt_data.entry.media$group.media$description.$t;
@@ -421,24 +422,28 @@ function appendVideo(yt_data,url)
 	    	url:url,
 	    	index: yt_video_index
 	    });
-	    console.log(compiledHtml);
+
 		$("#videos_list").append(compiledHtml);
 
 	yt_video_index = yt_video_index + 1;
 }
 
-function deleteYt(id)
+function deleteYt(id,video_id)
 {
 	$("#video_item_"+id).remove();
 		yt_video_index--;
+	if(video_id!='')
+	{
+		deleted_videos.push(video_id);
+	}
 }
 
 function getVideosArray()
 {
-	var videos_title = $(".yt-title"),
-	videos_desc = $(".yt-desc"),
-	videos_thumbnail = $(".yt-img-thumbnail");
-	videos_url = $(".yt-url");
+	var videos_title = $(".new-title"),
+	videos_desc = $(".new-desc"),
+	videos_thumbnail = $(".new-thumbnail");
+	videos_url = $(".new-url");
 
 
 	var videos_array=[];
@@ -512,10 +517,9 @@ function submitNewForm(formdata,section)
 
 function deleteImage(id,element)
 {
-	//remove croped image list item
-	//delete temp image from the server
+	
 	$.ajax({
-		url:Routes.cms_delete_temp,
+		url:Routes.cms_post_photos_destroy,
 		type:"POST",
 		data:{image:id},
 		success:function(res)
@@ -531,6 +535,8 @@ function deleteImage(id,element)
 			}
 		}
 	});
+
+	 
 }
 
 

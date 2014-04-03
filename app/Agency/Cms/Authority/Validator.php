@@ -8,6 +8,7 @@ use Agency\Helper;
 use Agency\Cms\Authority\Entities\Role;
 use Agency\Cms\Authority\Entities\Privilege;
 use Agency\Cms\Authority\Entities\Permission;
+use Agency\Contracts\HelperInterface;
 
 use Agency\Cms\Authority\Contracts\AuthorableInterface;
 
@@ -25,9 +26,11 @@ class Validator {
      *
      * @param Agency\Cms\Authority\Contracts\AuthorableInterface $authorable
      */
-    public function __construct(AuthorableInterface $authorable)
+    public function __construct(AuthorableInterface $authorable,
+                                HelperInterface $helper)
     {
         $this->authorable = $authorable;
+        $this->helper = $helper;
     }
 
     /**
@@ -97,7 +100,7 @@ class Validator {
 
     public function __call($method, $arguments)
     {
-        $permission = Helper::aliasify($method);
+        $permission = $this->helper->aliasify($method);
         array_unshift($arguments, $permission);
 
         return call_user_func_array([$this, 'validate'], $arguments);

@@ -16,6 +16,7 @@ use Agency\Repositories\Contracts\PostRepositoryInterface;
 use Agency\Repositories\Contracts\ImageRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 
+use Agency\Contracts\HelperInterface;
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
@@ -38,13 +39,15 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 								ImageRepositoryInterface $images,
 								SectionRepositoryInterface $sections,
 								ImageInterface $image,
-								VideoInterface $video)
+								VideoInterface $video,
+								HelperInterface $helper)
 	{
 		$this->post = $this->model = $post;
 		$this->images = $image;
 		$this->sections = $sections;
 		$this->image = $image;
 		$this->video = $video;
+		$this->helper = $helper;
 	}
 
 	protected $section;
@@ -83,7 +86,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function uniqSlug($title)
 	{
-		return Helper::slugify($title, $this->post);
+		return $this->helper->slugify($title, $this->post);
 	}
 
 	public function forSection($section_id)
@@ -128,62 +131,38 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function addTags($id, $new_tags, $existing_tags)
 	{	
-		$post = $this->find($id);
+		$post = $this->post->findOrFail($id);
 		$new_tags = $post->tags()->saveMany($new_tags);
 		$new_tags_ids = array_map(function($tag){ return $tag->id; }, $new_tags);
 		$tags_ids = array_merge($new_tags_ids, $existing_tags);
-		$post->tags()->sync($tags_ids);
+		return $post->tags()->sync($tags_ids);
 	}
 
-	public function detachImages($id, $image_guids)
+	public function detachTags($id)
 	{
-		$this->post->where('id', $id)->whereHas('media', function($q){
-			$q->where('media_type', get_class($this->image))
-				->whereIn('guid', $image_guids);
-		})->detach();
-
-		// $post = $this->find($post_id);
-
-		// $image = $post->media()
-		// 	->where('media_type', get_class($this->image))->where('media_id','=',$image_id)->first();
-		
-		// $images = $this->images->getByGuid($image->media->guid);
-		
-		// $images_ids = $images->lists('id');
-		// $this->images->groupDelete($images_ids);
-		
-		// $image->delete();
-		
-		return true;
+		return $this->post->findOrFail($id)->tags()->detach();
 	}
 
-	public function detachAllVideos($post_id)
+	public function detachImages($id, $image_ids)
 	{
-		try {
 
-			$post = $this->find($post_id);
-			$videos=$post->media()->where('media_type', get_class($this->video))->get();
-			$videos->each(function($video){
-				return $video->delete();
-			});
-			
-		} catch (Exception $e) {
+		return $this->post->findOrFail($id)->images()->detach($image_ids);
+	}
 
-			return $e->getMessage();
-		}
-		
+	public function detachVideos($id, $video_ids)
+	{
+		return $this->post->findOrFail($id)->videos()->detach($video_ids);
 	}
 
 	public function addImages($post_id, $images)
 	{
-		$post = $this->find($post_id);
-		$result = $post->images()->saveMany($images);
-		return dd($result);
+		$post = $this->post->findOrFail($post_id);
+		return $result = $post->images()->saveMany($images);
 	}
 
-
-
-
-
+	public function addVideos($post_id, $videos)
+	{
+		return $this->post->findOrFail($post_id)->videos()->saveMany($videos);
+	}
 
 }
