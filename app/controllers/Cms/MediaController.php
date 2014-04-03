@@ -4,7 +4,7 @@ use Agency\Media\Photos\Contracts\StoreInterface;
 
 use Input, Response,File;
 
-class TempsController extends \Controller {
+class MediaController extends \Controller {
 
     public function __construct(StoreInterface $temp)
     {
@@ -12,7 +12,7 @@ class TempsController extends \Controller {
     }
 	
 
-    public function storePhotos()
+    public function store()
     {
         $input = Input::all();
         $images = $input["images"];
@@ -28,7 +28,7 @@ class TempsController extends \Controller {
      * delete temporary image from the disk
      * @return boolean
      */
-    public function deletePhoto()
+    public function destroy()
     {
 
 

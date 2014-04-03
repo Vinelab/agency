@@ -13,7 +13,8 @@ class Entity extends Eloquent {
 
             if ( ! isset($model->alias) or empty($model->alias))
             {
-                $model->alias = Helper::aliasify($model->title);
+                $helper = new Helper();
+                $model->alias = $helper->aliasify($model->title);
             }
 
         });

@@ -22,6 +22,15 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
 		'small'     => 'small'
 	];
 
+    public static function boot()
+    {
+        parent::boot();
+        Image::deleting(function($image){
+            return $image->where('guid',$image->guid)->delete();
+        });
+
+    }
+
 	/**
 	 * get the post that this image belongs to
 	 *

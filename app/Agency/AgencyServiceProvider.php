@@ -47,6 +47,10 @@ class AgencyServiceProvider extends ServiceProvider {
             'Agency\Repositories\Contracts\PostRepositoryInterface',
             'Agency\Repositories\PostRepository');
 
+        $this->app->bind(
+            'Agency\Contracts\HelperInterface',
+            'Agency\Helper');
+
         // validators
         $this->app->bind(
             'Agency\Validators\Contracts\ImageValidatorInterface', function() {

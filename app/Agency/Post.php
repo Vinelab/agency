@@ -38,7 +38,7 @@ class Post extends Eloquent  {
 
     public function videos()
     {
-        return $this->morphedByMany('Agency\Image', 'media');
+        return $this->morphedByMany('Agency\Video', 'media');
            
     }
 

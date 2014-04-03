@@ -8,3 +8,5 @@ composer.phar
 Thumbs.db
 
 app/config/local/aws.php
+
+composer.lock

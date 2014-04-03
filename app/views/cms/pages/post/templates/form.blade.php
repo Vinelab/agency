@@ -105,9 +105,10 @@
 			                                <div class="inner">{{Lang::get("posts/form.preview")}}</div>
 			                            </div>
 			                        </a>
+			                       
 			                        @if ($admin_permissions->has('delete'))
 				                        <div class="tools tools-bottom">
-				                            <a href="javascript:void(0)" id="delete_cover_photos" onClick="removePhotos({{$media_element->id}}, {{$edit_post->id}})">
+				                            <a href="javascript:void(0)" id="delete_cover_photos" onClick="removePhotos('{{$media_element->id}}', {{$edit_post->id}})">
 				                                <i class="icon-remove red"></i>
 				                            </a>
 				                        </div>
@@ -169,7 +170,7 @@
 	                        		</div>
 	                        		@if ($admin_permissions->has('delete'))
 		                        		<div class="yt-delete">
-		                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt({{$key}})"><i class="icon-trash"></i></button>
+		                        			<button type="button" class="btn btn-xs btn-info yt-delete-btn" onclick="deleteYt({{$key}},{{$media_element->id}})"><i class="icon-trash"></i></button>
 		                        		</div>
 		                        	@endif
 	                        	</div>                       
@@ -260,7 +261,7 @@
 	    @if($updating)
 	    	{{Form::open(['route' => ['cms.content.posts.destroy',$edit_post->slug],'id'=>'delete-post-form'])}}
 	    		{{ Form::hidden('_method', 'DELETE') }}
-				{{ Form::button('Delete',['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost()"]) }}
+				{{ Form::button(Lang::get('posts/form.delete'),['class' => 'btn btn-danger btn-lg pull-right','onclick'=>"deletePost()"]) }}
 			{{Form::close()}}
 		@endif
 	</div>

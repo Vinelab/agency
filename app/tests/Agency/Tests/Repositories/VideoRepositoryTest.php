@@ -62,24 +62,4 @@ class VideoRepositoryTest extends TestCase {
         $this->assertNull($this->videos->extractYoutubeId(null));
     }
 
-    public function test_validating_youtube_video_url()
-    {
-        // with protocol
-        $this->assertTrue($this->videos->validateYoutubeUrl('http://youtu.be/MMnvNtjPr-4'));
-        $this->assertTrue($this->videos->validateYoutubeUrl('http://www.youtube.com/embed/Abbs7Jmd-4'));
-        $this->assertTrue($this->videos->validateYoutubeUrl('https://www.youtube.com/watch?v=yVcePxjFujs'));
-
-        // same as previous without protocol
-        $this->assertTrue($this->videos->validateYoutubeUrl('youtu.be/MMnvNtjPr-4'));
-        $this->assertTrue($this->videos->validateYoutubeUrl('www.youtube.com/embed/Abbs7Jmd-4'));
-        $this->assertTrue($this->videos->validateYoutubeUrl('www.youtube.com/watch?v=yVcePxjFujs'));
-
-        // not youtube
-        $this->assertFalse($this->videos->validateYoutubeUrl('http://youtb.be/asdhflkjh'));
-        $this->assertFalse($this->videos->validateYoutubeUrl('https://www.youtube.net'));
-        $this->assertFalse($this->videos->validateYoutubeUrl('https://youtube.net'));
-        $this->assertFalse($this->videos->validateYoutubeUrl('https://video.com/lol'));
-        $this->assertFalse($this->videos->validateYoutubeUrl(''));
-        $this->assertFalse($this->videos->validateYoutubeUrl(null));
-    }
 }

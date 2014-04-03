@@ -2,6 +2,8 @@
 
 use Agency\Cms\Exceptions\InvalidPermissionException;
 
+use Agency\Validators\Validator;
+
 class PermissionValidator extends Validator implements Contracts\PermissionValidatorInterface {
 
     protected $rules = [

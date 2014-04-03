@@ -7,6 +7,7 @@
 
 use Agency\Video;
 use Agency\Repositories\Contracts\VideoRepositoryInterface;
+use Agency\Repositories\Contracts\PostRepositoryInterface;
 
 class VideoRepository extends Repository implements VideoRepositoryInterface {
 
@@ -37,16 +38,17 @@ class VideoRepository extends Repository implements VideoRepositoryInterface {
 		return $id;
 	}
 
-	public function validateYoutubeUrl($url)
-	{
-		$pattern = '~
-	    	^(?:https?://)?              # Optional protocol
-	     	(?:www\.)?                  # Optional subdomain
-	     	(?:youtube\.com|youtu\.be)  # Mandatory domain name
-	     	(/embed/([^&]+))?           # URI with video id as capture group 1
-	     	~x';
+	
 
-		return (boolean) preg_match($pattern, $url, $matches);
-	}
+	/**
+	 * @override
+	 *
+	 * @param {array|int|string} $videos_ids
+	 * @return boolean
+	 */
+    public function remove($videos_ids)
+    {
+    	return $this->video->destroy($videos_ids);
+    }
 
 }

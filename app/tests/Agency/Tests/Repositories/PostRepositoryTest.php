@@ -6,6 +6,7 @@
 
  use Str, TestCase, Mockery as M;
  use Agency\Repositories\PostRepository;
+ use Agency\Contracts\HelperInterface;
 
 class PostRepositoryTest extends TestCase {
 
@@ -23,8 +24,8 @@ class PostRepositoryTest extends TestCase {
         $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
         $this->images = M::mock('Agency\Repositories\Contracts\ImageRepositoryInterface');
         $this->sections = M::mock('Agency\Repositories\Contracts\SectionRepositoryInterface');
-
-        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo);
+        $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
+        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo,$this->mHelper);
     }
 
     public function test_posts_provider_binding()
@@ -158,11 +159,8 @@ class PostRepositoryTest extends TestCase {
         $title = 'My tItlE iS BuTTifuLL';
         $slug = 'my-title-is-buttifull';
 
-        $this->mPost->shouldReceive('whereRaw')->once()
-                ->with("slug REGEXP '^{$slug}(-[0-9]*)?$'")
-                ->andReturn($this->mPost)
-            ->shouldReceive('count')->withNoArgs()->once()
-            ->andReturn(0);
+        $this->mHelper->shouldReceive('slugify')->with($title,$this->mPost)
+                        ->andReturn($slug);
 
         $uniq_slug = $this->posts->uniqSlug($title);
 
@@ -174,10 +172,8 @@ class PostRepositoryTest extends TestCase {
         $title = 'My tItlE iS BuTTifuLL';
         $slug  = 'my-title-is-buttifull';
 
-        $this->mPost->shouldReceive('whereRaw')->once()
-                ->with("slug REGEXP '^{$slug}(-[0-9]*)?$'")
-                ->andReturn($this->mPost)
-            ->shouldReceive('count')->withNoArgs()->once()->andReturn(10);
+        $this->mHelper->shouldReceive('slugify')->with($title,$this->mPost)
+                        ->andReturn("$slug-10");
 
         $uniq_slug = $this->posts->uniqSlug($title);
 
@@ -200,4 +196,196 @@ class PostRepositoryTest extends TestCase {
 
         $this->assertEquals($coll, $posts);
     }
+
+    public function test_add_tags()
+    {
+        $mTag = M::mock('Agency\Tag');
+        $mTag->id = 20;
+
+        $id=1;
+        $new_tags=[$mTag,$mTag,$mTag];
+        $existing_tags = [15,16];
+        $tags_ids = [20,15,16];
+
+        $belongs_to_many =M::mock('Illuminate\Database\Eloquent\Relations\BelongsToMany');
+        $belongs_to_many->shouldReceive('sync')
+                        ->with($tags_ids)->andReturn(true)
+                        ->shouldReceive('saveMany')->once()->with($new_tags)->andReturn([$mTag]);
+
+
+        $this->mPost->shouldReceive('tags')->once()
+                        ->andReturn($belongs_to_many)
+                    ->shouldReceive('findOrFail')->once()->with($id)
+                        ->andReturn($this->mPost);
+                   
+                  
+                     
+        $added_tags = $this->posts->addTags($id,$new_tags,$existing_tags);
+
+        $this->assertTrue($added_tags);     
+    }
+
+    public function test_detach_tags()
+    {
+        $id = 20;
+
+        $belongs_to_many =M::mock('Illuminate\Database\Eloquent\Relations\BelongsToMany');
+        $belongs_to_many->shouldReceive('detach')->once()
+                        ->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('tags')->once()
+                        ->andReturn($belongs_to_many);
+
+        $detached_tags = $this->posts->detachTags($id);
+
+        $this->assertTrue($detached_tags);
+    }
+
+    public function test_detach_images()
+    {
+        $post_id = 20;
+        $image_id = 1;
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many  ->shouldReceive('detach')->once()->with($image_id)
+                        ->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('images')->once()
+                        ->andReturn($morph_to_many);
+
+        $detached_images = $this->posts->detachImages($post_id,$image_id);
+
+        $this->assertTrue($detached_images);
+    }
+
+    public function test_detach_multiple_images()
+    {
+        $post_id = 20;
+        $images_ids = [1,2,3];
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many  ->shouldReceive('detach')->once()->with($images_ids)
+                        ->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('images')->once()
+                        ->andReturn($morph_to_many);
+
+        $detached_images = $this->posts->detachImages($post_id,$images_ids);
+
+        $this->assertTrue($detached_images);
+    }
+
+    public function test_detach_video()
+    {
+        $post_id = 20;
+        $video_id = 1;
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many->shouldReceive('detach')->once()->with($video_id)
+                     ->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('videos')->once()
+                        ->andReturn($morph_to_many);
+
+        $detached_videos = $this->posts->detachVideos($post_id,$video_id);
+
+        $this->assertTrue($detached_videos);
+    }
+
+
+    public function test_detach_multiple_videos()
+    {
+        $post_id = 20;
+        $videos_ids = [1,2,3];
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many->shouldReceive('detach')->once()->with($videos_ids)
+                     ->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('videos')->once()
+                        ->andReturn($morph_to_many);
+
+        $detached_videos = $this->posts->detachVideos($post_id,$videos_ids);
+
+        $this->assertTrue($detached_videos);
+    }
+
+    public function test_add_images()
+    {
+        $this->mImage->id = 1;
+        $images = [$this->mImage,$this->mImage];
+
+        $post_id = 1;
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many->shouldReceive('saveMany')->with($images)->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('images')->once()
+                        ->andReturn($morph_to_many);
+
+        $added_images = $this->posts->addImages($post_id,$images);
+
+        $this->assertTrue($added_images);
+    }
+
+    public function test_add_multiple_images()
+    {
+        $this->mImage->id = 1;
+        $images = [$this->mImage,$this->mImage];
+
+        $post_id = 1;
+
+        $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many->shouldReceive('saveMany')->with($images)->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('images')->once()
+                        ->andReturn($morph_to_many);
+
+        $added_images = $this->posts->addImages($post_id,$images);
+
+        $this->assertTrue($added_images);
+    }
+
+
+    public function test_add_videos()
+    {
+        $post_id = 20;
+        $this->mVideo->id = 1;
+        $videos = [$this->mVideo,$this->mVideo];
+
+        $morph_to_many = M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
+        $morph_to_many->shouldReceive('saveMany')->with($videos)->andReturn(true);
+
+        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+                        ->andReturn($this->mPost)
+                    ->shouldReceive('videos')->once()
+                        ->andReturn($morph_to_many);
+
+        $added_videos = $this->posts->addVideos($post_id,$videos);
+
+        $this->assertTrue($added_videos);
+
+    }
+
+
+
+
+
+
+
+
 }

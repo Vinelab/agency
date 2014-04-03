@@ -32,7 +32,7 @@
                                         <div class="widget-main">
                                             <h4 class="header blue lighter bigger">
                                                 <i class="icon-coffee green"></i>
-                                                Welcome, Login Please
+                                                {{Lang::get('login.welcome_login')}}
                                             </h4>
 
                                             <div class="space-6"></div>
@@ -41,14 +41,14 @@
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            {{ Form::text('email','', ['class'=>'form-control', 'placeholder'=>'Email']) }}
+                                                            {{ Form::text('email','', ['class'=>'form-control', 'placeholder'=>Lang::get('login.email')]) }}
                                                             <i class="icon-user"></i>
                                                         </span>
                                                     </label>
 
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            {{ Form::password('password', ['class'=>'form-control', 'placeholder'=>'Password']) }}
+                                                            {{ Form::password('password', ['class'=>'form-control', 'placeholder'=>Lang::get('login.password')]) }}
                                                             <i class="icon-lock"></i>
                                                         </span>
                                                     </label>
@@ -58,9 +58,9 @@
                                                     <div class="clearfix">
                                                         <label class="inline">
                                                             <input type="checkbox" name="remember" class="ace" />
-                                                            <span class="lbl"> Remember Me</span>
+                                                            <span class="lbl">{{Lang::get('login.remember_me')}}</span>
                                                         </label>
-                                                        {{ Form::submit('Login',['class'=> 'width-35 pull-right btn btn-sm btn-primary']) }}
+                                                        {{ Form::submit(Lang::get('login.login'),['class'=> 'width-35 pull-right btn btn-sm btn-primary']) }}
                                                     </div>
 
                                                     <div class="space-4"></div>
@@ -73,7 +73,7 @@
                                             <div>
                                                 <a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
                                                     <i class="icon-arrow-left"></i>
-                                                    I forgot my password
+                                                   {{Lang::get('login.forget_password')}}
                                                 </a>
                                             </div>
 
@@ -86,26 +86,26 @@
                                         <div class="widget-main">
                                             <h4 class="header red lighter bigger">
                                                 <i class="icon-key"></i>
-                                                Retrieve Password
+                                               {{Lang::get('login.retrieve_password')}}
                                             </h4>
 
                                             <div class="space-6"></div>
                                             <p>
-                                                Enter your email and to receive instructions
+                                                {{Lang::get('login.enter_email_to_receive_instruction')}}
                                             </p>
 
                                             {{ Form::open(['url' => URL::route('cms.password.email'), 'method'=>'POST']) }}
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <input type="email" name="email" class="form-control" placeholder="Email" />
+                                                            <input type="email" name="email" class="form-control" placeholder={{Lang::get('login.email')}} />
                                                             <i class="icon-envelope"></i>
                                                         </span>
                                                     </label>
 
                                                     <div class="clearfix">
                                                         
-                                                        {{ Form::submit('Send Me',['class'=> 'width-35 pull-right btn btn-sm btn-danger']) }}
+                                                        {{ Form::submit(Lang::get('login.send_me'),['class'=> 'width-35 pull-right btn btn-sm btn-danger']) }}
 
                                                     </div>
                                                 </fieldset>
@@ -114,7 +114,7 @@
 
                                         <div class="toolbar center">
                                             <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-                                                Back to login
+                                                {{Lang::get('login.back_to_login')}}
                                                 <i class="icon-arrow-right"></i>
                                             </a>
                                         </div>
