@@ -34,8 +34,8 @@ class AdminTableSeeder extends Seeder {
 		DB::table('admins')->delete();
 
 		Admin::create([
-			'name' => 'Ibrahim Fleifel',
-			'email' => 'bob.fleifel@gmail.com',
+			'name' => 'Mr. Admin',
+			'email' => 'agency@vinelab.com',
 			'password' => Hash::make('meh')
 		]);
 	}
