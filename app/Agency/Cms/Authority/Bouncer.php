@@ -22,8 +22,11 @@ class Bouncer {
 
     /**
      * Create a new Bouncer instance.
+     * Bouncer grants access to a privilegable resource
+     *     by a role (i.e. admin, manager, editor, etc.)
      *
      * @param Agency\Cms\Authority\Contracts\AuthorableInterface $authorable
+     * @param Agency\Contracts\HelperInterface $helper
      */
     public function __construct(AuthorableInterface $authorable,
                                 HelperInterface $helper)
