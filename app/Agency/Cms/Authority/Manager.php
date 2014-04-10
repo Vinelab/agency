@@ -7,6 +7,7 @@
  *        getKeyName and getKey instead of identifier
  */
 
+use Agency\Contracts\HelperInterface;
 use Agency\Cms\Authority\Contracts\AuthorableInterface;
 use Agency\Cms\Authority\Contracts\PrivilegableInterface;
 
@@ -21,8 +22,9 @@ class Manager implements Contracts\ManagerInterface {
      */
     protected $permissions;
 
-    public function __construct(PermissionRepositoryInterface $permissions)
+    public function __construct(PermissionRepositoryInterface $permissions, HelperInterface $helper)
     {
+        $this->helper = $helper;
         $this->permissions = $permissions;
     }
 
@@ -45,7 +47,7 @@ class Manager implements Contracts\ManagerInterface {
      */
     public function authorize(AuthorableInterface $authorable)
     {
-        return new Bouncer($authorable);
+        return new Bouncer($authorable, $this->helper);
     }
 
     /**
