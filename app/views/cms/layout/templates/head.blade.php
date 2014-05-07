@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>Star Academy Platform Management</title>
+<title>{{Config::get('agency.title')}}</title>
 
 <meta name="description" content="Star Academy Platform Management" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
