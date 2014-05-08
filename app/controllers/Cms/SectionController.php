@@ -22,14 +22,25 @@ class SectionController extends Controller {
      */
     protected $validator;
 
+    /**
+     * Provider of authorization related
+     * tasks.
+     *
+     * @var Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface
+     */
+    protected $authorizer;
+
     public function __construct(SectionRepositoryInterface $sections,
                                 SectionValidator $validator,
-                                HelperInterface $helper)
+                                HelperInterface $helper,
+                                 AdminAuthorizerInterface $authorizer)
     {
         parent::__construct($sections);
 
         $this->validator = $validator;
         $this->helper = $helper;
+        $this->authorizer = $authorizer;
+
     }
 
     /**
@@ -72,12 +83,31 @@ class SectionController extends Controller {
 
                 $this->validator->validate($attributes);
 
-                $this->sections->create(Input::get('title'),
-                                        Input::get('alias'),
-                                        Input::get('icon'),
-                                        Input::get('parent_id'),
-                                        $is_fertile,
-                                        $is_roleable);
+                $section = $this->sections->create(Input::get('title'),
+                        Input::get('alias'),
+                        Input::get('icon'),
+                        Input::get('parent_id'),
+                        $is_fertile,
+                        $is_roleable);
+
+                $sections = $this->cms_sections['accessible'];
+
+                $sections = $sections->map(function($section){
+
+                    $privilege = $section->privileges()->first();
+
+                    return  [$section->title => $privilege->role()->first()->alias];
+
+                },$sections);
+
+                $sections = $sections->collapse()->toArray();
+                $sections[$section->alias] = 'admin'; 
+
+                $admin = Auth::getUser();
+
+                $this->authorizer->authorize($admin, $cms_sections);
+
+
 
             } catch (\Agency\Cms\Exceptions\InvalidSectionException $e) {
 
