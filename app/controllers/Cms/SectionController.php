@@ -89,7 +89,7 @@ class SectionController extends Controller {
 
                     $privilege = $section->privileges()->first();
 
-                    return  [$section->alias => $privilege->role()->first()->alias];
+                    return  [$section->alias() => $privilege->role()->first()->alias()];
 
                 },$sections);
 
