@@ -94,21 +94,21 @@ class Controller extends BaseController {
     protected function currentSectionAlias()
     {
         //$url = parse_url(URL::current());
-        $url['path']=$_SERVER["REQUEST_URI"];
+         $url['path']=$_SERVER["REQUEST_URI"];
 
         $path = explode('/', $url['path']);
 
         if (isset($path[2]) and ! empty($path[2]))
         {
-            return $path[2];
+            return explode('?', $path[2])[0];
         }
 
         if (isset($path[1]) and ! empty($path[1]))
         {
-            return $path[1];
+            return explode('?', $path[1])[0];
         }
 
-        return $path[0];
+        return explode('?', $path[0])[0];
     }
 
     /**
