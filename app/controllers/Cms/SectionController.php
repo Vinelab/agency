@@ -9,9 +9,9 @@ use View, Response, Input, Auth, Authority, Lang;
 use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
-use Agency\Cms\Repositories\Contracts\ArtistRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
 use Agency\Contracts\HelperInterface;
+use Agency\Cms\Authentication\Contracts\AdminAuthorizerInterface;
 
 class SectionController extends Controller {
 
@@ -33,7 +33,7 @@ class SectionController extends Controller {
     public function __construct(SectionRepositoryInterface $sections,
                                 SectionValidator $validator,
                                 HelperInterface $helper,
-                                 AdminAuthorizerInterface $authorizer)
+                                AdminAuthorizerInterface $authorizer)
     {
         parent::__construct($sections);
 
@@ -83,29 +83,30 @@ class SectionController extends Controller {
 
                 $this->validator->validate($attributes);
 
-                $section = $this->sections->create(Input::get('title'),
-                        Input::get('alias'),
-                        Input::get('icon'),
-                        Input::get('parent_id'),
-                        $is_fertile,
-                        $is_roleable);
-
                 $sections = $this->cms_sections['accessible'];
 
                 $sections = $sections->map(function($section){
 
                     $privilege = $section->privileges()->first();
 
-                    return  [$section->title => $privilege->role()->first()->alias];
+                    return  [$section->alias => $privilege->role()->first()->alias];
 
                 },$sections);
 
                 $sections = $sections->collapse()->toArray();
+
+                $section = $this->sections->create(Input::get('title'),
+                                                    Input::get('alias'),
+                                                    Input::get('icon'),
+                                                    Input::get('parent_id'),
+                                                    $is_fertile,
+                                                    $is_roleable);
+
                 $sections[$section->alias] = 'admin'; 
 
                 $admin = Auth::getUser();
 
-                $this->authorizer->authorize($admin, $cms_sections);
+                $this->authorizer->authorize($admin, array_filter($sections));
 
 
 
