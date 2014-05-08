@@ -25,4 +25,9 @@ class Role extends Entity {
     {
         return $this->morphTo();
     }
+
+    public function alias()
+    {
+        return $this->alias;
+    }
 }
