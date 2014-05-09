@@ -72,6 +72,16 @@ class Section extends Eloquent implements PrivilegableInterface {
         return $this;
     }
 
+    public function parent()
+    {
+        return $this->find($this->parent_id);
+    }
+
+    public function dashboard()
+    {
+        return $this->where('alias','dashboard')->first();
+    }
+
 
 
 }
