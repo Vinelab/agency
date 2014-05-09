@@ -8,7 +8,7 @@ use Agency\Cms\Authority\Contracts\AuthorableInterface;
 
 interface AdminAuthorizerInterface {
 
-    public function initial(AuthorableInterface $admin, $najem = [], $artists = []);
-    public function authorize(AuthorableInterface $admin, $najem = [], $artists = []);
+    public function initial(AuthorableInterface $admin, $agency = []);
+    public function authorize(AuthorableInterface $admin, $agency = []);
 
 }
