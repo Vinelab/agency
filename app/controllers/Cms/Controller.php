@@ -52,7 +52,6 @@ class Controller extends BaseController {
             // fill out the cms sections
             $this->cms_sections['accessible'] = $this->getAccessibleSections();
             $this->cms_sections['current'] = $this->getCurrentSection();
-            $this->cms_sections['sections'] = $this->sections->sections($this->cms_sections['accessible']);
 
             // share cms sections with views
             View::share('cms_sections', $this->cms_sections);
