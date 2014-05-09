@@ -26,8 +26,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'development' => array('agency-develop') // as set in http://github.com/vinelab/agency-deployment-provisioning
-
+	'development' => array('agency-develop')
+	
 ));
 
 /*
