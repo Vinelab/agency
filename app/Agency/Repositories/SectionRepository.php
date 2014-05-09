@@ -126,7 +126,7 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
     */
     public function sections($accessible_section)
     {
-        $sections = $accessible_section->filter(function($section)use($dashboard){
+        $sections = $accessible_section->filter(function($section){
             if($section->parent_id == '0')
             {
                 return $section;

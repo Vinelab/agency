@@ -1,6 +1,6 @@
 
 <ul class="nav nav-list">
-	@foreach ($cms_sections['accessible'] as $section)
+	@foreach ($cms_sections['sections'] as $section)
 
 		<li {{ ($section->alias === $cms_sections['current']->alias) ? 'class=active' : null }} >
 			<a href="{{URL::route('cms.' . $section->alias)}}">
