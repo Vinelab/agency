@@ -97,13 +97,12 @@ class AdminController extends Controller {
     {
         if ($this->admin_permissions->has('create'))
         {
-            $Agency_sections   = $this->getAgencySections();
-            $artists_sections = $this->getArtistSections();
+            $agency_sections   = $this->getAgencySections();
             $roles = $this->getRoles();
 
            return View::make(
                 'cms.pages.administration.create',
-                compact('roles', 'Agency_sections', 'artists_sections')
+                compact('roles', 'agency_sections')
             );
         }
 
@@ -139,8 +138,7 @@ class AdminController extends Controller {
 
                 // grant permissions
                 $this->authorize($admin,
-                                Input::get('Agency_sections'),
-                                Input::get('artists_sections'),
+                                Input::get('agency_sections'),
                                 $is_initial = true);
 
                 return Redirect::route('cms.administration')
@@ -163,32 +161,23 @@ class AdminController extends Controller {
         {
             $edit_admin = $this->admins->find($id);
             // get the default sections
-            $Agency_sections   = $this->getAgencySections();
-            $artist_sections = $this->getArtistSections();
+            $agency_sections   = $this->getAgencySections();
             $roles = $this->getRoles();
             // get admin's access over the sections
-            $Agency_access = Authority::access($edit_admin, $Agency_sections);
-            // $artist_access = Authority::access($edit_admin, $artist_sections);
+            $agency_access = Authority::access($edit_admin, $agency_sections);
 
-            $edit_admin_Agency_roles = [];
-            // $edit_admin_artist_roles = [];
+            $edit_admin_agency_roles = [];
 
-            foreach ($Agency_access->resources as $resource)
+            foreach ($agency_access->resources as $resource)
             {
-                $edit_admin_Agency_roles[$resource->identifier()] = $resource->role->alias;
+                $edit_admin_agency_roles[$resource->identifier()] = $resource->role->alias;
             }
-
-            // foreach ($artist_access->resources as $resource)
-            // {
-            //     $edit_admin_artist_roles[$resource->identifier()] = $resource->role->alias;
-            // }
 
             return View::make('cms.pages.administration.edit',
                                 compact('edit_admin',
-                                        'Agency_sections',
+                                        'agency_sections',
                                         'roles',
-                                        // 'artist_sections',
-                                        'edit_admin_Agency_roles')
+                                        'edit_admin_agency_roles')
                             );
         }
 
@@ -210,8 +199,7 @@ class AdminController extends Controller {
                 {
                     // update admin access
                     $this->authorize($admin,
-                                    Input::get('Agency_sections'),
-                                    Input::get('artists_sections'));
+                                    Input::get('agency_sections'));
 
                     return Redirect::back()->with('success', [Lang::get('success.updated')])
                             ->withInput();
@@ -252,14 +240,13 @@ class AdminController extends Controller {
         throw new UnauthorizedException;
     }
 
-    protected function authorize(AuthorableInterface $admin, $Agency, $artists, $is_initial = false)
+    protected function authorize(AuthorableInterface $admin, $agency, $is_initial = false)
     {
-        $Agency = Input::get('Agency_sections');
-        $artists = [];
-        // $artists = Input::get('artist_sections');
+        $agency = Input::get('agency_sections');
+
         $method = $is_initial ? 'initial' : 'authorize';
 
-        $this->authorizer->$method($admin, array_filter($Agency), array_filter($artists));
+        $this->authorizer->$method($admin, array_filter($agency));
     }
     /**
      * Returns the roleable Agency sections.
@@ -269,16 +256,6 @@ class AdminController extends Controller {
     public function getAgencySections()
     {
         return $this->sections->roleable();
-    }
-
-    /**
-     * Returns the roleable artists sections.
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    public function getArtistSections()
-    {
-        // return $this->artist_sections->roleable();
     }
 
     /**

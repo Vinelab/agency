@@ -76,14 +76,14 @@
 
                             <tbody>
 
-                                @foreach ($Agency_sections as $section)
+                                @foreach ($agency_sections as $section)
 
                                 <tr>
                                     <td>{{ $section->title }}</td>
                                     <td>
                                         <?php $selected_role = isset($edit_admin_agency_roles[$section->id]) ?
                                                                     $edit_admin_agency_roles[$section->id] : 0; ?>
-                                        {{ Form::select("Agency_sections[$section->alias]",
+                                        {{ Form::select("agency_sections[$section->alias]",
                                             $roles,
                                             $selected_role) }}
                                     </td>
