@@ -118,4 +118,22 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
             return  array_reverse($parent_sections);
         }
     }
+
+    /**
+    * return the cms parent sections ex ('dashboard', 'contents','admnistration',...)
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function sections($accessible_section)
+    {
+        $dashboard = $this->section->dashboard();
+
+        $sections = $accessible_section->filter(function($section)use($dashboard){
+            if($section->parent_id == $dashboard->parent_id)
+            {
+                return $section;
+            }
+        });
+
+        return $sections;
+    }
 }
