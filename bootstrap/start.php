@@ -26,9 +26,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'development' => array('agency-develop'),
-	'local' => ['flay.local']
-
+	'development' => array('agency-develop')
+	
 ));
 
 /*
