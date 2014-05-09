@@ -53,7 +53,7 @@
             <div class="widget-box">
 
                 <div class="widget-header header-color-blue">
-                    <h4 class="lighter">Stara Academy CMS</h4>
+                    <h4 class="lighter">{{Config::get('agency.title')}}</h4>
                 </div>
 
                 <div class="widget-body">
