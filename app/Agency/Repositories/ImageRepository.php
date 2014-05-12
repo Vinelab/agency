@@ -13,11 +13,16 @@ use Agency\Media\Photos\Photo;
 use Agency\Contracts\ImageInterface;
 use Agency\Image;
 
+use Agency\Contracts\HelperInterface;
+
+
 class ImageRepository extends Repository implements ImageRepositoryInterface {
 
-	public function __construct(ImageInterface $image)
+	public function __construct(ImageInterface $image,
+								HelperInterface $helper)
 	{
 		$this->image = $this->model = $image;
+		$this->helper = $helper;
 	}
 
 	public function create( Photo $original,
@@ -25,7 +30,7 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
                             Photo $small,
                             Photo $square)
 	{
-		$unique_id = uniqid();
+		$unique_id = $this->helper->getUniqueId();
 
 		$original_image = $this->image->create([
 			'url'    => $original->url,
@@ -48,7 +53,7 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 
 		$this->image->create([
 			'url'    => $square->url,
-			'preset' => 'square',
+			'preset' => $this->image->presetType('square'),
 			'guid'   => $unique_id
 		]);
 
