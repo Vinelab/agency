@@ -15,7 +15,9 @@ class ImageRepositoryTest extends TestCase {
         parent::setUp();
 
         $this->mImage = M::mock('Agency\Contracts\ImageInterface');
-        $this->images = new ImageRepository($this->mImage);
+        $this->mHelper = M::Mock('Agency\Contracts\HelperInterface');
+        $this->images = new ImageRepository($this->mImage,$this->mHelper);
+        $this->mHelper->shouldReceive('getUniqueId')->andReturn('12345');
     }
 
     public function test_bindings()
@@ -117,6 +119,36 @@ class ImageRepositoryTest extends TestCase {
 
         $this->assertTrue($original_photo);
 
+    }
+
+
+        public function test_getByGuid()
+    {
+        $guid = 'guid';
+        $mCollection = M::mock('Illuminate\Database\Eloquent\Collection');
+        $this->mImage->shouldReceive('where')->with('guid','=',$guid)->andReturn($this->mImage)
+            ->shouldReceive('get')->andReturn($mCollection);
+
+        $image = $this->images->getByGuid($guid);
+
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection',$image);
+    }
+
+    public function test_remove_with_valid_ids()
+    {
+        $this->mImage->shouldReceive('destroy')->with([1,2,3])->andReturn(3);
+
+        $deleted_images = $this->images->remove([1,2,3]);
+
+        $this->assertEquals($deleted_images,3);
+    }
+
+    public function test_remove_with_invalid_ids()
+    {
+        $this->mImage->shouldReceive('destroy')->with([2])->andReturn(0);
+        $deleted_images = $this->images->remove([2]);
+
+        $this->assertEquals($deleted_images,0);
     }
 
 
