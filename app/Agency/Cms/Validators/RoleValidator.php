@@ -7,7 +7,7 @@ class RoleValidator extends Validator implements Contracts\RoleValidatorInterfac
 
     protected $rules = [
         'title' => 'required|max:255',
-        'alias' => 'alias|alpha_dash|max:255'
+        'alias' => 'required|alias|alpha_dash|max:255'
     ];
 
     public function validate($attributes)
