@@ -52,7 +52,7 @@ class Controller extends BaseController {
             // fill out the cms sections
             $this->cms_sections['accessible'] = $this->getAccessibleSections();
             $this->cms_sections['current'] = $this->getCurrentSection();
-            $this->cms_sections['sections'] = $this->sections->sections($this->cms_sections['accessible']);
+            $this->cms_sections['sections'] = $this->getParentSections($this->cms_sections['accessible']);
 
             // share cms sections with views
             View::share('cms_sections', $this->cms_sections);
@@ -128,5 +128,24 @@ class Controller extends BaseController {
     protected function getPermissions($section)
     {
         return Authority::permissions(Auth::user(), $section);
+    }
+
+    /**
+    * return the cms parent sections ex ('dashboard', 'contents','admnistration',...)
+    * @var  Illuminate\Database\Eloquent\Collection @accessible_section
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    protected function getParentSections($accessible_section)
+    {
+
+        $sections = $accessible_section->filter(function($section){
+            if($section->parent_id == '0')
+            {
+                return $section;
+            }
+        });
+
+        return $sections;
+
     }
 }

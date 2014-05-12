@@ -73,16 +73,7 @@ interface SectionRepositoryInterface {
      */
     public function children($alias);
 
-    /**
-     *
-     */
+
     public function parentSections($alias,$current_parent_section_id);
 
-    /**
-    * 
-    * return the cms parent sections ex ('dashboard', 'contents','admnistration',...)
-    * @param  Illuminate\Database\Eloquent\Collection  $accessible_section
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function sections($accessible_section);
 }
