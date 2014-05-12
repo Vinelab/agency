@@ -17,7 +17,7 @@ class ImageRepositoryTest extends TestCase {
 	{
 		parent::setUp();
 		$this->mImage = M::mock('Agency\Image');
-		$this->mHelper = M::mock('Agency\Helper');
+		$this->mHelper = M::mock('Agency\Contracts\HelperInterface');
 		$this->mHelper->shouldReceive('getUniqueId')->andReturn('12345');
 		$this->image = new ImageRepository($this->mImage,$this->mHelper);
 	}
