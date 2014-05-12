@@ -118,4 +118,5 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
             return  array_reverse($parent_sections);
         }
     }
+
 }
