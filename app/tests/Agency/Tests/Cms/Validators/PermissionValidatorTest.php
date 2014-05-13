@@ -17,8 +17,6 @@ class PermissionValidatorTest extends TestCase {
 	{
 		parent::setUp();
 
-		Artisan::call('migrate');
-
 		$this->mValidatorFactory = $this->app->make('Illuminate\Validation\Factory');
 		$this->validator = new PermissionValidator($this->mValidatorFactory);
 	}
@@ -137,6 +135,45 @@ class PermissionValidatorTest extends TestCase {
 		$this->validator->validate([
 			'title' => 'some_title',
         	'alias' => 'basdgfkajsdhgfkjahsdgfkjhasbdf,asdgfkuagsdfj,hbasdfb,asdfmnbasdjhfg adhfg kajshd fgk asdfgkadsjfg aksjdhfg akjdsgf aksdjhfg kajsdfg kajdsg fkajdsg fkjasdg fkjasdg fkjahsdg fkjadshg fkahjsgd fkjhsdag fkjashdg fkjadgs fkjasdg faks jdgfkjadgs fkajg asdfgakjsd',
+			'description' => 'description here'
+		]);
+	}
+
+	/**
+	 * @depends test_passing_validation
+	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 */
+	public function test_fails_with_space_in_alias()
+	{
+		$this->validator->validate([
+			'title' => 'some title',
+			'alias' => 'some title',
+			'description' => 'description here'
+		]);
+	}
+
+	/**
+	 * @depends test_passing_validation
+	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 */
+	public function test_fails_with_upercase_in_alias()
+	{
+		$this->validator->validate([
+			'title' => 'some title',
+			'alias' => 'SOMETITLE',
+			'description' => 'description here'
+		]);
+	}
+
+	/**
+	 * @depends test_passing_validation
+	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 */
+	public function test_fails_with_upercase_and_space_in_alias()
+	{
+		$this->validator->validate([
+			'title' => 'some title',
+			'alias' => 'Some Title',
 			'description' => 'description here'
 		]);
 	}
