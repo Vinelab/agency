@@ -8,7 +8,7 @@ class PermissionValidator extends Validator implements Contracts\PermissionValid
 
     protected $rules = [
         'title'       => 'required|max:255',
-        'alias'       => 'alias|alpha_dash|max:255',
+        'alias'       => 'required|alias|alpha_dash|max:255',
         'description' => 'max:1000'
     ];
 
