@@ -10,10 +10,8 @@
 		"aws/aws-sdk-php": "2.*",
 		"vinelab/neoeloquent":"dev-develop",
 		"everyman/neo4jphp": "dev-master",
-		"guzzlehttp/guzzle" : "~4.0"
-
-
-
+		"guzzlehttp/guzzle" : "~4.0",
+		"vinelab/cdn": "1.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.*",
