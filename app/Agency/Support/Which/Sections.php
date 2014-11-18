@@ -6,7 +6,6 @@
 
 use URL, Request, Input;
 use Agency\Contracts\Office\Repositories\SectionRepositoryInterface as SectionRepo;
-use Agency\Contracts\Artists\Repositories\SectionRepositoryInterface as ArtistsSectionRepo;
 
 
 class Sections {
@@ -17,29 +16,15 @@ class Sections {
     private $sections;
 
     /**
-     * @var \Agency\Support\Which\Artists
-     */
-    private $artists;
-
-    /**
-     * @var \Agency\Contracts\Artists\Repositories\SectionRepositoryInterface
-     */
-    private $artists_sections;
-
-    /**
      * Used to cache the current section being visited.
      *
      * @var \Illuminate\Database\Eloquent\Model | null
      */
     private $current_section;
 
-    public function __construct(
-        Artists $artists,
-        SectionRepo $sections,
-        ArtistsSectionRepo $artists_sections
-    ) {
+    public function __construct(SectionRepo $sections) 
+    {
         $this->sections = $sections;
-        $this->artists_sections = $artists_sections;
     }
 
     /**
@@ -54,16 +39,7 @@ class Sections {
 
         if ( ! is_null($existing)) return $existing;
 
-        // When we're dealing with a request for artists we have to fetch the corresponding section
-        // specific for artists.
-        if (Request::isForArtists())
-        {
-            $section = $this->artists_sections->findByAlias($this->getCurrentSectionAlias());
-        }
-        else
-        {
-            $section = $this->sections->findByAlias($this->getCurrentSectionAlias());
-        }
+        $section = $this->sections->findByAlias($this->getCurrentSectionAlias());
 
         // Cache the current section so that whenever someone asks for it we return
         // it right away without requesting it again.
@@ -84,13 +60,6 @@ class Sections {
         $existing = $this->getCurrentCategory($title);
 
         if ( ! is_null($existing)) return $existing;
-
-        if (Request::isForArtists())
-        {
-            $artist = $this->artists->current();
-
-            $category = $this->sections->findForArtist($artist->getKey(), 'alias', $category);
-        }
 
         return $this->getCurrentCategory($title);
    }

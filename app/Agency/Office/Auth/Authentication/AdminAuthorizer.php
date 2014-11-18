@@ -9,8 +9,6 @@ use Agency\Contracts\Office\AdminAuthorizerInterface;
 use Agency\Contracts\Office\AuthorableInterface;
 use Agency\Contracts\Office\Repositories\SectionRepositoryInterface
     as AgencySectionRepositoryInterface;
-use Agency\Contracts\Artists\Repositories\SectionRepositoryInterface
-    as ArtistSectionRepositoryInterface;
 
 class AdminAuthorizer implements AdminAuthorizerInterface {
 
@@ -35,14 +33,11 @@ class AdminAuthorizer implements AdminAuthorizerInterface {
      *
      * @var Agency\Contracts\Artists\Repositories\SectionRepositoryInterface
      */
-    protected $artist_sections;
 
     public function __construct(
-        AgencySectionRepositoryInterface $Agency,
-        ArtistSectionRepositoryInterface $artist
-    ) {
+        AgencySectionRepositoryInterface $Agency) 
+    {
         $this->Agency_sections = $Agency;
-        $this->artist_sections = $artist;
     }
 
     /**
