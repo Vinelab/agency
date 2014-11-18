@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Application;
+Application::requestClass('Agency\Support\Request');
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
