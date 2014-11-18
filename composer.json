@@ -4,9 +4,9 @@
 	"keywords": ["cms", "api", "laravel", "aws", "alc"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*",
-		"vinelab/social-auth": "3.*",
-		"intervention/image": "dev-master",
+		"laravel/framework": "4.2.*",
+		"vinelab/social-auth": "dev-master",
+		"intervention/image": "1.6.*",
 		"aws/aws-sdk-php": "2.*",
 		"vinelab/neoeloquent":"dev-develop",
 		"everyman/neo4jphp": "dev-master",
@@ -48,5 +48,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "dev"
 }
