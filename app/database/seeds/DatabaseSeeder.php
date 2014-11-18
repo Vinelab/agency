@@ -1,9 +1,9 @@
 <?php
 
-use Agency\Cms\Admin;
-use Agency\Section;
-use Agency\Cms\Authority\Entities\Role;
-use Agency\Cms\Authority\Entities\Permission;
+use Agency\Office\Admin;
+use Agency\Office\Section;
+use Agency\Office\Auth\Authorization\Entities\Role;
+use Agency\Office\Auth\Authorization\Entities\Permission;
 
 class DatabaseSeeder extends Seeder {
 
@@ -14,45 +14,38 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		Eloquent::unguard();
+		NeoEloquent::unguard();
 
-		$this->call('RoleTableSeeder');
-		$this->call('AdminTableSeeder');
-		$this->call('SectionTableSeeder');
-		$this->call('PermissionTableSeeder');
+		// Empty all the nodes before seeding
+		$connection = (new Role)->getConnection();
+        $client = $connection->getClient();
 
-		$this->call('RolePermissionsRelationSeeder');
-		$this->call('AdminPrivilegesSeeder');
+        $batch = $client->startBatch();
+		// Remove all relationships and related nodes
+		$query = new \Everyman\Neo4j\Cypher\Query($client, 'MATCH (n), (m)-[r]-(c) DELETE n,m,r,c');
+        $query->getResultSet();
+        // Remove singular nodes with no relations
+        $query = new \Everyman\Neo4j\Cypher\Query($client, 'MATCH (n) DELETE n');
+        $query->getResultSet();
+        $batch->commit();
+
+        $this->call('CmsSectionsSeeder');
+		$this->call('RoleAndPermissionsSeeder');
+		$this->call('AdminSeeder');
 	}
 
 }
 
-class AdminTableSeeder extends Seeder {
+
+class CmsSectionsSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('admins')->delete();
-
-		Admin::create([
-			'name' => 'Mr. Admin',
-			'email' => 'agency@vinelab.com',
-			'password' => Hash::make('meh')
-		]);
-	}
-}
-
-class SectionTableSeeder extends Seeder {
-
-	public function run()
-	{
-		DB::table('cms_sections')->delete();
-
 		$sections = [
 			[
 				'title'      => 'Dashboard',
 				'alias'      => 'dashboard',
 				'icon'       => 'dashboard',
-				'parent_id'  => 0,
 				'is_fertile' => true,
 				'is_roleable'=> false
 			],
@@ -60,16 +53,13 @@ class SectionTableSeeder extends Seeder {
 				'title'      => 'Content',
 				'alias'      => 'content',
 				'icon'       => 'rss',
-				'parent_id'  => 0,
 				'is_fertile' => true,
 				'is_roleable'=> true
 			],
-
 			[
 				'title'      => 'Administration',
 				'alias'      => 'administration',
 				'icon'       => 'list',
-				'parent_id'  => 0,
 				'is_fertile' => true,
 				'is_roleable'=> true
 			],
@@ -77,11 +67,9 @@ class SectionTableSeeder extends Seeder {
 				'title'      => 'Configuration',
 				'alias'      => 'configuration',
 				'icon'       => 'cogs',
-				'parent_id'  => 0,
 				'is_fertile' => true,
 				'is_roleable'=> false
 			]
-
 		];
 
 		foreach ($sections as $section)
@@ -91,126 +79,92 @@ class SectionTableSeeder extends Seeder {
 	}
 }
 
-class PermissionTableSeeder extends Seeder {
+
+class RoleAndPermissionsSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('cms_permissions')->delete();
+		// Create permissions so that we relate them while creating the roles.
 
-		$permissions = [
-			[
-				'title' => 'create',
-				'alias' => 'create',
-				'description' => 'Can create new posts.'
-			],
-			[
-				'title' => 'read',
-				'alias' => 'read',
-				'description' => 'Can only view data.'
-			],
-			[
-				'title' => 'update',
-				'alias' => 'update',
-				'description' => 'Can modify & update.'
-			],
-			[
-				'title' => 'delete',
-				'alias' => 'delete',
-				'description' => 'Can permanently delete records.'
-			],
-			[
-				'title' => 'publish',
-				'alias' => 'publish',
-				'description' => 'Can publish posts directly.'
-			],
-			[
-				'title' => 'Analyze Traffic',
-				'alias' => 'analyze-traffic',
-				'description' => 'This allows the user to view and analyze traffic...'
-			]
-		];
-
-		foreach ($permissions as $permission)
-		{
-			Permission::create($permission);
-		}
-	}
-}
-
-class RoleTableSeeder extends Seeder {
-
-	public function run()
-	{
-		DB::table('cms_roles')->delete();
-
-		$admin = Role::create([
-			'title' => 'Admin',
-			'alias' => 'admin'
+		$create = Permission::create([
+			'title' => 'Create Content',
+			'alias' => 'create'
 		]);
 
-		$manager = Role::create([
-			'title' => 'Manager',
-			'alias' => 'manager'
+		$read =	Permission::create([
+			'title' => 'Read Content',
+			'alias' => 'read'
 		]);
 
-		$editor = Role::create([
-			'title' => 'Editor',
-			'alias' => 'editor'
+		$update = Permission::create([
+			'title' => 'Update Content',
+			'alias' => 'update'
+		]);
+
+		$delete = Permission::create([
+			'title' => 'Delete Content',
+			'alias' => 'delete'
+		]);
+
+		$publish = Permission::create([
+			'title' => 'Publish Content',
+			'alias' => 'publish'
+		]);
+
+		$admin = Role::createWith(['title' => 'Admin', 'alias' => 'admin'], [
+			'permissions' => [$create, $read, $update, $delete, $publish]
+		]);
+
+		$manager = Role::createWith(['title' => 'Content Manager', 'alias' => 'content-manager'], [
+			'permissions' => [$create, $read, $update, $delete, $publish]
+		]);
+
+		$editor = Role::createWith(['title' => 'Content Editor', 'alias' => 'content-editor'], [
+			'permissions' => [$create, $read, $update, $delete]
+		]);
+
+		$publisher = Role::createWith([
+			'title' => 'Content Publisher',
+			'alias' => 'content-publisher'
+		], ['permissions' => [$read, $publish]]);
+
+		$artist_admin = Role::createWith(['title' => 'Admin', 'alias' => 'admin', 'for_artists' => true], [
+			'permissions' => [$create, $read, $update, $delete, $publish]
+		]);
+
+		$artist_manager = Role::createWith(['title' => 'Content Manager', 'alias' => 'manager', 'for_artists' => true], [
+			'permissions' => [$create, $read, $update, $delete, $publish]
+		]);
+
+		$artist_editor = Role::createWith(['title' => 'Content Editor', 'alias' => 'editor', 'for_artists' => true], [
+			'permissions' => [$create, $read, $update, $delete]
+		]);
+
+		$artist_published = Role::createWith(['title' => 'Content Published', 'alias' => 'published', 'for_artists' => true], [
+			'permissions' => [$read, $publish]
 		]);
 	}
 }
 
-class RolePermissionsRelationSeeder extends Seeder {
+
+class AdminSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('cms_role_permissions')->delete();
+		require app_path().'/launch/cms.boot.php';
 
-		$create_permission  = Permission::where('alias', 'create')->first();
-	    $read_permission    = Permission::where('alias', 'read')->first();
-	    $update_permission  = Permission::where('alias', 'update')->first();
-	    $delete_permission  = Permission::where('alias', 'delete')->first();
-	    $publish_permission = Permission::where('alias', 'publish')->first();
+		// Create Ibrahim Fleifel's admin account
+		$ibrahim = Admin::create([
+			'name'     => 'Ibrahim Fleifel',
+			'email'    => 'ibrahim@vinelab.com',
+			'password' => Hash::make('meh')
+		]);
 
-	    // define permissions for each of the roles
-	    $admin_role = Role::where('alias', 'admin')->first();
-	    $manager_role = Role::where('alias', 'manager')->first();
-	    $editor_role = Role::where('alias', 'editor')->first();
+		// Grant Abed privileges
+		$sections = Section::all();
 
-	    $admin_role->permissions()->attach([
-	        $create_permission->id,
-	        $read_permission->id,
-	        $update_permission->id,
-	        $delete_permission->id,
-	        $publish_permission->id
-	    ]);
-
-	    $manager_role->permissions()->attach([
-	        $read_permission->id
-	    ]);
-
-	    $editor_role->permissions()->attach([
-	        $create_permission->id,
-	        $read_permission->id,
-	        $update_permission->id,
-	        $delete_permission->id
-	    ]);
+		Auth::authorize($ibrahim)->admin($sections);
 	}
 }
 
-class AdminPrivilegesSeeder extends Seeder {
 
-
-	public function run()
-	{
-		DB::table('cms_privileges')->delete();
-
-		$admin = Admin::first();
-		$sections = Section::get();
-
-		foreach ($sections as $section)
-		{
-			Authority::authorize($admin)->admin($section);
-		}
-	}
-}
