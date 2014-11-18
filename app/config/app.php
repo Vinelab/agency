@@ -52,7 +52,7 @@ return array(
 	|
 	*/
 
-	'locale' => 'ar',
+	'locale' => 'en',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -108,9 +108,13 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 
+		'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
+
 		'Vinelab\Auth\AuthServiceProvider',
-		'Agency\AgencyServiceProvider',
-		'Agency\Cms\CmsServiceProvider'
+        'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
+
+		'Vinelab\Auth\AuthServiceProvider',
+		'Agency\Providers\AgencyServiceProvider',
 	),
 
 	/*
