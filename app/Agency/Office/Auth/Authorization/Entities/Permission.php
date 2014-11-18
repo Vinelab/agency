@@ -1,4 +1,4 @@
-<?php namespace Najem\Office\Auth\Authorization\Entities;
+<?php namespace Agency\Office\Auth\Authorization\Entities;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -12,7 +12,7 @@ class Permission extends Entity {
 
     public function roles()
     {
-        return $this->belongsToMany('Najem\Office\Auth\Authorization\Entities\Role', 'cms_role_permission')
+        return $this->belongsToMany('Agency\Office\Auth\Authorization\Entities\Role', 'cms_role_permission')
             ->withTimestamps();
     }
 }
