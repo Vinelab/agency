@@ -1,4 +1,7 @@
-/* colorbox used in gallery page */
+.enable_plugin_colorbox() when(@enable-plugin-colorbox = true) {
+
+
+//colorbox plugin used in gallery page
 #colorbox:focus , #colorbox:active {
  outline:none;
 }
@@ -19,13 +22,13 @@
   background:#000;
 }
 #cboxCurrent {
-  left:64px;
+  left: 64px;
   margin-bottom:4px;
-  font-size: 14px;
+  font-size: @baseFontSize + 1;
 }
 #cboxTitle {
   margin-bottom:4px;
-  font-size: 14px;
+  font-size: @baseFontSize + 1;
   color:#777;
 }
 
@@ -41,10 +44,10 @@
  border-radius:16px;
  
  color:#666;
- font-size:12px;
+ font-size: 12px;
 
- margin-left:5px;
- margin-bottom:5px;
+ margin-left: 5px;
+ margin-bottom: 5px;
 }
 #cboxNext:hover , #cboxPrevious:hover {
  color:#333;
@@ -54,12 +57,12 @@
  overflow:visible;
 }
 #cboxClose {
-    background-color: #000000;
+    background-color: #000;
 	    
-	border: 2px solid #FFFFFF;
+	border: 2px solid #FFF;
     border-radius: 32px;
     
-    color: #FFFFFF;
+    color: #FFF;
 	font-size: 21px;
 	
     height: 28px;
@@ -80,25 +83,30 @@
   background:#FFF none !important;
   text-align:center;
   
-  > [class*="icon-"] {
-	 display:inline-block;
-	 background-color:#FFF;
-	 border-radius:8px;
+  > .@{icon} {
+	 display: inline-block;
+	 background-color: #FFF;
+	 border-radius: 8px;
 
-	 width:32px; height:32px;
-	 position:relative; top:48%;
+	 width: 32px;
+	 height: 32px;
+	 
+	 position: relative;
+	 top: 48%;
 
 
-	 text-align:center;
-	 vertical-align:middle;
+	 text-align: center;
+	 vertical-align: middle;
 
 	 .animation(~"spin 1.5s infinite linear");
 	 
 	 
-	 font-size:24px;
-	 color:#FE7E3E;
+	 font-size: 24px;
+	 color: #FE7E3E;
  }
 
 }
 
 
+}
+.enable_plugin_colorbox();

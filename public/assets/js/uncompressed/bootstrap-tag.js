@@ -87,7 +87,7 @@
             that.element.siblings('.tag').removeClass('tag-important')
           }
         })
-        .typeahead({
+        .bs_typeahead({
           source: that.options.source
         , matcher: function ( value ) {
             return ~value.toLowerCase().indexOf(this.query.toLowerCase()) && (that.inValues(value) == -1 || that.options.allowDuplicates)
@@ -95,7 +95,7 @@
         , updater: $.proxy(that.add, that)
         })
 
-      $(that.input.data('typeahead').$menu).on('mousedown', function() {
+      $(that.input.data('bs_typeahead').$menu).on('mousedown', function() {
         that.skip = true
       })
 

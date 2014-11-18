@@ -1,7 +1,9 @@
-/* full calendar */
+.enable_plugin_fullcalendar() when(@enable-plugin-fullcalendar = true) {
+
+//calendar
 .fc-header-title > h2 {
-	font-size:22px;
-	color:#65A0CE;
+	font-size: 22px;
+	color: #65A0CE;
 }
 
 .fc-widget-header,
@@ -116,7 +118,8 @@
  
   color:#FFF;
   background-color:#ABBAC3;
-  font-size:13px; line-height:28px;
+  font-size: @baseFontSize;
+  line-height: 28px;
   
   &:hover {
 	.opacity(1);
@@ -126,13 +129,13 @@
   }
 
 
-  > [class*="icon-"]:first-child { /* the move & drag icon */
-	display:inline-block; height:32px; width:32px;
-	text-align:center;
-	line-height:30px;
-	margin-right:5px;
+  > .@{icon}:first-child {// the move & drag icon
+	display: inline-block; height:32px; width:32px;
+	text-align: center;
+	line-height: 30px;
+	margin-right: 5px;
  
-	font-size:15px;
+	font-size: floor(@baseFontSize * 1.2);
  
 	border-right:1px solid #FFF;
  }  
@@ -142,7 +145,8 @@
 
 
 
-/* calendar inside widget-box --- not complete yet */
+//calendar inside widget-box --- not complete yet
+/**
 .widget-main {
 	.fc {
 		position:relative;
@@ -159,8 +163,8 @@
 	}
 	
 	.fc-header-title > h2 {
-		font-size:18px;
-		line-height:36px;
+		font-size: floor(@baseFontSize * 1.4);
+		line-height: 36px;
 	}
 	
 	.fc-content {
@@ -174,11 +178,11 @@
 	}
 	
 }
+*/
 
 
 
-
-/* calendar */
+//calendar
 @media only screen and (max-width: @screen-xs) {
  .fc-header td {
   display:block;
@@ -186,3 +190,7 @@
   text-align:left;
  }
 }
+
+
+}
+.enable_plugin_fullcalendar();

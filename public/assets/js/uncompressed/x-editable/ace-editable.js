@@ -44,35 +44,12 @@ Image editable input.
 
 			this.$file.attr({'name':this.name});
 			this.$input.attr({'name':this.name+'-hidden'});
-
 			
-			this.options.image.before_change = this.options.image.before_change || function(files, dropped) {
-				var file = files[0];
-				if(typeof file === "string") {
-					//files is just a file name here (in browsers that don't support FileReader API)
-					if(! (/\.(jpe?g|png|gif)$/i).test(file) ) {
-						if(self.on_error) self.on_error(1);
-						return false;
-					}
-				}
-				else {//file is a File object
-					var type = $.trim(file.type);
-					if( ( type.length > 0 && ! (/^image\/(jpe?g|png|gif)$/i).test(type) )
-							|| ( type.length == 0 && ! (/\.(jpe?g|png|gif)$/i).test(file.name) )//for android default browser!
-						)
-					{
-						if(self.on_error) self.on_error(1);
-						return false;
-					}
-					if( self.max_size && file.size > self.max_size ) {
-						if(self.on_error) self.on_error(2);
-						return false;
-					}
-				}
-
-				if(self.on_success) self.on_success();
-				return true;
-			}
+			
+			this.options.image.allowExt = this.options.image.allowExt || ['jpg', 'jpeg', 'png', 'gif'];
+			this.options.image.allowMime = this.options.image.allowMime || ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+			this.options.image.maxSize = self.max_size || this.options.image.maxSize || false;
+			
 			this.options.image.before_remove = this.options.image.before_remove || function() {
 				self.$input.val(null);
 				return true;
@@ -82,6 +59,20 @@ Image editable input.
 				var $rand = (self.$file.val() || self.$file.data('ace_input_files')) ? Math.random() + "" + (new Date()).getTime() : null;
 				self.$input.val($rand)//set a random value, so that selected file is uploaded each time, even if it's the same file, because inline editable plugin does not update if the value is not changed!
 			}).closest('.ace-file-input').css({'width':'150px'}).closest('.editable-input').addClass('editable-image');
+			
+			this.$file
+			.off('file.error.ace')
+			.on('file.error.ace', function(e, info) {
+				if( !self.on_error ) return;
+				if( info.error_count['ext'] > 0 || info.error_count['mime'] > 0 ) {
+					//wrong ext or mime?
+					self.on_error(1);
+				}
+				else if( info.error_count['size'] > 0 ) {
+					//wrong size
+					self.on_error(2);
+				}
+			});
 		}
 
     });
@@ -95,7 +86,7 @@ Image editable input.
 			style: 'well',
 			btn_choose: 'Change Image',
 			btn_change: null,
-			no_icon: 'icon-picture',
+			no_icon: 'fa fa-picture-o',
 			thumbnail: 'large'
 		}
     });
@@ -205,6 +196,13 @@ Spinner editable input.
     var Spinner = function (options) {
         this.init('spinner', options, Spinner.defaults);
 		this.initSpinner(options, Spinner.defaults);
+		
+		this.nativeUI = false;
+		try {
+			var tmp_inp = document.createElement('INPUT');
+			tmp_inp.type = 'number';
+			this.nativeUI = tmp_inp.type === 'number' && this.options.spinner.nativeUI === true
+		} catch(e) {}
     };
 
     //inherit from Abstract input
@@ -233,9 +231,19 @@ Spinner editable input.
 				this.$input.focus();
 				$.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
 				
-				var val = parseInt(this.$input.val());
-				var options = $.extend({value:val}, this.options.spinner);
-				this.$input.ace_spinner(options);
+				if(!this.nativeUI) {
+					var val = parseInt(this.$input.val());
+					var options = $.extend({value:val}, this.options.spinner);
+					this.$input.ace_spinner(options);
+				}
+				else {
+					this.$input.get(0).type = 'number';
+					var options = ['min', 'max', 'step']
+					for(var o = 0 ; o < options.length; o++) {
+						if(options[o] in this.options.spinner)
+							this.$input.attr(options[o] , this.options.spinner[options[o]])
+					}
+				}
             }
        },
        
@@ -260,8 +268,8 @@ Spinner editable input.
 			min:0,
 			max:100,
 			step:1,
-			icon_up:'icon-plus',
-			icon_down:'icon-minus',
+			icon_up:'fa fa-plus',
+			icon_down:'fa fa-minus',
 			btn_up_class:'btn-success',
 			btn_down_class:'btn-danger'
         }
@@ -287,6 +295,13 @@ Slider editable input.
     var Slider = function (options) {
         this.init('slider', options, Slider.defaults);
 		this.initSlider(options, Slider.defaults);
+		
+		this.nativeUI = false;
+		try {
+			var tmp_inp = document.createElement('INPUT');
+			tmp_inp.type = 'range';
+			this.nativeUI = tmp_inp.type === 'range' && this.options.slider.nativeUI === true
+		} catch(e) {}
     };
 
     //inherit from Abstract input
@@ -314,6 +329,7 @@ Slider editable input.
 				this.$input.focus();
 				$.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
 
+				if(!this.nativeUI) {
 					var self = this;
 					var val = parseInt(this.$input.val());
 					var width = this.options.slider.width || 200;
@@ -323,14 +339,26 @@ Slider editable input.
 							var val = parseInt(ui.value);
 							self.$input.val(val);
 							
-							if(ui.handle.firstChild == null) {/* no tooltips attached to it */
-								$(ui.handle).append("<div class='tooltip top in' style='display:none;top:-38px;left:-5px;'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>");
+							if(ui.handle.firstChild == null) {//no tooltips attached to it
+								$(ui.handle).prepend("<div class='tooltip top in' style='display:none; top:-38px; left:-5px;'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>");
 							}
 							$(ui.handle.firstChild).show().children().eq(1).text(val);
 						}
 					});
-
 					this.$input.parent().addClass('editable-slider').css('width', width+'px').slider(options);
+				}
+				else {
+					this.$input.get(0).type = 'range';
+					var options = ['min', 'max', 'step']
+					for(var o = 0 ; o < options.length; o++) {
+						if(options[o] in this.options.slider) {							
+							this.$input[0][options[o]] = this.options.slider[options[o]]
+						}
+					}
+					var width = this.options.slider.width || 200;
+					this.$input.parent().addClass('editable-slider').css('width', width+'px');
+				}
+				
             }
        },
 	   
@@ -366,3 +394,103 @@ Slider editable input.
 
 }(window.jQuery));
 
+
+
+
+
+
+
+
+
+/**
+ADate editable input.
+**/
+(function ($) {
+    "use strict";
+	
+	
+
+    
+    var ADate = function (options) {
+        this.init('adate', options, ADate.defaults);
+		this.initDate(options, ADate.defaults);
+
+		this.nativeUI = false;
+		try {
+			var tmp_inp = document.createElement('INPUT');
+			tmp_inp.type = 'date';
+			this.nativeUI = tmp_inp.type === 'date' && this.options.date.nativeUI === true
+		} catch(e) {}
+    };
+
+    //inherit from Abstract input
+    $.fn.editableutils.inherit(ADate, $.fn.editabletypes.abstractinput);
+
+    $.extend(ADate.prototype, {
+		initDate: function(options, defaults) {
+            this.options.date = $.extend({}, defaults.date, options.date);
+        },
+
+        /**
+        Renders input from tpl
+
+        @method render() 
+        **/        
+        render: function() {
+			this.$input = this.$tpl.find('input.date');
+		},
+        /**
+        Activates input: sets focus on the first field.
+        
+        @method activate() 
+       **/
+       activate: function() {
+            if(this.$input.is(':visible')) {
+				this.$input.focus();
+            }
+
+			if(!this.nativeUI) {
+				var inp = this.$input;
+				this.$input.datepicker(this.options.date)
+				var picker = inp.data('datepicker');
+				if(picker) {
+					inp.on('click', function() {
+						picker.show();
+					})
+					.siblings('.input-group-addon').on('click', function(){
+						picker.show();
+					})
+				}
+			}
+			else {
+				this.$input.get(0).type = 'date';
+			}
+
+       },
+
+       /**
+        Attaches handler to submit form in case of 'showbuttons=false' mode
+        
+        @method autosubmit() 
+       **/       
+       autosubmit: function() {
+           this.$input.keydown(function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+           });
+       }
+    });
+
+    ADate.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl:'<div class="input-group input-group-compact"><input type="text" class="input-medium date" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>',
+		date: {
+			weekStart: 0,
+            startView: 0,
+            minViewMode: 0
+        }
+    });
+
+    $.fn.editabletypes.adate = ADate;
+
+}(window.jQuery));

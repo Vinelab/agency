@@ -1,3 +1,5 @@
+.enable_plugin_jquery_ui() when(@enable-plugin-jquery-ui = true) {
+
 .ui-datepicker {
 	background-color:#FFF;
 	border:1px solid rgba(0, 0, 0, 0.2);
@@ -24,11 +26,11 @@
 			text-decoration:none;
 		}
 		&:before {
-			display:inline;
-			font-family:FontAwesome;
-			font-size:14px;
-			content:"\f060";
-			color:@text-color;
+			display: inline;
+			font-family: FontAwesome;
+			font-size: 14px;
+			content: "\f060";
+			color: @text-color;
 		}
 		&-hover {
 			top:2px;
@@ -109,14 +111,14 @@
   .box-shadow(~"0 2px 4px rgba(0, 0, 0, 0.2)");
 
   .ui-dialog-titlebar , .ui-jqdialog-titlebar {
-	background-color:#F1F1F1;
-	font-size:16px;
-	color:@widget-header-color;
-	padding:0;
+	background-color: #F1F1F1;
+	font-size: @baseFontSize + 3;
+	color: @widget-header-color;
+	padding: 0;
  }
  .ui-dialog-title , .ui-jqdialog-title {
-	float:none;
-	width:auto;
+	float: none !important;//to override .RTL's
+	width: auto;
  }
  .widget-header {
 	margin:0;
@@ -200,10 +202,10 @@
 			left:10px; top:7px;
 			
 			&:before {
-				 display:inline;
-				 font-family:FontAwesome;
-				 font-size:15px;
-				 content:"\f0da";
+				 display: inline;
+				 font-family: FontAwesome;
+				 font-size: 15px;
+				 content: "\f0da";
 			}
 		}
 		&.ui-state-active .ui-accordion-header-icon:before {
@@ -303,10 +305,10 @@
 			text-indent:0;
 
 			&:before {
-				content:"\f105";
-				font-family:FontAwesome;
-				font-size:14px;
-				display:inline;
+				content: "\f105";
+				font-family: FontAwesome;
+				font-size: 14px;
+				display: inline;
 			}
 		}
 		
@@ -357,7 +359,7 @@
 
 
 
-/* spinner */
+// spinner
 .ui-spinner-button {
     border-width:0 !important;
     font-size: 10px;
@@ -374,7 +376,7 @@
 	text-align:center;
 	padding:0;
 
-	 > [class*="icon-"] {
+	 > .@{icon} {
 		width:18px;
 		display:inline-block;
 	}
@@ -390,14 +392,11 @@
 
 
 .ui-spinner-input {
-	margin-top:0;
-	padding:5px;
-	max-width:100px;
-	font-size:14px;
+	margin-top: 0;
+	padding: 5px;
+	max-width: 100px;
+	font-size: 14px;
 }
-
-
-
 
 
 .ui-tooltip {
@@ -417,3 +416,6 @@
 	}
 }
 
+
+}
+.enable_plugin_jquery_ui();
