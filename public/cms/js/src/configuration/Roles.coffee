@@ -103,8 +103,8 @@ class Roles
                 closeAfterEdit: yes
                 url: 'configuration/roles/id'
                 onclickSubmit: (params, postdata)->
-                    console.log "/cms/configuration/roles/#{encodeURIComponent(postdata['roles-table_id'])}"
-                    params.url = "/cms/configuration/roles/#{encodeURIComponent(postdata['roles-table_id'])}"
+                    console.log "/configuration/roles/#{encodeURIComponent(postdata['roles-table_id'])}"
+                    params.url = "/configuration/roles/#{encodeURIComponent(postdata['roles-table_id'])}"
             }
 
             {
@@ -119,7 +119,7 @@ class Roles
                 # delete
                 mtype: 'DELETE'
                 onclickSubmit: (params, postdata)->
-                    params.url = "/cms/configuration/roles/#{encodeURIComponent(postdata)}"
+                    params.url = "/configuration/roles/#{encodeURIComponent(postdata)}"
             }
 
             {

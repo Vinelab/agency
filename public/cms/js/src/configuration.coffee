@@ -167,7 +167,6 @@ class Sections
 
     iconView: (cellvalue, options, cell)-> "<span class=\"icon-#{cellvalue} bigger-110\"> #{cellvalue}</span>"
     iconEdit: (cellvalue, options, cell)-> $('span', cell).text().trim()
-
 class Roles
 
     constructor: ->
@@ -473,127 +472,6 @@ class Permissions
     permissionsChanged: (success, message, operation)->
         window.Configuration.Roles.reload() if success
 
-class Applications
-
-    constructor: -> @configure()
-
-    configure: ->
-        table_selector = '#applications-table'
-        pager_selector = '#applications-pager'
-
-        $(table_selector).jqGrid({
-
-            url: '/cms/configuration/applications'
-
-            datatype: 'json'
-            mtype: 'GET'
-
-            savekey: [yes, 13]
-
-            pager : pager_selector
-
-            height: 'auto'
-            viewrecords : yes
-
-            rowNum:10
-            rowList:[10,20,30]
-            caption: "Applications"
-
-            multiselect: no
-            multiboxonly: yes
-
-            autowidth: yes
-            shrinkToFit: yes
-
-            loadError: (xhr, status, error)->
-                throw new Error error
-                alert 'There was an error loading data. Please try again later.'
-
-
-            colNajems: ['ID','Name', 'Key', 'Secret']
-
-            colModel: [
-                {
-                    name: 'id', index: 'id', width: 5, sorttype: 'int', editable: no, align: 'center'
-                }
-
-                {
-                    name: 'name', index: 'name', width: 5, editable: yes, align: 'center'
-                }
-
-                {
-                    name: 'key', index: 'key', width: 40, editable: no
-                }
-
-                {
-                    name: 'secret', index: 'secret', width: 40, editable: no
-                }
-
-            ]
-
-            
-        }).navGrid(pager_selector, {
-                view: yes, viewicon: 'icon-zoom-in grey'
-                add: yes, addicon: 'icon-plus-sign purple'
-                edit: no, editicon: 'icon-pencil blue'
-                del: yes, delicon: 'icon-trash red'
-                search: yes, searchicon: 'icon-search orange'
-                refresh: yes, refreshicon: 'icon-refresh green'
-                reloadAfterSubmit: yes
-            }
-
-            {
-                # edit
-                editCaption: 'Edit Application'
-                mtype: 'PUT'
-                recreateForm: yes
-                closeAfterEdit: yes
-                onclickSubmit: (params, postdata)->
-                    params.url = "/cms/configuration/applications/#{encodeURIComponent(postdata['sections-table_id'])}"
-            }
-
-            {
-                # add
-                mtype: 'POST'
-                closeAfterAdd: yes
-                reloadAfterSubmit: yes
-                url: '/cms/configuration/applications'
-            }
-
-            {
-                # delete
-                mtype: 'DELETE'
-                onclickSubmit: (params, postdata)->
-                    params.url = "/cms/configuration/applications/#{encodeURIComponent(postdata)}"
-            }
-
-            {
-                # search
-                mtype: 'GET'
-            }
-
-            {
-                # view
-                mtype: 'GET'
-            }
-        )
-
-        $(window).on 'resize', ->
-
-            # Get width of parent container
-            width = $(window).width()
-
-            width = width - 2 # Fudge factor to prevent horizontal scrollbars
-
-            # Only resize if new width exceeds a minimal threshold
-            # Fixes IE issue with in-place resizing when mousing-over frame bars
-            if width > 0 and Math.abs(width - $(table_selector).width()) > 5
-                $(table_selector).setGridWidth(width)
-
-    iconView: (cellvalue, options, cell)-> "<span class=\"icon-#{cellvalue} bigger-110\"> #{cellvalue}</span>"
-    iconEdit: (cellvalue, options, cell)-> $('span', cell).text().trim()
-    
-
 
 
 
@@ -604,6 +482,5 @@ class Configuration extends Sections
         @Sections    = new Sections
         @Roles       = new Roles
         @Permissions = new Permissions
-        @Applications = new Applications
 
 $ -> window.Configuration = new Configuration

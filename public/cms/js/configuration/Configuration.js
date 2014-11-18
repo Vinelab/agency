@@ -11,7 +11,6 @@
       this.Sections = new Sections;
       this.Roles = new Roles;
       this.Permissions = new Permissions;
-      this.Applications = new Applications;
     }
 
     return Configuration;
