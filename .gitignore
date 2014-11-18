@@ -10,3 +10,5 @@ Thumbs.db
 app/config/local/aws.php
 
 composer.lock
+
+app/config/local/database.php
