@@ -93,9 +93,9 @@ class Access {
      * @param  array  $resources The resource ids.
      * @return Illuminate\Database\Eloquent\Collection
      */
-    protected function forResources(AuthorableInterface $authorable, array $resources, $for_artists)
+    protected function forResources(AuthorableInterface $authorable, array $resources)
     {
-        $section = $for_artists ? 'artistSection' : 'section';
+        $section = 'section';
 
         return Privilege::with($this->with)
             ->whereHas('admin', function($q) use($authorable)
@@ -155,7 +155,7 @@ class Access {
         if ( ! empty($privileges))
         {
             $this->setAccessiblePrivileges($privileges);
-            $section = $for_artists ? 'artistSection' : 'section';
+            $section = 'section';
             $this->setAccessibleResources($privileges->lists($section));
         }
     }

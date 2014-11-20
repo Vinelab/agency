@@ -33,10 +33,6 @@ class RoleRepository extends Repository implements RoleRepositoryInterface {
 		return $this->role->whereIn($ids)->get();
 	}
 
-    public function __construct(Role $role)
-    {
-        $this->model = $this->role = $role;
-    }
 
     public function create($title, $alias, $for_artists = false)
     {

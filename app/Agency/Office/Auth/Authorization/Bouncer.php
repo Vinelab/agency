@@ -161,7 +161,7 @@ class Bouncer {
      */
     protected function createPrivilege(Role $role, $resource, $attributes = [], $for_artists)
     {
-        $section = $for_artists ? 'artistSection' : 'section';
+        $section = 'section';
 
         return Privilege::createWith($attributes, [
             'admin'   => $this->authorable->getKey(),

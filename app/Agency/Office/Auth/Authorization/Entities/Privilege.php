@@ -29,11 +29,6 @@ class Privilege extends NeoEloquent implements PrivilegeEntityInterface {
         return $this->hasOne('Agency\Office\Section', 'ON');
     }
 
-    public function artistSection()
-    {
-        return $this->hasOne('Agency\Artists\Section', 'ON');
-    }
-
     public function admin()
     {
         return $this->belongsTo('Agency\Office\Admin', 'GRANTED');
@@ -49,7 +44,6 @@ class Privilege extends NeoEloquent implements PrivilegeEntityInterface {
         // Delete the edges so that we can delete the node.
         $this->role()->edge($this->role)->delete();
         if ($section = $this->section) $this->section()->edge($section)->delete();
-        if ($artist_section = $this->artistSection) $this->artistSection()->edge($artist_section)->delete();
         $this->admin()->edge($this->authorable)->delete();
 
         parent::delete();
