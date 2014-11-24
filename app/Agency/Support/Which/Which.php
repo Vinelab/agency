@@ -11,9 +11,8 @@ class Which {
      */
     private $sections;
 
-    public function __construct(Sections $sections, Artists $artists)
+    public function __construct(Sections $sections)
     {
-        $this->artists = $artists;
         $this->sections = $sections;
     }
 
@@ -30,11 +29,6 @@ class Which {
     public function category()
     {
         return $this->sections->currentCategory();
-    }
-
-    public function artist()
-    {
-        return $this->artists->current();
     }
 
 }
