@@ -1,0 +1,44 @@
+#post-container{
+	width: 80%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#post-cover{
+	height: 300px;
+}
+
+#cover-photo{
+	height: 100%;
+	display: block;
+	margin-top: 35px;
+}
+
+#post-body{
+	text-align:right;
+	font-size: 13pt;
+	margin-top: 35px;
+}
+
+#post-title{
+	text-align: center;
+}
+
+#title{
+	text-decoration: underline;
+	text-align: right;
+	font-size: 24pt;
+}
+
+
+#tag-list{
+	list-style: none;
+	display: inline;
+}
+
+.tag-item{
+	display: inline;
+	margin-left: 10px;
+}
+
