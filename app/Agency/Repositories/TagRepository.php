@@ -3,7 +3,7 @@
 use DB;
 use Agency\Tag;
 use Agency\Helper;
-use Agency\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Contracts\Repositories\TagRepositoryInterface;
 use Agency\Contracts\HelperInterface;
 
 class TagRepository extends Repository implements TagRepositoryInterface {
