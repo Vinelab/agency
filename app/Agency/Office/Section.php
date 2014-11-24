@@ -49,4 +49,11 @@ class Section extends NeoEloquent implements PrivilegableInterface {
         return $this->alias;
     }
 
+    public function posts()
+    {
+        return $this->hasMany('Agency\Post','POST');
+    }
+
+
+
 }
