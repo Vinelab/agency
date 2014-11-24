@@ -36,10 +36,6 @@
 
                 @include('cms.layout.templates.sidebar.menu')
 
-                <script type="text/javascript">
-                    ace.data.set('settings', 'sidebar-collapsed', 1);
-                    try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
-                </script>
             </div>
 
             <div class="main-content">
