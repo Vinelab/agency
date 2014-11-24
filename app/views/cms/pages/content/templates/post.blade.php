@@ -1,7 +1,7 @@
 <li class="posts-container">
     <div class="dd-handle">
     	<div class="pull-left action-buttons">
-            @if ($admin_permissions->has('update'))
+            @if (Auth::hasPermission('update'))
                 <a class="blue" href="{{URL::route('cms.content.posts.edit',$post->slug)}}">
                     <i class="icon-pencil bigger-130"></i>
                 </a>

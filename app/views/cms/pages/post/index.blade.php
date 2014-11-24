@@ -1,7 +1,7 @@
 @section('content')
 	<div class="col-xs-12">
 
-        @if ($admin_permissions->has('create'))
+        @if (Auth::hasPermission('create'))
         <div class="row">
             <a href="{{ URL::route('cms.content.posts.create') }}" class="btn btn-primary">
                 <span class="icon-plus"></span>
@@ -22,14 +22,14 @@
                             {{HTML::link(URL::route('cms.content.posts.show',$post['data']->slug),$post['data']->title)}}
                             <div class="pull-right action-buttons">
 
-                                @if ($admin_permissions->has('update'))
+                                @if (Auth::hasPermission('update'))
 
                                     <a class="blue" href="{{URL::route('cms.content.posts.edit',$post['data']->slug)}}">
                                         <i class="icon-pencil bigger-130"></i>
                                     </a>
                                 @endif
                                 
-                                @if ($admin_permissions->has('delete'))
+                                @if (Auth::hasPermission('delete'))
                                     <a class="red" href="{{URL::route('cms.content.posts.destroy',$post['data']->slug)}}">
                                         <i class="icon-trash bigger-130"></i>
                                     </a>

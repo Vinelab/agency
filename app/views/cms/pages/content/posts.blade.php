@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    @if ($admin_permissions->has('create'))
+    @if (Auth::hasPermission('create'))
         <div class="row">
             <a href="{{ URL::route('cms.content.posts.create') }}" class="btn btn-primary">
                 <span class="icon-plus"></span>
