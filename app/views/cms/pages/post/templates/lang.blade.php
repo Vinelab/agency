@@ -9,5 +9,6 @@
 	Lang.conf_messasge_delete_post="{{Lang::get('posts/form.conf_messasge_delete_post')}}"
 	Lang.cancel="{{Lang::get('posts/form.cancel')}}"
 	Lang.delete="{{Lang::get('posts/form.delete')}}"
+	Lang.cover_image_error = "{{Lang::get('posts/form.cover_image_msg')}}"
 </script>
 
