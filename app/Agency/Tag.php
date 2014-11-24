@@ -1,16 +1,16 @@
 <?php  namespace Agency;
 
-use Eloquent;
+use NeoEloquent;
 
-class Tag extends Eloquent  {
+class Tag extends NeoEloquent  {
 
-	protected $table = "tags";
+	protected $label = 'Tag';
 
 	protected $fillable = ['text','slug'];
 
 	public function posts()
     {
-        return $this->belongsToMany("Agency\Post");
+        return $this->belongsToMany("Agency\Post", "TAG");
     }
 
 	public function dbTable()
