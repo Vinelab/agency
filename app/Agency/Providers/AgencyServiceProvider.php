@@ -19,6 +19,11 @@ class AgencyServiceProvider extends ServiceProvider {
         // register Cms Service Provider
         $this->app->register('Agency\Providers\OfficeServiceProvider');
 
+        $this->app->bind(
+            'Agency\Contracts\Repositories\TagRepositoryInterface',
+            'Agency\Repositories\TagRepository');
+
+
         // register API V1 Mappers Service Provider
         // $this->app->register('Agency\Providers\Artists\Api\MappersServiceProvider');
 
@@ -68,6 +73,6 @@ class AgencyServiceProvider extends ServiceProvider {
         //     'Agency\Contracts\Post\StatusRepositoryInterface',
         //     'Agency\Post\Repositories\StatusRepository');
 
-        // $this->app->bind('Agency\Contracts\HelperInterface','Agency\Support\Helper');
+        $this->app->bind('Agency\Contracts\HelperInterface','Agency\Support\Helper');
     }
 }
