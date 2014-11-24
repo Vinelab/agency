@@ -5,9 +5,11 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Eloquent;
 
-class Post extends Eloquent  {
+
+use NeoEloquent;
+
+class Post extends NeoEloquent  {
 
 	protected $table = 'posts';
 
@@ -44,7 +46,7 @@ class Post extends Eloquent  {
 
 	public function section()
 	{
-		return $this->belongsTo("Agency\Section");
+		return $this->belongsTo('Agency\Office\Section','POST');
 	}
 
 	public function tags()
