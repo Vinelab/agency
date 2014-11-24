@@ -95,7 +95,7 @@ class AdminController extends Controller {
      */
     public function create()
     {
-        if ($this->admin_permissions->has('create'))
+        if (Auth::hasPermission('create'))
         {
             $agency_sections   = $this->getAgencySections();
             $roles = $this->getRoles();
@@ -118,7 +118,7 @@ class AdminController extends Controller {
     {
         try {
 
-            if ($this->admin_permissions->has('create'))
+            if (Auth::hasPermission('create'))
             {
                 $this->validator->validate(Input::get('info'));
 

@@ -80,7 +80,7 @@ class PostController extends Controller {
 	public function create()
 	{
 
-		if($this->admin_permissions->has("create"))
+		if(Auth::hasPermission('create'))
 		{
 
 			$edit_post=null;
@@ -101,7 +101,7 @@ class PostController extends Controller {
 	 */
 	public function store()
 	{
-		if($this->admin_permissions->has("create"))
+		if(Auth::hasPermission('create'))
 		{
 			if($this->validator->validate(Input::all()))
 			{

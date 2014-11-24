@@ -46,7 +46,7 @@ class ContentController extends Controller {
 	public function index()
 	{
 
-		if($this->admin_permissions->has("create"))
+		if(Auth::hasPermission('create'))
 		{
 			$section = $this->cms_sections['current'];
 			$sections = $this->section->children($section->alias)->sections()->get();

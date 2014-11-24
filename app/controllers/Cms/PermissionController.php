@@ -52,7 +52,7 @@ class PermissionController extends Controller {
 
     public function store()
     {
-        if ($this->admin_permissions->has('create'))
+        if (Auth::hasPermission('create'))
         {
             $this->validator->validate(Input::get());
 

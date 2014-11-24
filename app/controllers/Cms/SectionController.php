@@ -70,7 +70,7 @@ class SectionController extends Controller {
      */
     public function store()
     {
-        if ($this->admin_permissions->has('create'))
+        if (Auth::hasPermission('create'))
         {
            try {
 
