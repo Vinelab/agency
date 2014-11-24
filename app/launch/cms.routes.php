@@ -62,36 +62,80 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                 'as' => 'cms.dashboard.password.update',
                 'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
             ]);
-
         });
 
-        Route::get('/artists', [
-                'as' => 'cms.artists',
-                'uses' => 'DashboardController@index'
+        Route::group(['prefix' =>'/content'], function(){
+
+            Route::get('/',[
+                'as' => 'cms.content',
+                'uses' => 'ContentController@index'
             ]);
 
-        Route::get('/artists/{alias}', [
-                'as' => 'cms.artists.show',
-                'uses' => 'DashboardController@index'
+            Route::get('/{id}',[
+                'as' => 'cms.content.show',
+                'uses' => 'ContentController@show'
             ]);
+            
+            Route::group(['prefix'=>'/posts'],function(){
+
+                Route::resource('/tags', 'TagController',
+                [
+                'names' => [
+                    'index'   => 'cms.content.posts.tags',
+                    'create'  => 'cms.content.posts.tags.create',
+                    'store'   => 'cms.content.posts.tags.store',
+                    'edit'    => 'cms.content.posts.tags.edit',
+                    'update'  => 'cms.content.posts.tags.update',
+                    'destroy' => 'cms.content.posts.tags.destroy'
+                ],
+                'except' => ['show']
+                ]);
+
+                Route::resource('/', 'PostController',
+                [
+                    'names' => [
+                        'index'   => 'cms.content.posts',
+                        'create'  => 'cms.content.posts.create',
+                        'store'   => 'cms.content.posts.store',
+                        'edit'    => 'cms.content.posts.edit',
+                        'show'    => 'cms.content.posts.show',
+                        'destroy' => 'cms.content.posts.destroy'
+                    ],
+                    'except' => ['update']
+                ]);
+
+                Route::post("/photos",[
+                    "as" => "cms.content.posts.photos.store",
+                    "uses" => "Agency\Cms\Controllers\MediaController@store"
+                ]);
+
+                Route::post("/photos/delete",[
+                    "as" => "cms.content.posts.photos.destroy",
+                    "uses" => "Agency\Cms\Controllers\MediaController@destroy"
+                ]);
+
+                Route::post("/{id}",[
+                    'as' => 'cms.content.posts.update',
+                    'uses' => 'Agency\Cms\Controllers\PostController@update'
+                ]);
+
+            });
+
+           
+        });
 
         Route::resource('/administration', 'AdminController',
-            [
-                'names' => [
-                    'index'   => 'cms.administration',
-                    'create'  => 'cms.administration.create',
-                    'store'   => 'cms.administration.store',
-                    'show'    => 'cms.administration.show',
-                    'edit'    => 'cms.administration.edit',
-                    'update'  => 'cms.administration.update',
-                    'destroy' => 'cms.administration.destroy'
-                ]
-            ]);
-
-        Route::get('/content', [
-                'as' => 'cms.content',
-                'uses' => 'DashboardController@index'
-            ]);
+        [
+            'names' => [
+                'index'   => 'cms.administration',
+                'create'  => 'cms.administration.create',
+                'store'   => 'cms.administration.store',
+                'show'    => 'cms.administration.show',
+                'edit'    => 'cms.administration.edit',
+                'update'  => 'cms.administration.update',
+                'destroy' => 'cms.administration.destroy'
+            ]
+        ]);
 
         Route::get('/audience', [
                 'as' => 'cms.audience',
