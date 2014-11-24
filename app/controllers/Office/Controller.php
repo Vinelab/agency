@@ -13,7 +13,8 @@ class Controller extends BaseController {
 
     public function __construct()
     {
-        if (Auth::check() && ! Request::isOpen() && ! Auth::hasPermission('read')) throw new UnauthorizedException;
+        if (Auth::check() && ! Request::isOpen() && ! Auth::hasPermission('read')) {
+            throw new UnauthorizedException();
+        }
     }
-
 }
