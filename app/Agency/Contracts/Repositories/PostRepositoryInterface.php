@@ -1,4 +1,4 @@
-<?php  namespace Agency\Repositories\Contracts;
+<?php  namespace Agency\Contracts\Repositories;
 
 interface PostRepositoryInterface {
 
@@ -16,6 +16,18 @@ interface PostRepositoryInterface {
 	public function create($title, $slug, $body, $user_id, $section, $publish_date, $publish_state);
 
 	/**
+	 * [createWith description]
+	 * @param  string $title
+	 * @param  string $slug
+	 * @param  string $body
+	 * @param  DateTime $publish_date
+	 * @param  DateTime $publish_state
+	 * @param  array $relations
+	 * @return \Agency\Post
+	 */
+	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $relations= []);
+
+	/**
 	 * update a post's info
 	 * specified by its $id
 	 *
@@ -28,7 +40,7 @@ interface PostRepositoryInterface {
 	 * @param DateTime $publish_date
 	 * @param string $publish_state values must be specified at the model level and mapped to an enum
 	 */
-	public function update($id, $title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
+	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state);
 
 	/**
 	 * get a collection of posts
@@ -92,7 +104,7 @@ interface PostRepositoryInterface {
 	 *
 	 * @param integer $post_id
 	 * @param integer $image_id
-	 * @return boolean true if success 
+	 * @return boolean true if success
 	 * @return Exception in case of error
 	 */
 	public function detachImages($post_id, $image_ids);
@@ -100,7 +112,7 @@ interface PostRepositoryInterface {
 	/**
 	 * delete all videos from a post
 	 * according to the post id
-	 * @return boolean true if success 
+	 * @return boolean true if success
 	 * @return Exception in case of error
 	 */
 	public function detachVideos($post_id, $videos_ids);
@@ -112,7 +124,7 @@ interface PostRepositoryInterface {
 	 * @param array $existing_tags		array of integers representing the
 	 *                              	the ids of the existing tags
 	 */
-	public function addTags($id,$new_tags,$existing_tags);
+	public function addTags($id, $tags);
 
 	/**
 	 * Add images to post
