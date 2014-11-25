@@ -1,5 +1,5 @@
 <?php namespace Agency\Media\Videos;
-use Agency\Validators\Contracts\VideoValidatorInterface;
+use Agency\Contracts\Validators\VideoValidatorInterface;
 use Agency\Video;
 
 class Parser implements Contracts\ParserInterface {
