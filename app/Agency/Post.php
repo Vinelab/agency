@@ -5,123 +5,121 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
+use NeoEloquent, Config;
 
+use Carbon\Carbon;
 
-use NeoEloquent;
+use DB, Cache;
+
+use Vinelab\NeoEloquent\Eloquent\SoftDeletingTrait;
+
 
 class Post extends NeoEloquent  {
 
-	protected $table = 'posts';
+    use SoftDeletingTrait;
 
-	protected $fillable=['title','body','admin_id','section_id','publish_date','publish_state','slug'];
+    protected $label = ['Post'];
 
-	protected $thumbnail;
+    protected $fillable=['title','body','admin_id','section_id', 'featured','publish_date','publish_state','slug'];
+
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+
+    protected $thumbnail;
+
+    public $timestamps = true;
+
 
     public function scopePublished($query)
     {
-        return $query->where('publish_state','=','published');
+
+        $passed_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','<=',Carbon::now('Asia/Beirut')->toDateTimeString())->get();
+
+        foreach ($passed_scheduled_posts as $post) {
+            $post->update([
+                'publish_state' => 'published'
+            ]);
+        }
+
+        return $query->where('publish_state','published');
     }
 
-	public function admin()
-	{
-		return $this->belongsTo('Agency\Cms\Admin');
-	}
 
-	public function media()
-	{
-		return $this->hasMany('Agency\Media');
-	}
+    public function nearestScheduledPost()
+    {
+        $waiting_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','>',Carbon::now('Asia/Beirut')->toDateTimeString())->get();
+
+         if($waiting_scheduled_posts->count() > 0)
+        {
+            return $waiting_scheduled_posts->sortBy('publish_date')->first();
+        }
+
+        return null;
+    }
+
+
+    public function comments()
+    {
+        return $this->morphMany('Starac\Entities\Comment', 'ON');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo('Agency\Cms\Admin', 'ADMIN');
+    }
 
     public function images()
     {
-        return $this->morphedByMany('Agency\Image', 'media');
-            
+        return $this->hasMany('Agency\Image', 'IMAGE');
+    }
+
+    public function coverImage()
+    {
+        return $this->hasOne('Agency\Image', 'COVER_IMAGE');
     }
 
     public function videos()
     {
-        return $this->morphedByMany('Agency\Video', 'media');
-           
+        return $this->hasMany('Agency\Video', 'VIDEO');
+
     }
 
-	public function section()
-	{
-		return $this->belongsTo('Agency\Office\Section','POST');
-	}
-
-	public function tags()
+    public function section()
     {
-        return $this->belongsToMany("Agency\Tag");
+        return $this->belongsTo("Agency\Section", "POST");
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany("Agency\Tag", "TAG");
     }
 
     public function setThumbnail($thumbnail)
     {
-    	$this->thumbnail = $thumbnail;
+        $this->thumbnail = $thumbnail;
     }
 
     public function thumbnailURL()
     {
-    	if(!is_null($this->thumbnail))
-    	{
-    		return $this->thumbnail;
-    	} else {
-
-            $media = $this->media()->get();
-
-            if(!$media->isEmpty())
+        $cover_image = $this->coverImage();
+        if(($cover_image->first()))
+        {
+            return $cover_image->first()->thumbnail;
+        } else {
+          $video = $this->videos()->first();
+            if(isset($video->thumbnail))
             {
-                $media=$this->media()->first()->media;
-
-                if($media->type() == 'image')
-                {
-                    return $media->presetURL('thumbnail');
-                }else{
-                    return $media->thumbnail;
-                }
-
-                return $this->media()->first()->media->url;
-            }
-
-    	}
-    }
-
-    public function getAllImages()
-    {
-        $media = $this->media()->get();
-        $images = [];
-
-        if(!$media->isEmpty())
-        {
-            foreach ($media as $media_element) {
-                if($media_element->media->type() == "image")
-                {
-                     array_push($images, $media_element->media) ;
-                }
+                return $video->thumbnail;
             }
         }
 
-        return $images;
-
     }
 
-    public function getAllVideos()
+
+    public function shareUrl()
     {
-        $media = $this->media()->get();
-        $videos = [];
-
-        if(!$media->isEmpty())
-        {
-            foreach ($media as $media_element) {
-                if($media_element->media->type()=="video")
-                {
-                    array_push($videos, $media_element->media);
-                }
-            }
-        }
-
-        return $videos;
-
+        return Config::get('share.url').'/posts/'.$this->slug;
     }
+
 
 
 
