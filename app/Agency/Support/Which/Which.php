@@ -31,4 +31,9 @@ class Which {
         return $this->sections->currentCategory();
     }
 
+    public function children()
+    {
+        return $this->sections->children();
+    }
+
 }
