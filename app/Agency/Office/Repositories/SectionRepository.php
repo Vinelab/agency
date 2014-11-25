@@ -116,4 +116,9 @@ class SectionRepository extends Repository implements SectionRepositoryInterface
 
         return $section;
     }
+
+    public function infertile()
+    {
+        return $this->section->where('is_fertile', false)->get();
+    }
 }
