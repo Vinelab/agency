@@ -1,28 +1,28 @@
 <?php  namespace Agency;
 
-use Eloquent;
+use NeoEloquent;
 use Agency\Contracts\MediaInterface;
 use Agency\Contracts\VideoInterface;
 
-class Video extends Eloquent implements MediaInterface, VideoInterface  {
+class Video extends NeoEloquent implements MediaInterface, VideoInterface  {
 
-	protected $table = 'videos';
+    protected $lable = 'Video';
 
-	protected $fillable = ['url', 'title', 'description', 'thumbnail'];
+    protected $fillable = ['youtube_id','url', 'title', 'description', 'thumbnail'];
 
-    public function media()
-    {
-        return $this->morphToMany('Agency\Post', 'media');
-    }
+   public function posts()
+   {
+        return $this->belongsTo('Agency\Post', 'VIDEO');
+   }
 
     public function type()
     {
-    	return 'video';
+        return 'video';
     }
 
     public function url()
     {
-    	return $this->url;
+        return $this->url;
     }
 
 }
