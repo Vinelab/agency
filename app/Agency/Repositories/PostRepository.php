@@ -6,24 +6,25 @@
  */
 
 use Agency\Post;
+use Carbon\Carbon;
 use Agency\Helper;
 use Agency\Api\Api;
 use DB,Config, Response;
-use Agency\Api\Mappers\PostMapper;
-use Agency\Contracts\ImageInterface;
-use Agency\Contracts\VideoInterface;
-use Agency\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Repositories\Contracts\ImageRepositoryInterface;
-use Agency\Repositories\Contracts\SectionRepositoryInterface;
-
+use Agency\Contracts\Repositories\PostRepositoryInterface;
+use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
 use Agency\Contracts\HelperInterface;
+
+use Starac\Entities\Student;
+
+use Exception;
+
 
 class PostRepository extends Repository implements PostRepositoryInterface {
 
 
 	/**
 	 * the post model instance
-	 * 
+	 *
 	 * @var Agency\Post
 	 */
 	protected $post;
@@ -36,17 +37,11 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 
 	public function __construct(Post $post,
-								ImageRepositoryInterface $images,
 								SectionRepositoryInterface $sections,
-								ImageInterface $image,
-								VideoInterface $video,
 								HelperInterface $helper)
 	{
 		$this->post = $this->model = $post;
-		$this->images = $image;
 		$this->sections = $sections;
-		$this->image = $image;
-		$this->video = $video;
 		$this->helper = $helper;
 	}
 
@@ -54,13 +49,41 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function create($title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state)
 	{
-		return $this->post->create(compact("title","body","admin_id","section_id","publish_date","publish_state","slug"));
+		return $this->post->create([
+			"title"         => $title,
+			"slug"          => $slug,
+			"body"          => $body,
+			"admin_id"      => $admin_id,
+			"section_id"    => $section_id,
+			"publish_date"  => $publish_date,
+			"publish_state" => $publish_state
+		]);
 	}
 
-	public function update($id, $title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state)
+
+	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $relations = [])
+	{
+		return $this->post->createWith([
+			'title'         => $title,
+			'slug'          => $slug,
+			'body'          => $body,
+			'featured'      => $featured,
+			'publish_date'  => $publish_date,
+			'publish_state' => $publish_state
+		], $relations);
+	}
+
+	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state)
 	{
 		$post = $this->find($id);
-		$post->fill(compact('title', 'slug', 'body', 'admin_id', 'section_id', 'publish_date', 'publish_state'));
+		$post->fill([
+			'title'         => $title,
+			'slug'          => $slug,
+			'body'          => $body,
+			'featured'      => $featured,
+			'publish_date'  => $publish_date,
+			'publish_state' => $publish_state
+		]);
 
 		if ($post->save())
 		{
@@ -81,7 +104,9 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 	 */
 	public function remove($id_or_slug)
 	{
-		return $this->findByIdOrSlug($id_or_slug)->delete();
+		$post = $this->findByIdOrSlug($id_or_slug);
+		$post->section()->edge($post->section)->delete();
+		return $post->delete();
 	}
 
 	public function uniqSlug($title)
@@ -105,13 +130,27 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 	public function published($input = array())
 	{
-		$posts = $this->post->published()->latest('created_at');
+
+		$posts = $this->post->published();
+
+		if(isset($input['keyword']) and ! empty($input['keyword']))
+		{
+			$posts->where('body','=~','.*'.$input['keyword'].'.*')->orWhere('title', '=~', '.*'.$input['keyword'].'.*');
+		}
+
+		if(isset($input['featured']) and ! empty($input['featured']))
+        {
+        	$featured = ((boolean)$input['featured'] == 1) ? 'true' : 'false';
+        	$posts = $posts->where('featured',$featured);
+        }
 
         if(isset($input['category']) and ! empty($input['category']))
         {
-			$posts = $posts->join('cms_sections', 'cms_sections.id', '=', 'posts.section_id')
-				->where('cms_sections.alias', $input['category']);
+        	$posts = $posts->whereHas('section', function($q) use ($input) {
+        		return $q->where('alias','=',$input['category']);
+        	});
         }
+
 
         if(isset($input['tag']) and ! empty($input['tag']))
         {
@@ -120,27 +159,36 @@ class PostRepository extends Repository implements PostRepositoryInterface {
             });
         }
 
-		$limit = (isset($input['limit']) and ! empty($input['limit'])) ? $input['input'] : Config::get('api.limit');
+        return $posts;
 
-        $paginated_posts = $posts->paginate((int) $input);
 
-		$posts->select('posts.id as id', 'posts.title as title', 'posts.body as body');
-
-        return $posts->get();
 	}
 
-	public function addTags($id, $new_tags, $existing_tags)
-	{	
+
+	public function paginatedPublishedPost($input = array())
+	{
+		$posts = $this->published($input);
+
+		$posts = $posts->orderBy('publish_date','desc');
+
+		$limit = (isset($input['limit']) and ! empty($input['limit'])) ? $input['limit'] : Config::get('api.limit');
+		$limit = $this->checkLimit($limit);
+
+        return  $posts->paginate($limit);
+
+	}
+
+	public function addTags($id, $tags_ids)
+	{
 		$post = $this->post->findOrFail($id);
-		$new_tags = $post->tags()->saveMany($new_tags);
-		$new_tags_ids = array_map(function($tag){ return $tag->id; }, $new_tags);
-		$tags_ids = array_merge($new_tags_ids, $existing_tags);
-		return $post->tags()->sync($tags_ids);
+		return $post->tags()->attach($tags_ids);
 	}
 
 	public function detachTags($id)
 	{
-		return $this->post->findOrFail($id)->tags()->detach();
+
+		$post = $this->post->findOrFail($id);
+		return $post->tags()->detach($post->tags->lists('id'));
 	}
 
 	public function detachImages($id, $image_ids)
@@ -165,4 +213,77 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 		return $this->post->findOrFail($post_id)->videos()->saveMany($videos);
 	}
 
+	public function updateCoverImage($post_id, $image)
+	{
+		return $this->post->findOrFail($post_id)->coverImage()->attach($image);
+
+	}
+
+	public function getBlendedPosts($input = array(), $parent_id)
+	{
+		$posts = $this->post->published();
+
+		$posts = $posts->whereHas('section', function($q) use ($parent_id) {
+        		return  $q->where('parent_id','=',$parent_id);
+        	});
+
+		$posts = $posts->orderBy('publish_date','desc');
+
+		$limit = (isset($input['limit']) and ! empty($input['limit'])) ? $input['limit'] : Config::get('api.limit');
+		$limit = $this->checkLimit($limit);
+
+        return $posts->paginate($limit);
+
+	}
+
+	public function updateSection($id, $section_id)
+	{
+		$section = $this->sections->find($section_id);
+		$post = $this->find($id);
+		$post_section = $post->section;
+		$post_section->posts()->detach($post->id);
+		return $section->posts()->attach($post->id);
+
+	}
+
+	public function nearestScheduledPost()
+	{
+		return $this->post->nearestScheduledPost();
+	}
+
+	public function getFromMultipleSections($input = array(), $section_ids)
+	{
+		$posts = $this->post->published();
+
+		$posts = $posts->whereHas('section', function($q) use ($section_ids) {
+			return $q->whereIn('id',$section_ids);
+		});
+
+		$posts = $posts->orderBy('publish_date','desc');
+
+
+		$limit = (isset($input['limit']) and ! empty($input['limit'])) ? $input['limit'] : Config::get('api.limit');
+		$limit = $this->checkLimit($limit);
+
+        return $posts->paginate($limit);
+
+	}
+
+
+	public function checkLimit($limit)
+	{
+		if($limit > Config::get('api.limit') )
+		{
+			return Config::get('api.limit');
+		}
+
+		return $limit;
+	}
+
+
+	public function getComments($id, $page)
+	{
+		$post = $this->find($id);
+		return $post->comments()->orderBy('created_at', 'desc')->paginate('25',$page);
+	}
 }
