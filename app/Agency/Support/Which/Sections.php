@@ -108,4 +108,9 @@ class Sections {
     {
         return $this->current_section;
     }
+
+    public function children()
+    {
+        return $this->sections->infertile();   
+    }
 }
