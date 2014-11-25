@@ -1,8 +1,9 @@
 <?php namespace Agency\Validators;
 
 use Agency\Exceptions\InvalidVideoException;
+use Agency\Contracts\Validators\VideoValidatorInterface;
 
-class VideoValidator extends Validator implements Contracts\VideoValidatorInterface {
+class VideoValidator extends Validator implements VideoValidatorInterface {
 
     protected $rules = [
         'url' => 'required|url|max:255|youtube'
