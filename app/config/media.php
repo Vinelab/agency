@@ -23,6 +23,7 @@ return [
             'thumbnail' => ['width' => 150, 'height' => 100],
             'square'    => ['width' => 50, 'height' => 50]
         ]
-    ]
+    ],
 
+    'location' => 'cms/images/uploads'
 ];
