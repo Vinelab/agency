@@ -1,6 +1,6 @@
 @section("head")
     @parent
-	{{HTML::style("/css/content/posts.css")}}
+	{{HTML::style(Cdn::asset("/css/content/posts.css"))}}
 
 @stop
 
@@ -33,7 +33,7 @@
 
 @section('scripts')
     @parent
-        {{HTML::script("/cms/js/content/index.js")}}
+        {{HTML::script(Cdn::asset("/cms/js/content/index.js"))}}
 
         
 @stop
