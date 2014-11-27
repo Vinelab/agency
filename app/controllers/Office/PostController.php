@@ -19,7 +19,8 @@ use Agency\Media\Photos\Contracts\FilterResponseInterface;
 use Agency\Media\Videos\Contracts\ParserInterface;
 
 use Agency\Post;
-
+use Which;
+use Config;
 use Agency\Cms\Tag;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,9 +38,23 @@ class PostController extends Controller {
 	 */
 	
 
-    public function __construct()
+    public function __construct(PostValidatorInterface $validator,
+    							PostRepositoryInterface $post,
+    							HelperInterface $helper,
+    							SectionRepositoryInterface $section,
+    							ParserInterface $parser_interface,
+    							TagRepositoryInterface $tag,
+    							ManagerInterface $manager,
+    							FilterResponseInterface $filter_response)
     {
-        
+		$this->validator = $validator;
+		$this->posts = $post;
+		$this->helper = $helper;
+		$this->sections = $section;
+		$this->parser_interface = $parser_interface;
+		$this->tags = $tag;
+		$this->manager = $manager;
+		$this->filter_response = $filter_response;        
     }
 
 	public function index()
@@ -60,7 +75,7 @@ class PostController extends Controller {
 
 			$edit_post=null;
 
-			$contents=[];
+			$contents=Which::children();
 			
 			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
@@ -76,27 +91,33 @@ class PostController extends Controller {
 	 */
 	public function store()
 	{
-		if(Auth::hasPermission('create'))
+		if(Auth::hasPermission("create"))
 		{
 			if($this->validator->validate(Input::all()))
 			{
 			  	$slug = $this->posts->uniqSlug( Input::get('title') );
 				$body = $this->helper->cleanHtml(Input::get('body'));
-				
+
 				$section = $this->sections->findBy('alias',Input::get('section'));
 
+				$related_models = $this->save();
 
-				$post = $this->posts->create(Input::get('title'),$slug,$body,Auth::user()->id,$section->id,Input::get('publish_date'),Input::get('publish_state'));
+				$related_models['section'] = $section;
 
-				$this->save($post->id);
+				$publish_state = $this->filterPublishState(Input::get('publish_state'));
+				$publish_date = Input::get('publish_date');
+				$publish_date = $this->formatDate($publish_date);
+				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state, $related_models);
 
-			
+				$this->posts->updateSection($post->id, $section->id);
+
+				// $this->cache->forgetByTags(['posts']);
+
 				return Response::json($post);
 
 			} else {
 				return Response::json(['status'=>400,"message"=>$this->validator->messages()]);
 			}
-
 		}
 
 		throw new UnauthorizedException;
@@ -110,7 +131,7 @@ class PostController extends Controller {
 	 */
 	public function show($slug)
 	{
-		if($this->admin_permissions->has("read"))
+		if(Auth::hasPermission("read"))
 		{
 			try {
 
@@ -118,23 +139,25 @@ class PostController extends Controller {
 				$section = $post->section()->first();
 
 				//get all parent sections
-				$parent_sections = $this->sections->parentSections($section->alias,$this->cms_sections['current']->id);
-				$gallery = $post->media()->get();
-				
-				$media=[];
-				foreach ($gallery as $value) {
-					array_push($media, $value->media);					
-				}
+
+				$images = $post->images;
+
+				$videos = $post->videos;
+
+				$tags = $post->tags;
 
 
-				$tags = $post->tags()->get();
-
-				return View::make('cms.pages.post.show',compact('post','media','parent_sections','tags'));
+				return View::make('cms.pages.post.show',[
+					'tags'   => $tags,
+					'post'   => $post,
+					'images' => $images,
+					'videos' => $videos,
+				]);
 
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
-			
+
 		}
 
 		throw new UnauthorizedException;
@@ -148,31 +171,30 @@ class PostController extends Controller {
 	 */
 	public function edit($slug)
 	{
-		if($this->admin_permissions->has("update"))
+		if(Auth::hasPermission("update"))
 		{
 
 			try {
 
 				$post=$this->posts->findBy("slug",$slug);
-				$media = $post->media()->get();
-				$media_array=[];
-				foreach ($media as $value) {
-					array_push($media_array, $value->media);
-				}
 
-				$tags = $post->tags()->get()->fetch('text')->toArray();
+				$images = $post->images;
 
-				$contents = $this->sections->infertile($this->cms_sections['current']->alias);
-				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'media'=>$media_array]);
+				$videos = $post->videos;
 
-				
+				$tags = $post->tags->lists('text');
+
+				$contents=Which::children();
+
+				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'images'=>$images, 'videos'=>$videos]);
+
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
-			
+
 		}
 
-		throw new UnauthorizedException;		
+		throw new UnauthorizedException;
 	}
 
 	/**
@@ -183,15 +205,28 @@ class PostController extends Controller {
 	 */
 	public function update($id)
 	{
-		if($this->admin_permissions->has("update"))
+		if(Auth::hasPermission("update"))
 		{
 			if($this->validator->validate(Input::all()))
 			{
+
 				$body = $this->helper->cleanHtml(Input::get('body'));
 
-				$slug = $this->posts->uniqSlug(Input::get('title'));
-
+				$post = $this->posts->find($id);
+				($post->title == Input::get('title')) ? $slug = $post->slug : $slug = $this->posts->uniqSlug(Input::get('title'));
 				$section = $this->sections->findBy('alias', Input::get('section'));
+
+				$publish_state = $this->filterPublishState(Input::get('publish_state'));
+
+				if($post->publish_state == $publish_state && $publish_state == 'published')
+				{
+					$publish_date = $post->publish_date;
+				} else {
+
+					$publish_date = Input::get('publish_date');
+					$publish_date = $this->formatDate($publish_date);
+				}
+
 				if ($section)
 				{
 
@@ -199,36 +234,72 @@ class PostController extends Controller {
 												Input::get("title"),
 												$slug,
 												$body,
-												Auth::user()->id,
-												$section->id,
-												Input::get('publish_date'),
-												Input::get('publish_state'));
+												Input::get('featured'),
+												$publish_date,
+												$publish_state);
+
 
 					if ($updated)
 					{
+
+						$this->posts->updateSection($id, $section->id);
+
 						$deleted_images = Input::get('deleted_images');
 
 						if( ! empty($deleted_images))
 						{
-							$deleted_images = explode(',', $deleted_images);
+							$deleted_images =array_map('intval', explode(',', $deleted_images));
 
 							$this->posts->detachImages($id,$deleted_images);
 							$this->images->remove($deleted_images);
 						}
 
 						$deleted_videos =Input::get('deleted_videos');
+
 						if( ! empty($deleted_videos))
 						{
-							$deleted_videos = explode(',', $deleted_videos);
-							$this->posts->detachVideos($id,$deleted_videos);
+							$deleted_videos = array_map('intval', explode(',', $deleted_videos));
+
+							$result = $this->posts->detachVideos($id, $deleted_videos);
 							$this->videos->remove($deleted_videos);
 						}
 
-						$post = $this->save($id);	
+
+
+						$related_models = $this->save($id);
+
+
+
+						if( ! empty($related_models['tags']))
+						{
+							$tags = $related_models['tags'];
+							$this->posts->addTags($id, $tags);
+						}
+
+						if(! empty($related_models['images']))
+						{
+							$images = $related_models['images'];
+							$this->posts->addImages($id, $images);
+						}
+
+						if(! empty($related_models['videos']))
+						{
+							$videos = $related_models['videos'];
+							$this->posts->addVideos($id, $videos);
+						}
+
+						if(! empty($related_models['coverImage']))
+						{
+							$image = $related_models['coverImage'];
+							$this->posts->updateCoverImage($id, $image);
+						}
+
+						// $this->cache->forgetByTags(['posts']);
+
 					}
 				}
-			
-				return Response::json($post);
+
+				return Response::json($updated);
 			} else {
 				//display error
 
@@ -247,23 +318,29 @@ class PostController extends Controller {
 	 */
 	public function destroy($slug)
 	{
-		if($this->admin_permissions->has("delete"))
+		if(Auth::hasPermission("delete"))
 		{
 			try {
 
 				$post = $this->posts->findByIdOrSlug($slug);
 
-				$section = $post->section()->get()->first();
+				$section = $post->section;
+
 
 				if($this->posts->remove($post->id))
 				{
-					return Redirect::route("cms.content.show",$section->alias);	
+					// $this->cache->forgetByTags(['posts']);
+
+					return Redirect::route("cms.content.show",$section->alias);
 				}
 
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
-			
+
+			// $this->cache->forgetByTags(['posts']);
+
+
 		}
 
 		throw new UnauthorizedException;
@@ -281,35 +358,36 @@ class PostController extends Controller {
 
 			return Response::json(['messages' => $e->getMessages()]);
 		}
-		
+
 	}
 
-	public function save($post_id)
+	public function save($post_id = null)
 	{
+		$related_models = [];
 
-		//detach all tags
-		$this->posts->detachTags($post_id);
+		$related_models['admin']=Auth::getUser();
 
-		$tags = explode(', ', Input::get('tags'));
-		// filter empty tags
-		$tags = array_filter($tags);
+		$tags = Input::get('tags');
 
-		if(!empty($tags))
+
+
+
+		$tags_id = $this->addTags($tags, $post_id);
+
+		if(! is_null($tags_id))
 		{
-			
-			// get tags ids
-			$tags = $this->tags->splitFound($tags);
-			// add new tags to post
-			$new_tags = $this->posts->addTags($post_id, $tags['new'], $tags['existing']);
-
+			$related_models['tags'] = $tags_id;
 		}
-		
+
+
+		$photos = new UploadedPhotosCollection;
+
 		// upload images
 		if(Input::has('croped_images_array'))
 		{
-			$photos = new UploadedPhotosCollection;
 
 		 	$crop_sizes = json_decode(Input::get('croped_images_array'));
+
 
 		 	if(Input::has('images'))
 		 	{
@@ -317,7 +395,7 @@ class PostController extends Controller {
 
 		 		foreach ($images as $key => $image) {
 
-		 			$image = new UploadedFile(public_path()."/tmp/$image", $image);
+		 			$image = new UploadedFile(public_path()."/".Config::get("media.location")."/".$image, $image);
 					$crop_size = get_object_vars($crop_sizes[$key]);
 
 				 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
@@ -326,26 +404,70 @@ class PostController extends Controller {
 
 				$response = $this->manager->upload($photos,'artists/webs');
 
+
 				$response = $response->toArray();
 
 				$images = $this->filter_response->make($response);
 
-				$this->images->store($images['without_original']);
-
-				$this->posts->addImages($post_id, $images['originals']);
-
+				$related_models['images'] = $images['originals'];
 		 	}
+		}
+
+		$photos = new UploadedPhotosCollection;
+
+
+		if(Input::has('cover'))
+		{
+			$cover_crop_size = json_decode(Input::get('croped_cover'));
+			if(! is_null($cover_crop_size))
+			{
+				$cover = Input::get('cover');
+				$cover = new UploadedFile(public_path().$cover, $cover);
+				$cover_crop_size = get_object_vars($cover_crop_size);
+
+			 	$cover = UploadedPhoto::make($cover, $cover_crop_size)->validate();
+				$photos->push($cover);
+
+				$response = $this->manager->upload($photos,'artists/webs');
+				$response = $response->toArray();
+				$images = $this->filter_response->make($response);
+				$related_models['coverImage'] = $images['originals'];
+			}
 		}
 
 		$videos = json_decode(Input::get('videos'));
 
-		$videos = $this->parser_interface->make($videos);
+		if(sizeof($videos)>0)
+		{
+			$videos = $this->parser_interface->make($videos);
 
-		$this->posts->addVideos($post_id,$videos);
+			$related_models['videos'] = $videos;
+		}
+
+		return $related_models;
 
 	}
 
+	public function addTags($tags, $post_id = null)
+	{
+		if(! is_null($post_id))
+		{
+			$this->posts->detachTags($post_id);
+		}
 
+
+		$tags = explode(', ', Input::get('tags'));
+		// filter empty tags
+		$tags = array_filter($tags);
+
+		if(!empty($tags))
+		{
+			// get tags ids
+			$tags = $this->tags->splitFound($tags);
+
+			return $tags;
+		}
+	}
 
 
 }
