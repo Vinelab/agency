@@ -1,5 +1,6 @@
 <?php namespace Agency\Media\Photos;
 
+use Config;
 
 use Agency\Media\Photos\Contracts\StoreInterface;
 
@@ -9,7 +10,7 @@ class Store implements StoreInterface {
 
 	public function __construct()
 	{
-		$this->location ="tmp/";
+		$this->location =Config::get('media.location');
 	}
 
 
