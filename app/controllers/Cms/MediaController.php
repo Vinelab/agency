@@ -33,7 +33,7 @@ class MediaController extends \Controller {
 
 
         try {
-            $result = File::delete(public_path()."/tmp/".Input::get('image'));
+            $result = File::delete(public_path()."/".Input::get('image'));
 
             return Response::json(["result"=>$result]);
             
