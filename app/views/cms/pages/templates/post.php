@@ -3,7 +3,7 @@
 		<span  onclick="deleteImage('{{data}}',this)">
 			<i class="icon-trash bigger-130"></i>
 		</span>
-		<img class="image_to_crop" src="/tmp/{{data}}" id="croped-img-{{index}}">
+		<img class="image_to_crop" src="{{data}}" id="croped-img-{{index}}">
 	</li>
 
 </script>
