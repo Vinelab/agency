@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="{{Cdn::asset('/assets/css/jquery-ui-1.10.3.full.min.css')}}" >
 		<link rel="stylesheet" href="{{Cdn::asset('/assets/css/colorbox.css')}}" />
 		<link rel="stylesheet" href="{{Cdn::asset('/css/style.css')}}">
-		<script src="{{Cdn::asset('js/jquery_1_9_1.min.js')}}"></script>
+		<script src="{{Cdn::asset('/js/jquery_1_9_1.min.js')}}"></script>
 
 	@stop
 
@@ -44,7 +44,7 @@
 
 					@foreach($tags as $tag)
 						<li class="tag-item">
-							<span class="label label-info arrowed-in-left arrowed">{{$tag->text}}</span>
+							<span class="label label-info arrowed-right arrowed-in">{{$tag->text}}</span>
 						</li>
 					@endforeach
 				</ul>

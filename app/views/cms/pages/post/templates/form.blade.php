@@ -88,6 +88,8 @@
 		{{HTML::script(Cdn::asset('/assets/js/bootstrap-tag.min.js'))}}
 		{{HTML::script(Cdn::asset('/js/handlebars.js'))}}
 		<script src="{{Cdn::asset('/assets/js/bootstrap-wysiwyg.min.js')}}"></script>
+		{{HTML::script("/cms/js/post/create.js")}}
+
 
 
 		<script src="{{Cdn::asset('/assets/js/jquery.colorbox-min.js')}}"></script>
