@@ -3,14 +3,13 @@
 use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
-use Agency\Validators\Contracts\PostValidatorInterface;
+use Agency\Contracts\Validators\PostValidatorInterface;
 use Agency\Validators\Contracts\TagValidatorInterface;
 
-use Agency\Repositories\Contracts\SectionRepositoryInterface;
-use Agency\Repositories\Contracts\PostRepositoryInterface;
-use Agency\Repositories\Contracts\ImageRepositoryInterface;
+use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
+use Agency\Contracts\Repositories\PostRepositoryInterface;
 use Agency\Repositories\Contracts\VideoRepositoryInterface;
-use Agency\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Contracts\Repositories\TagRepositoryInterface;
 
 use Agency\Media\Photos\UploadedPhoto;
 use Agency\Media\Photos\UploadedPhotosCollection;
