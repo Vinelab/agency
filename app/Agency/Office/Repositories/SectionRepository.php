@@ -7,6 +7,7 @@
 use Agency\Office\Section;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
+use Config;
 
 class SectionRepository extends Repository implements SectionRepositoryInterface {
 
@@ -120,5 +121,12 @@ class SectionRepository extends Repository implements SectionRepositoryInterface
     public function infertile()
     {
         return $this->section->where('is_fertile', false)->get();
+    }
+
+    public function getRelatedPosts($id)
+    {
+        $section = $this->find($id);
+
+        return $section->posts()->orderBy('publish_date','desc')->paginate(Config::get('posts.number_per_page'));
     }
 }
