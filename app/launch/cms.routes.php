@@ -70,17 +70,12 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                 'as' => 'cms.content',
                 'uses' => 'ContentController@index'
             ]);
-
-            Route::get('/{id}',[
-                'as' => 'cms.content.show',
-                'uses' => 'ContentController@show'
-            ]);
             
             Route::group(['prefix'=>'/posts'],function(){
 
                 Route::resource('/tags', 'TagController',
                 [
-                'names' => [
+                    'names' => [
                     'index'   => 'cms.content.posts.tags',
                     'create'  => 'cms.content.posts.tags.create',
                     'store'   => 'cms.content.posts.tags.store',
@@ -91,7 +86,26 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                 'except' => ['show']
                 ]);
 
-                Route::resource('/', 'PostController',
+                
+
+                Route::post("/photos",[
+                    "as" => "cms.content.posts.photos.store",
+                    "uses" => "MediaController@store"
+                ]);
+
+                Route::post("/photos/delete",[
+                    "as" => "cms.content.posts.photos.destroy",
+                    "uses" => "MediaController@destroy"
+                ]);
+
+                Route::post("/{id}",[
+                    'as' => 'cms.content.posts.update',
+                    'uses' => 'PostController@update'
+                ]);
+
+            });
+
+            Route::resource('/posts', 'PostController',
                 [
                     'names' => [
                         'index'   => 'cms.content.posts',
@@ -104,22 +118,10 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                     'except' => ['update']
                 ]);
 
-                Route::post("/photos",[
-                    "as" => "cms.content.posts.photos.store",
-                    "uses" => "Agency\Cms\Controllers\MediaController@store"
-                ]);
-
-                Route::post("/photos/delete",[
-                    "as" => "cms.content.posts.photos.destroy",
-                    "uses" => "Agency\Cms\Controllers\MediaController@destroy"
-                ]);
-
-                Route::post("/{id}",[
-                    'as' => 'cms.content.posts.update',
-                    'uses' => 'Agency\Cms\Controllers\PostController@update'
-                ]);
-
-            });
+            Route::get('/{id}',[
+                'as' => 'cms.content.show',
+                'uses' => 'ContentController@show'
+            ]);
 
            
         });
