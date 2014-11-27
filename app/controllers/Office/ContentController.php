@@ -74,7 +74,7 @@ class ContentController extends Controller {
 
 						if($section->posts->count()>0)
 						{
-							$posts = $this->section->getRelatedPosts($section->id);
+							$posts = $this->sections->getRelatedPosts($section->id);
 						}
 
 						return View::make("cms.pages.content.posts",[
