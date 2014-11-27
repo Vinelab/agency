@@ -64,7 +64,7 @@ class Post extends NeoEloquent  {
 
     public function admin()
     {
-        return $this->belongsTo('Agency\Cms\Admin', 'ADMIN');
+        return $this->belongsTo('Agency\Office\Admin', 'ADMIN');
     }
 
     public function images()
@@ -85,7 +85,7 @@ class Post extends NeoEloquent  {
 
     public function section()
     {
-        return $this->belongsTo("Agency\Section", "POST");
+        return $this->belongsTo("Agency\Office\Section", "POST");
     }
 
     public function tags()
