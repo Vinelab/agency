@@ -21,12 +21,15 @@ class ImageMapper{
 
 	public function parseAndFill($image)
 	{
-		$this->image['original'] = $image->presetUrl('original');
-		$this->image['small'] = $image->presetUrl('small');
-		$this->image['thumbnail'] = $image->presetUrl('thumbnail');
-		$this->image['square'] = $image->presetUrl('square');
+
+		$default_cover = 'https://s3.amazonaws.com/season10%2Fartists%2Fwebs/5411d23590cf5.jpeg';
+
+		$this->image['original'] = isset($image->original)? $image->original : $default_cover;
+		$this->image['small'] = isset($image->small)? $image->small : $default_cover;
+		$this->image['thumbnail'] = isset($image->thumbnail) ? $image->thumbnail : $default_cover;
+		$this->image['square'] = isset($image->square)? $image->square : $default_cover;
 
 		return $this->image;
 	}
-	
+
 }
