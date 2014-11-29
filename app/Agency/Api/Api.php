@@ -1,13 +1,17 @@
 <?php namespace Agency\Api;
 
-class Api {
+use Agency\Contracts\Api\ApiInterface;
+use Response;
 
-	public static function respond($posts,$total,$page)
+class Api implements ApiInterface {
+
+	public function respond($results,$total,$page = 1)
 	{
-		return [
-            'results' => $posts,
-            'total' => $total,
-            'page' => !is_null($page) ? $page : 1
-        ];
+		return Response::json([
+			'status' => 200,
+            'data' => $results,
+            'total' => intval($total),
+            'page' => is_null($page) ? 1 : intval($page)
+        ]);
 	}
 }
