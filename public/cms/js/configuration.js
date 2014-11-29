@@ -468,7 +468,7 @@
                 url: 'configuration/permissions/id',
                 afterSubmit: this.permissionsChanged,
                 onclickSubmit: function(params, postdata) {
-                    return params.url = "/cms/configuration/permissions/" + (encodeURIComponent(postdata['permissions-table_id']));
+                    return params.url = "/configuration/permissions/" + (encodeURIComponent(postdata['permissions-table_id']));
                 }
             }, {
                 mtype: 'POST',
@@ -480,7 +480,7 @@
                 mtype: 'DELETE',
                 afterSubmit: this.permissionsChanged,
                 onclickSubmit: function(params, postdata) {
-                    return params.url = "/cms/configuration/permissions/" + (encodeURIComponent(postdata));
+                    return params.url = "/configuration/permissions/" + (encodeURIComponent(postdata));
                 }
             }, {
                 mtype: 'GET'
@@ -507,6 +507,121 @@
 
     })();
 
+    Applications = (function() {
+
+        function Applications() {
+          this.configure();
+        }
+
+        Applications.prototype.configure = function() {
+          var pager_selector, table_selector;
+          table_selector = '#applications-table';
+          pager_selector = '#applications-pager';
+          $(table_selector).jqGrid({
+            url: '/configuration/applications',
+            datatype: 'json',
+            mtype: 'GET',
+            savekey: [true, 13],
+            pager: pager_selector,
+            height: 'auto',
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            caption: "Applications",
+            multiselect: false,
+            multiboxonly: true,
+            autowidth: true,
+            shrinkToFit: true,
+            loadError: function(xhr, status, error) {
+              throw new Error(error);
+              return alert('There was an error loading data. Please try again later.');
+            },
+            colNajems: ['ID', 'Name', 'Key', 'Secret'],
+            colModel: [
+              {
+                name: 'id',
+                index: 'id',
+                width: 5,
+                sorttype: 'int',
+                editable: false,
+                align: 'center'
+              }, {
+                name: 'name',
+                index: 'name',
+                width: 5,
+                editable: true,
+                align: 'center'
+              }, {
+                name: 'key',
+                index: 'key',
+                width: 40,
+                editable: false
+              }, {
+                name: 'secret',
+                index: 'secret',
+                width: 40,
+                editable: false
+              }
+            ]
+          }).navGrid(pager_selector, {
+                view: true,
+                viewicon: 'ace-icon fa fa-search-plus grey',
+                add: true,
+                addicon: 'ace-icon fa fa-plus-circle purple',
+                edit: true,
+                editicon: 'ace-icon fa fa-pencil blue',
+                del: true,
+                delicon: 'ace-icon fa fa-trash-o red',
+                search: true,
+                searchicon: 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon: 'ace-icon fa fa-refresh green',
+                reloadAfterSubmit: true
+          }, {
+            editCaption: 'Edit Application',
+            mtype: 'PUT',
+            recreateForm: true,
+            closeAfterEdit: true,
+            onclickSubmit: function(params, postdata) {
+              return params.url = "/configuration/applications/" + (encodeURIComponent(postdata['sections-table_id']));
+            }
+          }, {
+            mtype: 'POST',
+            closeAfterAdd: true,
+            reloadAfterSubmit: true,
+            url: '/configuration/applications'
+          }, {
+            mtype: 'DELETE',
+            onclickSubmit: function(params, postdata) {
+              return params.url = "/configuration/applications/" + (encodeURIComponent(postdata));
+            }
+          }, {
+            mtype: 'GET'
+          }, {
+            mtype: 'GET'
+          });
+          return $(window).on('resize', function() {
+            var width;
+            width = $(window).width();
+            width = width - 2;
+            if (width > 0 && Math.abs(width - $(table_selector).width()) > 5) {
+              return $(table_selector).setGridWidth(width);
+            }
+          });
+        };
+
+        Applications.prototype.iconView = function(cellvalue, options, cell) {
+          return "<span class=\"icon-" + cellvalue + " bigger-110\"> " + cellvalue + "</span>";
+        };
+
+        Applications.prototype.iconEdit = function(cellvalue, options, cell) {
+          return $('span', cell).text().trim();
+        };
+
+        return Applications;
+
+    })();
+
     Configuration = (function(_super) {
         __extends(Configuration, _super);
 
@@ -514,6 +629,7 @@
             this.Sections = new Sections;
             this.Roles = new Roles;
             this.Permissions = new Permissions;
+            this.Applications = new Applications;
         }
 
         return Configuration;

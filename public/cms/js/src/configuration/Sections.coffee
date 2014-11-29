@@ -86,7 +86,7 @@ class Sections
                 }
 
                 {
-                    name:'parent', jsonmap:'parent.title', editable: yes, width:25
+                    name:'parent_id',index:'parent_id', editable: yes, width:25
                 }
 
                 {
@@ -124,7 +124,7 @@ class Sections
                 recreateForm: yes
                 closeAfterEdit: yes
                 onclickSubmit: (params, postdata)->
-                    params.url = "/configuration/sections/#{encodeURIComponent(postdata['sections-table_id'])}"
+                    params.url = "/cms/configuration/sections/#{encodeURIComponent(postdata['sections-table_id'])}"
             }
 
             {
@@ -139,7 +139,7 @@ class Sections
                 # delete
                 mtype: 'DELETE'
                 onclickSubmit: (params, postdata)->
-                    params.url = "/configuration/sections/#{encodeURIComponent(postdata)}"
+                    params.url = "/cms/configuration/sections/#{encodeURIComponent(postdata)}"
             }
 
             {

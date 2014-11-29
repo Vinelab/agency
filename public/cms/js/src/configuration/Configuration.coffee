@@ -8,5 +8,6 @@ class Configuration extends Sections
         @Sections    = new Sections
         @Roles       = new Roles
         @Permissions = new Permissions
+        @Applications = new Applications
 
 $ -> window.Configuration = new Configuration
