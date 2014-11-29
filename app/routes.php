@@ -35,3 +35,8 @@ foreach($files as $file)
 {
     require_once app_path() . '/launch/' . "$prefix.$file.php";
 }
+
+Route::any('/code',[
+    'as' => 'api.code.create',
+    'uses' => 'Agency\Api\Controllers\CodesController@create'
+]);
