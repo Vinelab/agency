@@ -1,12 +1,14 @@
 <?php namespace Agency\Api\Validators;
 
 use Agency\Api\Validators\Contracts\ApplicationValidatorInterface;
+use Agency\Api\Exceptions\InvalidApplicationException;
+
 
 class ApplicationValidator Extends SystemValidator implements ApplicationValidatorInterface {
 
-	protected $rules = [
+    protected $rules = [
         "name"=>"required",
-        "key"=>"required|unique:applications",
+        "key"=>"required|unique:Application",
         "secret"=>"required"
     ];
 
@@ -16,7 +18,7 @@ class ApplicationValidator Extends SystemValidator implements ApplicationValidat
 
         if ( ! $validation->passes())
         {
-        	return false;
+           throw new InvalidApplicationException($validation->messages()->all());
         }
 
         return true;
