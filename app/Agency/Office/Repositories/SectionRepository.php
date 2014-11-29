@@ -129,4 +129,27 @@ class SectionRepository extends Repository implements SectionRepositoryInterface
 
         return $section->posts()->orderBy('publish_date','desc')->paginate(Config::get('posts.number_per_page'));
     }
+
+     public function getMultipleSectionBySlug(array $slug, $relation)
+    {
+        return $this->section->with("$relation")->whereIn('alias',$slug)->get();
+    }
+
+    public function getIdsofMutlipleSections(Collection $sections)
+    {
+        $ids = [];
+        foreach ($sections as $section) {
+            if($section->is_fertile)
+            {
+                $children = $section->children;
+                $children_ids = $children->lists('id');
+                $ids = array_merge($children_ids,$ids);
+            } else {
+                array_push($ids, $section->id);
+            }
+        }
+
+        return $ids;
+
+    }
 }
