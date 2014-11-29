@@ -1,17 +1,19 @@
 <?php namespace Agency\Api;
 
-use Eloquent;
+use NeoEloquent;
 
-class Application extends Eloquent{
+use Agency\Contracts\ApplicationInterface;
+
+class Application extends NeoEloquent implements ApplicationInterface{
 
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = "applications";
+	protected $label = 'Application';
 
-	protected $fillable = ["name","key","secret"];
+	protected $fillable = ['name','key','secret'];
 
 	public function codes()
 	{
