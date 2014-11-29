@@ -186,8 +186,21 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                         'destroy' => 'cms.configuration.permissions.destroy'
                     ]
                 ]);
+
+            Route::resource('applications', 'ApplicationController',
+                [
+                    'names' => [
+                        'index'   => 'cms.configuration.applications',
+                        'store'   => 'cms.configuration.applications.store',
+                        'edit'    => 'cms.configuration.applications.update',
+                        'destroy' => 'cms.configuration.applications.destroy'
+                ]
+            ]);
         });
 
     });
+});
 
+Route::get('/client', function (){
+    return View::make('client');
 });
