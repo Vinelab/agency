@@ -25,6 +25,7 @@ use Agency\Cms\Tag;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Agency\Contracts\HelperInterface;
+use Agency\Cache\PostCacheManager;
 
 
 use View,Input,App,Session,Auth,Response,Redirect;
@@ -45,7 +46,8 @@ class PostController extends Controller {
     							ParserInterface $parser_interface,
     							TagRepositoryInterface $tag,
     							ManagerInterface $manager,
-    							FilterResponseInterface $filter_response)
+    							FilterResponseInterface $filter_response,
+    							PostCacheManager $cache)
     {
 		$this->validator = $validator;
 		$this->posts = $post;
@@ -54,7 +56,8 @@ class PostController extends Controller {
 		$this->parser_interface = $parser_interface;
 		$this->tags = $tag;
 		$this->manager = $manager;
-		$this->filter_response = $filter_response;        
+		$this->filter_response = $filter_response;
+		$this->cache = $cache;         
     }
 
 	public function index()
@@ -111,7 +114,7 @@ class PostController extends Controller {
 
 				$this->posts->updateSection($post->id, $section->id);
 
-				// $this->cache->forgetByTags(['posts']);
+				$this->cache->forgetByTags(['posts']);
 
 				return Response::json($post);
 
@@ -294,7 +297,7 @@ class PostController extends Controller {
 							$this->posts->updateCoverImage($id, $image);
 						}
 
-						// $this->cache->forgetByTags(['posts']);
+						$this->cache->forgetByTags(['posts']);
 
 					}
 				}
@@ -329,7 +332,7 @@ class PostController extends Controller {
 
 				if($this->posts->remove($post->id))
 				{
-					// $this->cache->forgetByTags(['posts']);
+					$this->cache->forgetByTags(['posts']);
 
 					return Redirect::route("cms.content.show",$section->alias);
 				}
@@ -338,7 +341,7 @@ class PostController extends Controller {
 				return Response::json(['message'=>$e->getMessage()]);
 			}
 
-			// $this->cache->forgetByTags(['posts']);
+			$this->cache->forgetByTags(['posts']);
 
 
 		}
