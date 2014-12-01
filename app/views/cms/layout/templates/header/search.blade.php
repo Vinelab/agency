@@ -1,8 +1,13 @@
 <div class="nav-search" id="nav-search">
-	<form class="form-search">
+	{{ Form::open([
+	    'url'    => URL::route('cms.content.search') ,
+	    'class'  => 'form-search',
+	    'role'   =>'form',
+	]) }}
 		<span class="input-icon">
-			<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+				<input name='keyword' type="text" placeholder="Search ..." class="nav-search-input" onKeyPress='handle()' id="nav-search-input" autocomplete="off" />
 			<i class="icon-search nav-search-icon"></i>
 		</span>
-	</form>
+	{{Form::close()}}
 </div>
+`
