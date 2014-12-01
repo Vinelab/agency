@@ -70,6 +70,11 @@ Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
                 'as' => 'cms.content',
                 'uses' => 'ContentController@index'
             ]);
+
+            Route::post('/search', [
+                'as' => 'cms.content.search',
+                'uses' => 'SearchController@index'
+            ]);
             
             Route::group(['prefix'=>'/posts'],function(){
 
