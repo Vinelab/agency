@@ -56,12 +56,6 @@ class Post extends NeoEloquent  {
         return null;
     }
 
-
-    public function comments()
-    {
-        return $this->morphMany('Starac\Entities\Comment', 'ON');
-    }
-
     public function admin()
     {
         return $this->belongsTo('Agency\Office\Admin', 'ADMIN');

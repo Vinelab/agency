@@ -62,35 +62,15 @@ class Image extends NeoEloquent implements ImageInterface, MediaInterface  {
         return $image->$preset.'_url';
     }
 
-  public function presetType($preset)
-  {
-    return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
-  }
-
-
-    public function studentNominee()
+    public function presetType($preset)
     {
-        return $this->belongsTo('Starac\Entities\Student', 'NOMINEE_IMAGE');
+      return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
     }
 
-    public function studentProfile()
-    {
-        return $this->belongsTo('Starac\Entities\Student', 'PROFILE_IMAGE');
-    }
-
-    public function iconProfile()
-    {
-        return $this->belongsTo('Starac\Entities\Student', 'ICON_IMAGE');
-    }
-
+ 
     public function postCover()
     {
         $this->belongsTo('Agency\Post', 'COVER_IMAGE');
-    }
-
-    public function officialImage()
-    {
-        return $this->belongsTo('Starac\Entities\Official', 'PROFILE_IMAGE');
     }
 
 }
