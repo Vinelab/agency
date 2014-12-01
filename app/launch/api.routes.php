@@ -1,18 +1,23 @@
 <?php
+Route::group(['before'=>'code'], function(){
 
-Route::group(['namespace' => 'Agency\Api\Controllers'], function(){
+   Route::get('/search',[
+        'as' => 'api.search',
+        'uses' => 'Agency\Api\Controllers\SearchController@index'
+    ]);
 
-    Route::group(['prefix'=>'/auth/{provider}'], function(){
+    Route::get('/posts',[
+            'as' => 'api.posts',
+            'uses' => 'Agency\Api\Controllers\PostsController@index'
+        ]);
 
-        Route::get('/', [
-                'as'   => 'api.auth.social',
-                'uses' => 'SocialLoginController@index'
-            ]);
+    Route::get('/posts/{slugOrId}',[
+            'as' => 'api.posts.show',
+            'uses' => 'Agency\Api\Controllers\PostsController@show'
+        ]);
 
-        Route::get('/authenticate', [
-                'as'   => 'api.auth.social.authenticate',
-                'uses' => 'SocialLoginController@authenticate'
-            ]);
-    });
+
+
 
 });
+
