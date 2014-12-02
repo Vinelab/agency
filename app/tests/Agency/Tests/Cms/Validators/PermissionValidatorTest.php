@@ -8,7 +8,7 @@ use Agency\Cms\Authority\Entities\Permission;
 
 use DB, Artisan, TestCase, Mockery as M;
 
-use Agency\Cms\Validators\PermissionValidator;
+use Agency\Office\Validators\PermissionValidator;
 
 
 class PermissionValidatorTest extends TestCase {
@@ -23,8 +23,8 @@ class PermissionValidatorTest extends TestCase {
 
 	public function test_permission_validator_provider_binding()
 	{
-		$validator = $this->app->make('Agency\Cms\Validators\Contracts\PermissionValidatorInterface');
-		$this->assertInstanceOf('Agency\Cms\Validators\PermissionValidator', $validator);
+		$validator = $this->app->make('Agency\Contracts\Office\Validators\PermissionValidatorInterface');
+		$this->assertInstanceOf('Agency\Office\Validators\PermissionValidator', $validator);
 
 	}
 
@@ -39,7 +39,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_missing_title()
 	{
@@ -51,7 +51,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_null_title()
 	{
@@ -64,7 +64,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_empty_title()
 	{
@@ -77,7 +77,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_long_title()
 	{
@@ -90,45 +90,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
-	 */
-	public function test_fails_with_missing_alias()
-	{
-		$this->validator->validate([
-			'title' => 'some_title',
-			'description' => 'description here'
-		]);
-	}
-
-	/**
-	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
-	 */
-	public function test_fails_with_null_alias()
-	{
-		$this->validator->validate([
-			'title' => 'some_title',
-			'alias' => null,
-			'description' => 'description here'
-		]);
-	}
-
-	/**
-	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
-	 */
-	public function test_fails_with_empty_alias()
-	{
-		$this->validator->validate([
-			'title' => 'some_title',
-			'alias' => '',
-			'description' => 'description here'
-		]);
-	}
-
-	/**
-	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_long_alias()
 	{
@@ -141,7 +103,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_space_in_alias()
 	{
@@ -154,7 +116,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_upercase_in_alias()
 	{
@@ -167,7 +129,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_upercase_and_space_in_alias()
 	{
@@ -180,7 +142,7 @@ class PermissionValidatorTest extends TestCase {
 
 	/**
 	 * @depends test_passing_validation
-	 * @expectedException Agency\Cms\Exceptions\InvalidPermissionException
+	 * @expectedException Agency\Office\Exceptions\InvalidPermissionException
 	 */
 	public function test_fails_with_long_description()
 	{
