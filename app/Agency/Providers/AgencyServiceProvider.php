@@ -28,6 +28,13 @@ class AgencyServiceProvider extends ServiceProvider {
             'Agency\Contracts\Repositories\PostRepositoryInterface',
             'Agency\Repositories\PostRepository');
 
+         $this->app->bind(
+            'Agency\Contracts\Repositories\ImageRepositoryInterface',
+            'Agency\Repositories\ImageRepository');
+
+        $this->app->bind(
+            'Agency\Contracts\Repositories\VideoRepositoryInterface',
+            'Agency\Repositories\VideoRepository');
 
         $this->app->bind(
             'Agency\Contracts\Repositories\ApplicationRepositoryInterface',
@@ -64,68 +71,24 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Contracts\Cache\CacheManagerInterface',
             'Agency\Cache\CacheManager');
-      $this->app->bind(
+
+        $this->app->bind(
                 'Agency\Contracts\Api\ApiInterface',
                 'Agency\Api\Api');
 
+        $this->app->bind(
+                'Agency\Contracts\ImageInterface',
+                'Agency\Image');
+
+        $this->app->bind(
+                'Agency\Contracts\VideoInterface',
+                'Agency\Video');
 
 
 
 
 
 
-
-
-
-
-        // register API V1 Mappers Service Provider
-        // $this->app->register('Agency\Providers\Artists\Api\MappersServiceProvider');
-
-        // Agency stuff registration starts here
-
-        // Login
-
-        // $this->app->bind('Agency\Contracts\Validators\SocialProfileValidatorInterface', function(){
-        //     return new Validators\SocialProfileValidator($this->app->make('validator'));
-        // });
-
-        // $this->app->bind(
-        //     'Agency\Contracts\Repositories\UserRepositoryInterface',
-        //     'Agency\Repositories\UserRepository'
-        // );
-
-        // $this->app->singleton('Agency\Login\Store\StoreInterface',function(){
-        //     return new Login\Store\RedisStore($this->app->make('redis'));
-        // });
-
-        // $this->app->bind('Agency\Login\Store\StoreManagerInterface', function(){
-        //     return new Login\Store\StoreManager(
-        //         $this->app->make('Agency\Login\Store\StoreInterface'),
-        //         $this->app->make('cache')
-        //     );
-        // });
-
-        //  $this->app->bind(
-        //     'Agency\Login\SocialLoginInterface',
-        //     'Agency\Login\SocialAuthenticator'
-        // );
-
-        // $this->app->bind('Agency\Login\SessionManagerInterface', 'Agency\Login\SessionManager');
-
-        // $this->app->bind('Agency\Contracts\SocialUserInterface', 'Agency\User');
-
-        // $this->app->bind('Agency\Contracts\UserProfileInterface', 'Agency\UserProfile');
-
-        // posts
-        // $this->app->bind('Agency\Contracts\PostInterface', 'Agency\Post');
-        // $this->app->bind('Agency\Contracts\Post\StatusInterface', 'Agency\Post\Status');
-
-        // $this->app->bind('Agency\Contracts\Post\UrlFactoryInterface', 'Agency\Post\Factories\UrlFactory');
-        // $this->app->bind('Agency\Contracts\Post\HashtagFactoryInterface', 'Agency\Post\Factories\HashtagFactory');
-
-        // $this->app->bind(
-        //     'Agency\Contracts\Post\StatusRepositoryInterface',
-        //     'Agency\Post\Repositories\StatusRepository');
 
         $this->app->bind('Agency\Contracts\HelperInterface','Agency\Support\Helper');
 
@@ -139,6 +102,16 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Contracts\Validators\VideoValidatorInterface', function() {
                 return new \Agency\Validators\VideoValidator($this->app->make('validator'));
+            });
+
+         $this->app->bind(
+            'Agency\Contracts\Validators\ImageValidatorInterface', function() {
+                return new \Agency\Validators\ImageValidator($this->app->make('validator'));
+            });
+
+          $this->app->bind(
+            'Agency\Contracts\Validators\TagValidatorInterface', function() {
+                return new \Agency\Validators\TagValidator($this->app->make('validator'));
             });
 
 
