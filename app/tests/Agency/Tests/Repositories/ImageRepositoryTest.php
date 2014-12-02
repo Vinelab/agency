@@ -20,51 +20,49 @@ class ImageRepositoryTest extends TestCase {
         $this->mHelper->shouldReceive('getUniqueId')->andReturn('12345');
     }
 
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
+    }
+
     public function test_bindings()
     {
         $image = $this->app->make('Agency\Contracts\ImageInterface');
         $this->assertInstanceOf('Agency\Image', $image);
 
-        $images = $this->app->make('Agency\Repositories\Contracts\ImageRepositoryInterface');
+        $images = $this->app->make('Agency\Contracts\Repositories\ImageRepositoryInterface');
         $this->assertInstanceOf('Agency\Repositories\ImageRepository', $images);
     }
 
     public function test_creating_image()
     {
-        $this->mImage->shouldReceive('presetType')->with('original')->once()->andReturn('original');
-        $this->mImage->shouldReceive('presetType')->with('thumbnail')->once()->andReturn('thumbnail');
-        $this->mImage->shouldReceive('presetType')->with('square')->once()->andReturn('square');
-        $this->mImage->shouldReceive('presetType')->with('small')->once()->andReturn('small');
+        $this->mImage->shouldReceive('presetType')->with('original')->andReturn('original');
+        $this->mImage->shouldReceive('presetType')->with('thumbnail')->andReturn('thumbnail');
+        $this->mImage->shouldReceive('presetType')->with('square')->andReturn('square');
+        $this->mImage->shouldReceive('presetType')->with('small')->andReturn('small');
 
 
         $original  = M::mock('Agency\Media\Photos\Photo');
         $original->url = 'http://placekitten.com/1024/768';
 
-        $this->mImage->shouldReceive('create')->once()->with(M::subset([
-            'url' => $original->url,
-            'preset' => 'original'
-        ]))->andReturn($this->mImage);
-
         $thumbnail = M::mock('Agency\Media\Photos\Photo');
         $thumbnail->url = 'http://placekitten.com/300/200';
-        $this->mImage->shouldReceive('create')->once()->with(M::subset([
-            'url' => $thumbnail->url,
-            'preset' => 'thumbnail'
-        ]));
 
         $small = M::mock('Agency\Media\Photos\Photo');
         $small->url = 'http://pacekitten.com/320/128';
-        $this->mImage->shouldReceive('create')->once()->with(M::subset([
-            'url' => $small->url,
-            'preset' => 'small'
-        ]));
 
         $square = M::mock('Agency\Media\Photos\Photo');
         $square->url = 'http://plackitten.com/200/200';
-        $this->mImage->shouldReceive('create')->once()->with(M::subset([
-            'url' => $square->url,
-            'preset' => 'square'
-        ]));
+
+
+        $this->mImage->shouldReceive('create')->with(M::subset([
+            'original' => $original->url,
+            'thumbnail' => $thumbnail->url,
+            'small' => $small->url,
+            'square'=>$square->url
+        ]))->andReturn($this->mImage);
+
 
         $original_image = $this->images->create($original, $thumbnail, $small, $square);
         $this->assertInstanceOf('Agency\Contracts\ImageInterface', $original_image);
@@ -74,10 +72,10 @@ class ImageRepositoryTest extends TestCase {
     {
         $guid = uniqid();
 
-        $this->mImage->shouldReceive('presetType')->once()->with('thumbnail')->andReturn('thumbnail');
-        $this->mImage->shouldReceive('where')->once()->with('guid', '=', $guid)->andReturn($this->mImage);
-        $this->mImage->shouldReceive('where')->once()->with('preset', '=', 'thumbnail')->andReturn($this->mImage);
-        $this->mImage->shouldReceive('first')->once()->andReturn($this->mImage);
+        $this->mImage->shouldReceive('presetType')->with('thumbnail')->andReturn('thumbnail');
+        $this->mImage->shouldReceive('where')->with('guid', '=', $guid)->andReturn($this->mImage);
+        $this->mImage->shouldReceive('where')->with('preset', '=', 'thumbnail')->andReturn($this->mImage);
+        $this->mImage->shouldReceive('first')->andReturn($this->mImage);
 
         $this->assertInstanceOf('Agency\Contracts\ImageInterface', $this->images->getThumbnail($guid));
     }
@@ -86,7 +84,7 @@ class ImageRepositoryTest extends TestCase {
     {
         $mPhoto = M::mock('Agency\Media\Photos\Photo');
 
-        
+
 
         $photos_without_original =[];
 
@@ -102,7 +100,7 @@ class ImageRepositoryTest extends TestCase {
                 'preset' => 'small',
                 'guid' => "uniqueid"
             ]);
-        
+
         array_push($photos_without_original,[
                 'url' => "https://s3.amazonaws.com/awsfacebookapp%2Fartists%2Fwebs/53398439beb34.thumb.jpeg",
                 'preset' => 'square',
@@ -110,11 +108,11 @@ class ImageRepositoryTest extends TestCase {
             ]);
 
 
-        $this->mImage->shouldReceive('insert')->with($photos_without_original)->once()
+        $this->mImage->shouldReceive('insert')->with($photos_without_original)
              ->andReturn(true);
 
 
-        
+
         $original_photo = $this->images->store($photos_without_original);
 
         $this->assertTrue($original_photo);
