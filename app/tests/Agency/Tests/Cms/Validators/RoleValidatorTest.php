@@ -5,7 +5,7 @@
  */
 
 use TestCase;
-use Agency\Cms\Validators\RoleValidator;
+use Agency\Office\Validators\RoleValidator;
 
 class RoleValidatorTest extends TestCase {
 
@@ -19,8 +19,8 @@ class RoleValidatorTest extends TestCase {
 
     public function test_role_validator_binding()
     {
-        $validator = $this->app->make('Agency\Cms\Validators\Contracts\RoleValidatorInterface');
-        $this->assertInstanceOf('Agency\Cms\Validators\RoleValidator', $validator);
+        $validator = $this->app->make('Agency\Contracts\Office\Validators\RoleValidatorInterface');
+        $this->assertInstanceOf('Agency\Office\Validators\RoleValidator', $validator);
     }
 
     public function test_passing_role_validation()
@@ -30,7 +30,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_missing_title()
     {
@@ -39,7 +39,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_null_title()
     {
@@ -48,7 +48,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_empty_title()
     {
@@ -57,7 +57,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_huge_title()
     {
@@ -67,7 +67,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_alias_in_space()
     {
@@ -79,7 +79,7 @@ class RoleValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_role_validation
-     * @expectedException Agency\Cms\Exceptions\InvalidRoleException
+     * @expectedException Agency\Office\Exceptions\InvalidRoleException
      */
     public function test_fails_with_big_ass_aliass()
     {
