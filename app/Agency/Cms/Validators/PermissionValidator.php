@@ -1,6 +1,6 @@
 <?php namespace Agency\Cms\Validators;
 
-use Agency\Cms\Exceptions\InvalidPermissionException;
+use Agency\Office\Exceptions\InvalidPermissionException;
 
 use Agency\Validators\Validator;
 
