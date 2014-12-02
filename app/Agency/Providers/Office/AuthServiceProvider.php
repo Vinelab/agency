@@ -22,5 +22,11 @@ class AuthServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Contracts\Office\Repositories\RoleRepositoryInterface',
             'Agency\Office\Auth\Repositories\RoleRepository');
+
+        $this->app->bind(
+            'Agency\Contracts\Office\AdminInterface',
+            'Agency\Office\Admin');
+    
+
     }
 }
