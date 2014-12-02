@@ -29,6 +29,16 @@ class Section extends NeoEloquent implements PrivilegableInterface {
         });
     }
 
+    public function getKey()
+    {
+        return $this->id;
+    }
+
+    public function getKeyName()
+    {
+        return "id";
+    }
+
     public function privileges()
     {
         return $this->morphMany('Agency\Office\Auth\Authorization\Entities\Privilege', 'resource');
