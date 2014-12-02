@@ -13,7 +13,7 @@ class TagRepositoryTest extends TestCase {
 
     public function __construct()
     {
-        $this->mock = M::mock('Eloquent');
+        $this->mock = M::mock('NeoEloquent');
     }
 
     public function setUp()
@@ -25,9 +25,15 @@ class TagRepositoryTest extends TestCase {
         $this->tags = new TagRepository($this->mTag,$this->mHelper);
     }
 
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
+    }
+
     public function test_tag_provider_bindings()
     {
-        $tags = $this->app->make('Agency\Repositories\Contracts\TagRepositoryInterface');
+        $tags = $this->app->make('Agency\Contracts\Repositories\TagRepositoryInterface');
         $this->assertInstanceOf('Agency\Repositories\TagRepository', $tags);
     }
 
@@ -35,10 +41,10 @@ class TagRepositoryTest extends TestCase {
     {
         $text = $slug = 'my-tag';
 
-        $this->mTag->shouldReceive('whereRaw')->once()->andReturn($this->mTag);
-        $this->mTag->shouldReceive('count')->once()->andReturn(0);
-        $this->mTag->shouldReceive('firstOrCreate')->once()
-            ->with(compact('text', 'slug'))->andReturn($this->mTag);
+        $this->mTag->shouldReceive('whereRaw')->andReturn($this->mTag);
+        $this->mTag->shouldReceive('count')->andReturn(0);
+        $this->mTag->shouldReceive('firstOrCreate')
+            ->with(M::type('array'))->andReturn($this->mTag);
 
         $this->mHelper->shouldReceive('slugify')->with($text,$this->mTag)->andReturn($slug);
 
@@ -53,16 +59,19 @@ class TagRepositoryTest extends TestCase {
         $slugs = ['my-tag', 'another-tag', 'some-tag-here'];
         $coll = M::mock('Illuminate\Database\Eloquent\Collection');
 
-        $coll->shouldReceive('lists')->once()->with('id')->andReturn($coll)
-          ->shouldReceive('lists')->once()->with('slug')->andReturn(['some-slug']);
+        $coll->shouldReceive('lists')->with('id')->andReturn($coll)
+            ->shouldReceive('lists')->with('slug')->andReturn(['some-slug'])
+            ->shouldReceive('merge')->andReturn($coll)
+            ->shouldReceive('offsetExists')->andReturn($coll);
 
         $this->mTag
-            ->shouldReceive('whereRaw')->times(count($tags))->andReturn($this->mTag)
-            ->shouldReceive('count')->times(count($tags))->andReturn(0)
-            ->shouldReceive('whereIn')->once()->with('slug',$slugs)->andReturn($this->mTag)
-            ->shouldReceive('get')->once()->andReturn($coll)
-            ->shouldReceive('lists')->once()->with('id')->andReturn([])
-            ->shouldReceive('lists')->once()->with('slug')->andReturn([]);
+            ->shouldReceive('whereRaw')->andReturn($this->mTag)
+            ->shouldReceive('count')->andReturn(0)
+            ->shouldReceive('whereIn')->with('slug',$slugs)->andReturn($this->mTag)
+            ->shouldReceive('get')->andReturn($coll)
+            ->shouldReceive('lists')->with('id')->andReturn([])
+            ->shouldReceive('lists')->with('slug')->andReturn([])
+            ->shouldReceive('create')->andReturn($this->mTag);
 
         $this->mHelper->shouldReceive('slugify')->with('my tag')->andReturn('my-tag');
         $this->mHelper->shouldReceive('slugify')->with('another tag')->andReturn('another-tag');
