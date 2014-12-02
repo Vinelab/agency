@@ -2,11 +2,12 @@
 
 use Agency\Validators\Validator;
 use Agency\Exceptions\InvalidTagException;
+use Agency\Contracts\Validators\TagValidatorInterface;
 
-class TagValidator extends Validator implements Contracts\TagValidatorInterface {
+class TagValidator extends Validator implements TagValidatorInterface {
 
     protected $rules = [
-        'text' => 'required|unique:tags|max:255'
+        'text' => 'required|unique:Tag|max:255'
     ];
 
     public function validate($attributes)
