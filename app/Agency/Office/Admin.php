@@ -10,8 +10,9 @@ use Illuminate\Auth\UserInterface;
 use Agency\Contracts\Office\RegistrableInterface;
 use Vinelab\NeoEloquent\Eloquent\SoftDeletingTrait;
 use Agency\Contracts\Office\AuthorableInterface;
+use Agency\Contracts\Office\AdminInterface;
 
-class Admin extends NeoEloquent implements AuthorableInterface, UserInterface, RegistrableInterface {
+class Admin extends NeoEloquent implements  AdminInterface, AuthorableInterface, UserInterface, RegistrableInterface {
 
     use SoftDeletingTrait;
 
@@ -67,5 +68,10 @@ class Admin extends NeoEloquent implements AuthorableInterface, UserInterface, R
     public function getRememberTokenName()
     {
         return 'remember_token';
+    }
+
+    public function getKey()
+    {
+        return $this->id;
     }
 }
