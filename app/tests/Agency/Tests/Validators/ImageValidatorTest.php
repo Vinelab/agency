@@ -19,7 +19,7 @@ class ImageValidatorTest extends TestCase {
 
     public function test_image_provider_binding()
     {
-        $validator = $this->app->make('Agency\Validators\Contracts\ImageValidatorInterface');
+        $validator = $this->app->make('Agency\Contracts\Validators\ImageValidatorInterface');
         $this->assertInstanceOf('Agency\Validators\ImageValidator', $validator);
     }
 
