@@ -1,33 +1,33 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
 use View, Request, Auth, Input, Lang, Redirect;
-use Agency\Office\Exceptions\UnauthorizedException;
-use Agency\Office\Exceptions\InvalidAdminException;
-use Agency\Contracts\Office\AuthorableInterface;
-use Agency\Contracts\Office\AdminAuthorizerInterface;
-use Agency\Contracts\Office\Validators\AdminValidatorInterface;
-use Agency\Contracts\Office\Repositories\RoleRepositoryInterface;
-use Agency\Contracts\Office\Repositories\AdminRepositoryInterface;
-use Agency\Contracts\Office\Notifications\AdminRegistrationNotifierInterface;
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface as Sections;
+use Agency\Cms\Exceptions\UnauthorizedException;
+use Agency\Cms\Exceptions\InvalidAdminException;
+use Agency\Contracts\Cms\AuthorableInterface;
+use Agency\Contracts\Cms\AdminAuthorizerInterface;
+use Agency\Contracts\Cms\Validators\AdminValidatorInterface;
+use Agency\Contracts\Cms\Repositories\RoleRepositoryInterface;
+use Agency\Contracts\Cms\Repositories\AdminRepositoryInterface;
+use Agency\Contracts\Cms\Notifications\AdminRegistrationNotifierInterface;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface as Sections;
 
 class AdminController extends Controller {
 
     /**
      * The admin repository instance.
      *
-     * @var Agency\Contracts\Office\Repositories\AdminRepositoryInterface
+     * @var Agency\Contracts\Cms\Repositories\AdminRepositoryInterface
      */
     protected $admins;
 
     /**
      * The role repository instance.
      *
-     * @var Agency\Contracts\Office\Repositories\RoleRepositoryInterface
+     * @var Agency\Contracts\Cms\Repositories\RoleRepositoryInterface
      */
     protected $roles;
 
@@ -35,26 +35,26 @@ class AdminController extends Controller {
      * Provider of authorization related
      * tasks.
      *
-     * @var Agency\Contracts\Office\AdminAuthorizerInterface
+     * @var Agency\Contracts\Cms\AdminAuthorizerInterface
      */
     protected $authorizer;
 
     /**
      * The validator instance.
      *
-     * @var Agency\Office\Validators\AdminValidatorInterface
+     * @var Agency\Cms\Validators\AdminValidatorInterface
      */
     protected $validator;
 
     /**
      * The registration notifier instance.
      *
-     * @var Agency\Office\Notifiers\Contracts\AdminRegistrationNotifierInterface
+     * @var Agency\Cms\Notifiers\Contracts\AdminRegistrationNotifierInterface
      */
     protected $notifier;
 
     /**
-     * @var \Agency\Contracts\Office\Repositories\SectionRepositoryInterface
+     * @var \Agency\Contracts\Cms\Repositories\SectionRepositoryInterface
      */
     protected $sections;
 

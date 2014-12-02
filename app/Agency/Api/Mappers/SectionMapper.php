@@ -2,7 +2,7 @@
 
 use Agency\Api\SectionsCollection;
 
-use Agency\Office\Section;
+use Agency\Cms\Section;
 
 class SectionMapper{
 

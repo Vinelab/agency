@@ -10,4 +10,3 @@
 		</span>
 	{{Form::close()}}
 </div>
-`

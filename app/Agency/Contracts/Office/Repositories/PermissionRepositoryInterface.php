@@ -1,7 +1,7 @@
-<?php namespace Agency\Contracts\Office\Repositories;
+<?php namespace Agency\Contracts\Cms\Repositories;
 
-use Agency\Contracts\Office\AuthorableInterface;
-use Agency\Contracts\Office\PrivilegableInterface;
+use Agency\Contracts\Cms\AuthorableInterface;
+use Agency\Contracts\Cms\PrivilegableInterface;
 
 interface PermissionRepositoryInterface {
 

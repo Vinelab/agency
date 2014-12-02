@@ -1,4 +1,4 @@
-<?php namespace Agency\Contracts\Office\Repositories;
+<?php namespace Agency\Contracts\Cms\Repositories;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -55,7 +55,7 @@ interface SectionRepositoryInterface {
      * Find a section by its Id or its alias.
      *
      * @param  int|string $idOrAlias
-     * @return \Agency\Office\Section
+     * @return \Agency\Cms\Section
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If section not found.
      */

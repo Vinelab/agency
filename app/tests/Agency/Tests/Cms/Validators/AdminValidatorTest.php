@@ -6,7 +6,7 @@
 
 use Agency\Cms\Admin;
 use DB, Artisan, TestCase, Mockery as M;
-use Agency\Office\Validators\AdminValidator;
+use Agency\Cms\Validators\AdminValidator;
 
 class AdminValidatorTest extends TestCase {
 
@@ -20,8 +20,8 @@ class AdminValidatorTest extends TestCase {
 
     public function test_admin_validator_provider_binding()
     {
-        $validator = $this->app->make('Agency\Contracts\Office\Validators\AdminValidatorInterface');
-        $this->assertInstanceOf('Agency\Office\Validators\AdminValidator', $validator);
+        $validator = $this->app->make('Agency\Contracts\Cms\Validators\AdminValidatorInterface');
+        $this->assertInstanceOf('Agency\Cms\Validators\AdminValidator', $validator);
     }
 
     public function test_passing_validation()
@@ -31,7 +31,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_missing_name()
     {
@@ -40,7 +40,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_null_name()
     {
@@ -49,7 +49,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_empty_name()
     {
@@ -58,7 +58,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_missing_email()
     {
@@ -67,7 +67,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_null_email()
     {
@@ -76,7 +76,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_empty_email()
     {
@@ -85,7 +85,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_malformatted_email()
     {
@@ -94,7 +94,7 @@ class AdminValidatorTest extends TestCase {
 
     /**
      * @depends test_passing_validation
-     * @expectedException Agency\Office\Exceptions\InvalidAdminException
+     * @expectedException Agency\Cms\Exceptions\InvalidAdminException
      */
     public function test_fails_with_duplicate_email()
     {

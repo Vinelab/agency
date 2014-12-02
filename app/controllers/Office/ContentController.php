@@ -1,10 +1,10 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
 
 
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface;
 use Agency\Repositories\Contracts\PostRepositoryInterface;
 
 use Agency\Helper;

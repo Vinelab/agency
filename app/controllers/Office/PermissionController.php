@@ -1,23 +1,23 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 use Input;
-use Agency\Office\Exceptions\UnauthorizedException;
-use Agency\Contracts\Office\Repositories\PermissionRepositoryInterface as Permissions;
-use Agency\Contracts\Office\Validators\PermissionValidatorInterface as PermissionValidator;
+use Agency\Cms\Exceptions\UnauthorizedException;
+use Agency\Contracts\Cms\Repositories\PermissionRepositoryInterface as Permissions;
+use Agency\Contracts\Cms\Validators\PermissionValidatorInterface as PermissionValidator;
 
 class PermissionController extends Controller {
 
     /**
      * The permissions repo instance.
      *
-     * @var Agency\Office\Auth\Repositories\PermissionRepository
+     * @var Agency\Cms\Auth\Repositories\PermissionRepository
      */
     protected $permissions;
 
     /**
      * The Permission validator instance.
      *
-     * @var Agency\Contracts\Office\Validators\PermissionValidatorInterface
+     * @var Agency\Contracts\Cms\Validators\PermissionValidatorInterface
      */
     protected $validator;
 

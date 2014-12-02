@@ -1,11 +1,11 @@
 <?php
 
-use Agency\Office\Auth\Guard;
-use Agency\Office\Auth\UserProvider;
+use Agency\Cms\Auth\Guard;
+use Agency\Cms\Auth\UserProvider;
 use Illuminate\Foundation\Application;
 
 Config::set('auth.driver', 'agency.management');
-Config::set('auth.model', 'Agency\Office\Admin');
+Config::set('auth.model', 'Agency\Cms\Admin');
 
 Auth::extend('agency.management', function(Application $app)
 {

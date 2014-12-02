@@ -1,4 +1,4 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -6,7 +6,7 @@
 
 use View, Input, Redirect, Lang, URL, Auth;
 
-use Agency\Contracts\Office\AuthenticatorInterface;
+use Agency\Contracts\Cms\AuthenticatorInterface;
 
 class LoginController extends Controller {
 

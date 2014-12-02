@@ -1,7 +1,7 @@
 <?php namespace Agency\Api\Controllers;
 
 use Agency\Contracts\Repositories\PostRepositoryInterface;
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface;
 use Agency\Contracts\Repositories\TagRepositoryInterface;
 use Agency\Contracts\Repositories\CodeRepositoryInterface;
 
@@ -11,7 +11,7 @@ use Input, Response, File, DB, Lang, Controller;
 
 use Agency\Api\Exceptions\InvalidCodeException;
 use Agency\Post;
-use Agency\Office\Section;
+use Agency\Cms\Section;
 
 use Agency\Contracts\Api\ApiInterface;
 

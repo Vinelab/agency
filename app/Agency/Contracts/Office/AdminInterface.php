@@ -1,4 +1,4 @@
-<?php namespace Agency\Contracts\Office;
+<?php namespace Agency\Contracts\Cms;
 
 interface AdminInterface {
 

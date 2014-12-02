@@ -5,13 +5,13 @@
  */
 
 use URL, Request, Input;
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface as SectionRepo;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface as SectionRepo;
 
 
 class Sections {
 
     /**
-     * @var \Agency\Contracts\Office\Repositories\SectionRepositoryInterface
+     * @var \Agency\Contracts\Cms\Repositories\SectionRepositoryInterface
      */
     private $sections;
 

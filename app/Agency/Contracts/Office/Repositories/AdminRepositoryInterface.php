@@ -1,3 +1,3 @@
-<?php namespace Agency\Contracts\Office\Repositories ;
+<?php namespace Agency\Contracts\Cms\Repositories ;
 
 interface AdminRepositoryInterface {}

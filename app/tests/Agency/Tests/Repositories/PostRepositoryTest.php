@@ -24,7 +24,7 @@ class PostRepositoryTest extends TestCase {
         $this->mImage = M::mock('Agency\Contracts\ImageInterface');
         $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
         $this->images = M::mock('Agency\Contracts\Repositories\ImageRepositoryInterface');
-        $this->sections = M::mock('Agency\Contracts\Office\Repositories\SectionRepositoryInterface');
+        $this->sections = M::mock('Agency\Contracts\Cms\Repositories\SectionRepositoryInterface');
         $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
         $this->mPaginator = M::mock('Starac\Helper\Contracts\PaginatorInterface');
 

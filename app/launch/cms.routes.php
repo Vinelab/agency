@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Agency\Office\Controllers'], function(){
+Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
 
     Route::get('/', [
             'as'   => 'cms.login',

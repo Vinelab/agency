@@ -1,3 +1,3 @@
-<?php namespace Agency\Contracts\Office\Validators;
+<?php namespace Agency\Contracts\Cms\Validators;
 
 interface RoleValidatorInterface {}

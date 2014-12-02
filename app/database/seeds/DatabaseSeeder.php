@@ -1,9 +1,9 @@
 <?php
 
-use Agency\Office\Admin;
-use Agency\Office\Section;
-use Agency\Office\Auth\Authorization\Entities\Role;
-use Agency\Office\Auth\Authorization\Entities\Permission;
+use Agency\Cms\Admin;
+use Agency\Cms\Section;
+use Agency\Cms\Auth\Authorization\Entities\Role;
+use Agency\Cms\Auth\Authorization\Entities\Permission;
 
 class DatabaseSeeder extends Seeder {
 

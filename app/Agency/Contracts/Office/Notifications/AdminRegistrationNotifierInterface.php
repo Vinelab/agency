@@ -1,10 +1,10 @@
-<?php namespace Agency\Contracts\Office\Notifications;
+<?php namespace Agency\Contracts\Cms\Notifications;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Contracts\Office\RegistrableInterface;
+use Agency\Contracts\Cms\RegistrableInterface;
 
 interface AdminRegistrationNotifierInterface {
 

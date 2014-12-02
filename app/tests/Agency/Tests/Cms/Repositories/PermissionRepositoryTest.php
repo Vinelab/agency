@@ -6,7 +6,7 @@
 
 use TestCase, Mockery as M;
 
-use Agency\Office\Auth\Repositories\PermissionRepository;
+use Agency\Cms\Auth\Repositories\PermissionRepository;
 
 class PermissionRepositoryTest extends TestCase {
 
@@ -14,8 +14,8 @@ class PermissionRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->privileges = M::mock('Agency\Office\Auth\Repositories\PrivilegeRepository');
-        $this->mPermission = M::mock('Agency\Office\Auth\Authorization\Entities\Permission');
+        $this->privileges = M::mock('Agency\Cms\Auth\Repositories\PrivilegeRepository');
+        $this->mPermission = M::mock('Agency\Cms\Auth\Authorization\Entities\Permission');
 
         $this->permissions = new PermissionRepository($this->privileges, $this->mPermission);
     }
@@ -29,15 +29,15 @@ class PermissionRepositoryTest extends TestCase {
 
     public function test_fetching_permissions_for_admin_over_resource()
     {
-        $admin = M::mock('Agency\Office\Admin');
-        $section = M::mock('Agency\Office\Section');
+        $admin = M::mock('Agency\Cms\Admin');
+        $section = M::mock('Agency\Cms\Section');
 
-        $role = M::mock('Agency\Office\Auth\Authorization\Entities\Role');
+        $role = M::mock('Agency\Cms\Auth\Authorization\Entities\Role');
         $role->shouldReceive('getAttribute')->once()
             ->with('permissions')
-            ->andReturn(M::mock('Agency\Office\Auth\Authorization\PermissionsCollection'));
+            ->andReturn(M::mock('Agency\Cms\Auth\Authorization\PermissionsCollection'));
 
-        $privilege = M::mock('Agency\Office\Auth\Authorization\Entities\Privilege');
+        $privilege = M::mock('Agency\Cms\Auth\Authorization\Entities\Privilege');
         $privilege->shouldReceive('getAttribute')->once()
             ->with('role')
             ->andReturn($role);
@@ -47,7 +47,7 @@ class PermissionRepositoryTest extends TestCase {
             ->andReturn($privilege);
 
         $permissions = $this->permissions->of($admin, $section);
-        $this->assertInstanceOf('Agency\Office\Auth\Authorization\PermissionsCollection', $permissions);
+        $this->assertInstanceOf('Agency\Cms\Auth\Authorization\PermissionsCollection', $permissions);
     }
 
     /**
@@ -55,8 +55,8 @@ class PermissionRepositoryTest extends TestCase {
      */
     public function test_returns_array_when_no_privileges_found()
     {
-        $admin = M::mock('Agency\Office\Admin');
-        $section = M::mock('Agency\Office\Section');
+        $admin = M::mock('Agency\Cms\Admin');
+        $section = M::mock('Agency\Cms\Section');
 
         $this->privileges->shouldReceive('of')->once();
         $this->assertEquals([], $this->permissions->of($admin, $section));

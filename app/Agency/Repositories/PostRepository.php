@@ -11,7 +11,7 @@ use Agency\Helper;
 use Agency\Api\Api;
 use DB,Config, Response;
 use Agency\Contracts\Repositories\PostRepositoryInterface;
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface;
 use Agency\Contracts\HelperInterface;
 
 use Exception;

@@ -1,4 +1,4 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -8,7 +8,7 @@ use Auth;
 use Request;
 use Carbon\Carbon;
 use Controller as BaseController;
-use Agency\Office\Exceptions\UnauthorizedException;
+use Agency\Cms\Exceptions\UnauthorizedException;
 
 class Controller extends BaseController {
 

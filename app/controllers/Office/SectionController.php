@@ -1,26 +1,26 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
 use View, Response, Input, Auth, Lang;
-use Agency\Office\Validators\SectionValidator;
-use Agency\Office\Exceptions\UnauthorizedException;
-use Agency\Contracts\Office\Repositories\ArtistRepositoryInterface;
-use Agency\Contracts\Office\Repositories\SectionRepositoryInterface as Sections;
+use Agency\Cms\Validators\SectionValidator;
+use Agency\Cms\Exceptions\UnauthorizedException;
+use Agency\Contracts\Cms\Repositories\ArtistRepositoryInterface;
+use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface as Sections;
 
 class SectionController extends Controller {
 
     /**
      * The section validator instance.
      *
-     * @var Agency\Office\Validators\SectionValidator
+     * @var Agency\Cms\Validators\SectionValidator
      */
     protected $validator;
 
     /**
-     * @var \Agency\Contracts\Office\Repositories\SectionRepositoryInterface
+     * @var \Agency\Contracts\Cms\Repositories\SectionRepositoryInterface
      */
     protected $sections;
 
@@ -180,7 +180,7 @@ class SectionController extends Controller {
 
             return $attributes;
 
-         } catch (\Agency\Office\Exceptions\InvalidSectionException $e) {
+         } catch (\Agency\Cms\Exceptions\InvalidSectionException $e) {
             return Response::json(['error' => $e->messages()], 400);
         }
     }

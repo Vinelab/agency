@@ -1,23 +1,23 @@
-<?php namespace Agency\Office\Controllers;
+<?php namespace Agency\Cms\Controllers;
 
 use Input, Response, Redirect, Lang;
-use Agency\Office\Exceptions\UnauthorizedException;
-use Agency\Contracts\Office\Repositories\RoleRepositoryInterface as Roles;
-use Agency\Contracts\Office\Validators\RoleValidatorInterface as RoleValidator;
+use Agency\Cms\Exceptions\UnauthorizedException;
+use Agency\Contracts\Cms\Repositories\RoleRepositoryInterface as Roles;
+use Agency\Contracts\Cms\Validators\RoleValidatorInterface as RoleValidator;
 
 class RoleController extends Controller {
 
     /**
      * The role repository instance.
      *
-     * @var Agency\Contracts\Office\Repositories\RoleRepositoryInterface
+     * @var Agency\Contracts\Cms\Repositories\RoleRepositoryInterface
      */
     protected $roles;
 
     /**
      * The role validator instance.
      *
-     * @var Agency\Office\Validator\Contracts\RoleValidatorInterface
+     * @var Agency\Cms\Validator\Contracts\RoleValidatorInterface
      */
     protected $validator;
 
@@ -51,7 +51,7 @@ class RoleController extends Controller {
 
                 return $role;
 
-            } catch (\Agency\Office\Exceptions\InvalidRoleException $e) {
+            } catch (\Agency\Cms\Exceptions\InvalidRoleException $e) {
 
                 return Response::json(['error' => $e->messages()]);
             }
@@ -83,7 +83,7 @@ class RoleController extends Controller {
 
                 return Response::json($updated);
 
-            } catch (\Agency\Office\Exceptions\InvalidRoleException $e) {
+            } catch (\Agency\Cms\Exceptions\InvalidRoleException $e) {
                 return Response::json(['error' => $e->messages()], 400);
             }
         }

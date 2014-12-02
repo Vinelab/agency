@@ -17,7 +17,7 @@ class AgencyServiceProvider extends ServiceProvider {
         $this->app->register('Agency\Media\MediaServiceProvider');
 
         // register Cms Service Provider
-        $this->app->register('Agency\Providers\OfficeServiceProvider');
+        $this->app->register('Agency\Providers\CmsServiceProvider');
 
         $this->app->bind(
             'Agency\Contracts\Repositories\TagRepositoryInterface',
