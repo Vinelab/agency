@@ -2,7 +2,7 @@
 
 use Agency\Media\Photos\Contracts\StoreInterface;
 
-use Input, Response,File;
+use Input, Response,File, Config;
 
 class MediaController extends \Controller {
 
@@ -33,7 +33,8 @@ class MediaController extends \Controller {
 
 
         try {
-            $result = File::delete(public_path()."/tmp/".Input::get('image'));
+
+            $result = File::delete(public_path().Input::get('image'));
 
             return Response::json(["result"=>$result]);
             
