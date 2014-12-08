@@ -22,7 +22,8 @@
 		<div class="space-4"></div>
 
 		{{--Body Input--}}
-		@include('cms.pages.post.templates.form.body')
+		{{--@include('cms.pages.post.templates.form.body')--}}
+		{{Editor::display($updating, $edit_post)}}
 
 		<div class="space-4"></div>
 
@@ -65,7 +66,9 @@
 
 	{{--publish state--}}
 
-	@include('cms.pages.post.templates.form.status')
+	{{--@include('cms.pages.post.templates.form.status')--}}
+
+	{{Publisher::display($updating, $edit_post)}}
 
 	<div class="space-12"></div>
 
