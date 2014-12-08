@@ -65,5 +65,6 @@ class CmsServiceProvider extends ServiceProvider {
                 'Agency\Cms\Auth\Authorization\Entities\Privilege');
 
         $this->app->singleton('which', 'Agency\Support\Which\Which');
+        $this->app->singleton('publisher', 'Agency\Support\Publisher\Publisher');
     }
 }
