@@ -179,9 +179,9 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-		'Which'			  => 'Agency\Facades\Cms\Which'
-
-
+		'Which'			  => 'Agency\Facades\Cms\Which',
+		'Publisher'		  => 'Agency\Facades\Cms\Publisher',
+		'Editor'		  => 'Agency\Facades\Cms\Editor'
 	),
 
 );
