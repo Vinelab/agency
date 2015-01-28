@@ -27,6 +27,10 @@ return [
     'author' => "Author",
     'edit' => 'Edit',
     'agency_cms'=> "Agency CMS",
-    'tags_input' => "Tag Input",
-    'preview' => 'Preview'
+    'tag_input' => "Tags",
+    'preview' => 'Preview',
+    'featured' => 'Featured',
+    'cover_photo' => 'Cover Photo',
+    'status' => 'Status'
+
 ];

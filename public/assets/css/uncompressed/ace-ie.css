@@ -1,11 +1,91 @@
-/* a few ie specific changes */
-.sidebar {
- *left:0;
+/* a few ie8/9 specific changes */
+.navbar .navbar-inner , .navbar .btn-navbar {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
 }
-.sidebar:before {
- display: none;
+.dropdown-menu li > a,
+.dropdown-submenu > a  {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+.btn {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+.progress , .progress .bar {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
 }
 
+
+
+
+#cboxLoadingGraphic > .ace-icon, #cboxLoadingGraphic > .fa , #cboxLoadingGraphic > .glyphicon {
+ display:inline-block;
+ background:#FFF url('images/loading.gif') no-repeat center; 
+}
+#cboxLoadingGraphic > .ace-icon:before, #cboxLoadingGraphic > .fa:before, #cboxLoadingGraphic > .glyphicon:before {
+ display:none;
+}
+
+.widget-box-overlay > .loading-icon {
+  display:inline-block;
+  width:24px;
+  height:24px;
+  background:transparent url('images/loading.gif') no-repeat center; 
+}
+.widget-box-overlay > .loading-icon:before {
+  display:none;
+}
+
+
+@media (max-width: 991px) {
+ .sidebar.responsive {
+   display: none;
+ }
+ .sidebar.responsive.display {
+   display: block;
+ }
+}
+
+.profile-user-info { width: 98%; }
+.wysiwyg-toolbar .dropdown-menu { min-width: 260px; }
+
+
+
+/* IE9 and below have an issue with left & right borders and RTL */
+.rtl .sidebar .nav-list li.active > a:before, .rtl .sidebar .nav-list li.active > a:after {
+ direction: ltr;
+ text-align: left;
+}
+.rtl .sidebar .nav-list li > .arrow {
+ direction: ltr;
+ text-align: left;
+}
+
+
+
+
+/* following is for ie8 only */
+@media \0screen {
+body {
+ background-color: #E9E9E9;
+}
+
+.sidebar-fixed:before {
+ left: 0;
+}
+/* it doesn't show up in ie8, so let's make it visible at least when inside .container */
+.sidebar .nav-list > li:before {
+	z-index: 4444;
+	left: -3px;
+}
+
+.sidebar.navbar-collapse {
+  width: 190px;/* @sidebar-width */
+  max-height: none;
+}
+
+
+.nav-list > li > .submenu li.open > a > .menu-icon {
+  display: inline-block;
+}
 
 .ace-nav > li.white-opaque {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CCFFFFFF', endColorstr='#CCFFFFFF',GradientType=0 );
@@ -14,9 +94,42 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
 }
 
-.infobox > .infobox-icon > [class*="icon-"]:before {
-  color: #FFF;
+.ace-nav > li.transparent > a:hover,
+.ace-nav > li.transparent > a:focus, 
+.ace-nav > li.open.transparent > a {
+	background-color: transparent !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#19000000', endColorstr='#19000000',GradientType=0 );
 }
+
+.ace-nav > li.light-10 > a {
+	background-color: transparent !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#19FFFFFF', endColorstr='#19FFFFFF',GradientType=0 );
+}
+.ace-nav > li.light-10 > a:hover, .ace-nav > li.light-10 > a:focus, .ace-nav > li.open.light-10 > a {
+	background-color: transparent !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CCFFFFFF', endColorstr='#CCFFFFFF',GradientType=0 ) !important;
+}
+
+.ace-nav > li.dark-10 > a {
+	background-color: transparent !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#19000000', endColorstr='#19000000',GradientType=0 );
+}
+.ace-nav > li.dark-10 > a:hover, .ace-nav > li.dark-10 > a:focus, .ace-nav > li.open.dark-10 > a {
+	background-color: transparent !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
+}
+
+
+
+.navbar .navbar-nav > li  > a:hover,
+.navbar .navbar-nav > li  > a:focus,
+.navbar .navbar-nav > li.open  > a {
+  background-color: transparent !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#19000000', endColorstr='#19000000',GradientType=0 ) !important;
+}
+
+
+
 .infobox-dark > .badge {
  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33FFFFFF', endColorstr='#33FFFFFF',GradientType=0 ) !important;
 }
@@ -27,48 +140,40 @@
  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#D8FFFFFF', endColorstr='#D8FFFFFF',GradientType=0 ) !important;
 }
 
-input[type=checkbox].ace , input[type=radio].ace {
-	position:static;
-	width:auto; height:auto;
-	z-index:auto;
+input[type=checkbox].ace , input[type=radio].ace,
+label input[type=checkbox].ace , label input[type=radio].ace,
+input[type=checkbox].ace.ace-switch , input[type=radio].ace.ace-switch,
+label input[type=checkbox].ace.ace-switch , label input[type=radio].ace.ace-switch 
+ {
+	position: static !important;
+	width: auto !important;
+	height: auto !important;
+	z-index: auto !important;
 }
-input[type=checkbox].ace + .lbl, input[type=radio].ace + .lbl{
-	min-height:auto;
-	min-width:auto;
+
+input[type=checkbox].ace + .lbl, input[type=radio].ace + .lbl,
+input[type=checkbox].ace ~ .lbl, input[type=radio].ace ~ .lbl {
+	min-height: auto !important;
+	min-width: auto !important;
+	width: auto !important;
+	height: auto !important;
+	position: static !important;
 }
 input[type=checkbox].ace.ace-switch  {
-	width:auto;
+	width: auto !important;
 }
-input[type=checkbox].ace.ace-switch + .lbl {
-	margin:0;
-	min-height:auto;
+input[type=checkbox].ace.ace-switch + .lbl,
+input[type=checkbox].ace.ace-switch ~ .lbl {
+	margin: 0 !important;
+	min-height: auto !important;
 }
-input[type=checkbox].ace.ace-switch-7 {
-	width:auto;
+
+
+[class*="input-"] {
+	max-width: none !important;
 }
-.ace-file-input input[type=file] {
- /*must be visible and on top for ie8/9 to actually work */
- width:100%; height:30px;
- position:absolute;
- z-index:1;
- filter:alpha(opacity=0);
- cursor:pointer;
-}
-.ace-file-input input[type=file]:hover + .file-label {
- border-color: #f59942;
-}
-.ace-file-multiple input[type=file] {
- height:100%;
-}
-.ace-file-input .remove {
- z-index:2;
-}
-.ace-file-input .file-label.selected .file-name {
- width:50%; /* prevent long filename lay over button in IE */
-}
-.ace-file-multiple .file-label.selected .file-name {
- width:auto;
-}
+
+
 
 .wizard-steps li:first-child:before {
  max-width:100%;
@@ -85,8 +190,8 @@ input[type=checkbox].ace.ace-switch-7 {
  display:block;
 }
 .pricing-box-small:hover {
-  zoom:1.04;
-  left:-1px; top:-3px;
+    left:-1px;
+	top:-3px;
 }
 
 
@@ -107,24 +212,6 @@ input[type=checkbox].ace.ace-switch-7 {
 }
 
 
-#cboxLoadingGraphic > [class*="icon-"] {
- display:inline-block;
- background:#FFF url('images/loading.gif') no-repeat center; 
-}
-#cboxLoadingGraphic > [class*="icon-"]:before {
- display:none;
-}
-
-.widget-box-overlay > [class*="icon-"] {
-  display:inline-block;
-  width:24px; height:24px;
-  margin-left:46%;
-  background:transparent url('images/loading.gif') no-repeat center; 
-}
-.widget-box-overlay > [class*="icon-"]:before {
-  display:none;
-}
-
 
 .btn.btn-app.btn-light {
   border: 1px solid #D9D9D9;
@@ -134,6 +221,21 @@ input[type=checkbox].ace.ace-switch-7 {
 }
 
 
+.widget-box-overlay {
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#55000000', endColorstr='#55000000',GradientType=0 ) !important;
+}
+.ace-file-overlay {
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7F000000', endColorstr='#7F000000',GradientType=0 ) !important;
+}
+.ace-file-overlay  > .ace-icon, .ace-file-overlay  > .fa, .ace-file-overlay  > .glyphicon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: transparent url('images/loading.gif') no-repeat center; 
+}
+.ace-file-overlay  > .ace-icon:before, .ace-file-overlay  > .fa:before, .ace-file-overlay  > .glyphicon:before {
+  display: none;
+}
 
 
 .grid3 {
@@ -148,12 +250,14 @@ input[type=checkbox].ace.ace-switch-7 {
 }
 
 .fc-event-hori, .fc-event-vert {
- border:none !important;
+ border-width: 0 !important;
 }
 
 
-[class*="tab-color-"] .nav-tabs > li > a > [class*="icon-"]:first-child{
- color:#666 !important;
+[class*="tab-color-"] .nav-tabs > li > a > .ace-icon:first-child,
+[class*="tab-color-"] .nav-tabs > li > a > .fa:first-child 
+ {
+ color: #666 !important;
 }
 
 
@@ -225,68 +329,30 @@ input[type=checkbox].ace.ace-switch-7 {
 	display:none;
 }
 
-/*
-//the plugin doesn't work in IE
-.tag .close:hover {
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 ) !important;
-}
-*/
 
-
-
-/* a few skinny changes */
-body.skin-3, .skin-3 .sidebar {
- background-color:#D6D6D6;
+.scroller-bar , .scroller-active .scroller-bar {
+ display: none;	
 }
-.skin-3  .menu-min .nav-list > li.active > a {
- background-color:#EEF8FF;
-}
-
-
-body.skin-2 , .skin-2 .sidebar{
- background-color:#505050;
-}
-.skin-2  .nav-list > li:hover > a > span {
- color:#FFF;
-}
-.skin-2  .nav-list > li:hover > a > [class*="icon-"]:first-child {
- color:#FFF;
-}
-.skin-2  .menu-min .nav-list > li > a:hover > [class*="icon-"]:first-child {
- color:#FFF;
+.scroller-active:hover .scroller-bar,
+.scroller-active .scroller-bar.active,
+.scroller-active .scroller-bar:active,
+.nav-wrap:hover + .scroller-active .scroller-bar {
+ display: block;
 }
 
 
 
-/* a few RTL changes */
-.rtl .nav-list li.active > a:after {
- border-left-color: transparent;
- border-right-color: #0B6CBC;
+.ace-settings-box {
+ display: none;
 }
-.rtl.skin-1 .nav-list  li.active > a:after {
- border-right-color:#FFF;
- border-left-color:transparent;
+.ace-settings-box.open {
+ display: block;
 }
-.rtl.skin-1 .menu-min .nav-list  li.active:hover > a:after {
- border-right-color:#242A2B;
+
+[data-toggle="buttons"] > .btn > input[type="radio"],
+[data-toggle="buttons"] > .btn > input[type="checkbox"] {
+  display: none;
 }
-.rtl.skin-2 .nav-list  li.active > a:after {
- border-right-color:#FFF;
- border-left-color:transparent;
-}
-.rtl.skin-2 .menu-min .nav-list  li.active:hover > a:after {
- border-right-color:#292929;
- border-left-color:transparent;
-}
-.rtl.skin-2 .nav-list  li.active.open > .submenu > li.active > a:after {
- border-right-color:#FFF;
- border-left-color:transparent;
-}
-.rtl.skin-3 .nav-list li.active > a:after{
- border-right-color:#FFF;
- border-left-color:transparent;
-}
-.rtl.skin-3 .nav-list  li.active > a:before {
- border-right-color:#A4C6DD;
- border-left-color:transparent;
+
+
 }

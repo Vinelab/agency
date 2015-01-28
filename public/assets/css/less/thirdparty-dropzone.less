@@ -1,16 +1,18 @@
+.enable_plugin_dropzone() when(@enable-plugin-dropzone = true) {
+
 .dropzone {
   .border-radius(0);
   border: 1px solid rgba(0, 0, 0, 0.06);
   
   .dz-default.dz-message {
-	background-image:none;
-	font-size:24px;
-	text-align:center;
-	line-height:32px;
+	background-image: none;
+	font-size: 24px;
+	text-align: center;
+	line-height: 32px;
 
-	left:0;
-	width:100%;
-	margin-left:auto;
+	left: 0;
+	width: 100%;
+	margin-left: auto;
 
 	span {
 		display:inline;
@@ -48,17 +50,17 @@
 
 .dropzone .dz-preview .dz-error-mark:before,
 .dropzone-previews .dz-preview .dz-error-mark:before{
-	font-family:FontAwesome;
-	font-size:30px;
-	color:#DB6262;
-	content:"\f00d";
+	font-family: FontAwesome;
+	font-size: 30px;
+	color: #DB6262;
+	content: "\f00d";
 }
 .dropzone .dz-preview .dz-success-mark:before,
 .dropzone-previews .dz-preview .dz-success-mark:before{
-	font-family:FontAwesome;
-	font-size:30px;
-	color:#6DA552;
-	content:"\f00c";
+	font-family: FontAwesome;
+	font-size: 30px;
+	color: #6DA552;
+	content: "\f00c";
 }
 
 
@@ -87,3 +89,6 @@
 {
   display:none;
 }
+
+}
+.enable_plugin_dropzone();

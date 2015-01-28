@@ -5,3 +5,29 @@
 .publish-date-margin {
     margin-right: 20px;
 }
+
+.gray{
+    color: #B1B1B1;
+}
+
+.image-min-width {
+    min-width: 350px;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.photo-input-width {
+    max-width: 300px;
+}
+.btn-width {
+    width: 300px;
+}
+
+.remove-dots {
+    list-style-type: none;
+}
+.remove-dots li {
+    padding-bottom: 10px;
+}

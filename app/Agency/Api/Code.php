@@ -1,21 +1,23 @@
 <?php namespace Agency\Api;
-use Eloquent;
+use NeoEloquent;
 
-class Code extends Eloquent{
+use Agency\Contracts\CodeInterface;
+
+class Code extends NeoEloquent implements CodeInterface{
 
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = "codes";
+	protected $label = 'Code';
 
-	protected $fillable = ["application_id","code","valid"];
+	protected $fillable = ['application_id','code','valid'];
 
 	public function application()
 	{
 		return $this->belongsTo('Agency\Api\Application');
 	}
-	
+
 
 }

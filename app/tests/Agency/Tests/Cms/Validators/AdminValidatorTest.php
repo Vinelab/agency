@@ -14,15 +14,13 @@ class AdminValidatorTest extends TestCase {
     {
         parent::setUp();
 
-        Artisan::call('migrate');
-
         $this->mValidatorFactory = $this->app->make('Illuminate\Validation\Factory');
         $this->validator = new AdminValidator($this->mValidatorFactory);
     }
 
     public function test_admin_validator_provider_binding()
     {
-        $validator = $this->app->make('Agency\Cms\Validators\Contracts\AdminValidatorInterface');
+        $validator = $this->app->make('Agency\Contracts\Cms\Validators\AdminValidatorInterface');
         $this->assertInstanceOf('Agency\Cms\Validators\AdminValidator', $validator);
     }
 
@@ -101,12 +99,14 @@ class AdminValidatorTest extends TestCase {
     public function test_fails_with_duplicate_email()
     {
         // add admin to make sure it's there when we check for it
-        DB::table((new Admin)->dbTable())->insert(['name' => 'some name',
+        DB::table(['Admin'])->insert(['name' => 'some name',
              'email' => 'chuck.norris@batal.zib',
              'password'=>'death',
              'created_at' => date(time()),
              'updated_at' => date(time())
         ]);
+
+
 
         $this->validator->validate(['name' => 'Some Name', 'email' => 'chuck.norris@batal.zib']);
     }

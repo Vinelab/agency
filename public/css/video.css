@@ -1,0 +1,44 @@
+.button-width {
+    width: 70px;
+}
+
+.add-padding-buttom {
+    padding-bottom: 5px;
+}
+
+#edit-video {
+    visibility: hidden;
+}
+
+#videos .well:hover #edit-video {
+    visibility: visible;
+}
+
+#channel .well:hover #edit-video {
+    visibility: visible;
+}
+
+#edit-channel {
+    padding-right: 10px;
+    margin-top: -45px;
+}
+
+#video_title {
+    width: 500px;
+}
+
+.delete_video_checkbox {
+    margin-top: -15px;
+    margin-left: -30px;
+    padding-right: 10px;
+}
+
+.add-margin-right {
+    margin-right: 30px;
+}
+
+.select_all_videos {
+    float: left;
+    margin-top: -44px;
+    margin-left: 133px;
+}

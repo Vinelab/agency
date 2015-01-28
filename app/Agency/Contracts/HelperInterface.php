@@ -1,17 +1,74 @@
 <?php namespace Agency\Contracts;
 
+/**
+ * @author Abed Halawi <abed.halawi@vinelab.com>
+ */
 interface HelperInterface {
+    /**
+     * Convert <br> to \n
+     *
+     * @param  string $html
+     *
+     * @return string
+     */
+    public function br2nl($html);
 
-	public function aliasify($string);
+    /**
+     * Transform a normal HTML into
+     * a stripped HTML (no tags attributes
+     * except the href in the a tags)
+     *
+     * @param  string $html
+     *
+     * @return string
+     */
+    public function cleanHTML($html);
 
-	public function cleanHTML($html);
+    /**
+     * Convert <div> to <br>
+     *
+     * @param  string $html
+     *
+     * @return string
+     */
+    public function div2br($html);
 
-	public function br2nl($html);
+    /**
+     * Transforms a camelCase string to
+     * snake-case.
+     *
+     * @param  string $string
+     *
+     * @return string
+     */
+    public function aliasify($string);
 
-	public function div2br($html);
+    /**
+     * generate a slug
+     *
+     * @param      $title
+     * @param null $model
+     *
+     * @return bool|mixed|string
+     */
+    public function slugify($title, $model = null);
 
-	public function slugify($title, $model = null);
+    /**
+     * generate a hash based on the id sent
+     *
+     * @param $id
+     *
+     * @return string
+     */
+    public function generateHash($id);
 
-    public function getUniqueId();
-    
+
+    /**
+     * format the date for a better json response
+     *
+     * @param $date
+     *
+     * @return string
+     */
+    public function formatDate($date);
 }

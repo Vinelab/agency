@@ -4,9 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Contracts\HelperInterface;
-
-class Helper implements HelperInterface {
+class Helper {
 
     /**
      * Transforms a camelCase string to
@@ -15,33 +13,36 @@ class Helper implements HelperInterface {
      * @param  string $string
      * @return string
      */
-    public function aliasify($string)
+    public static function aliasify($string)
     {
-        return $this->aliasOrSlug($string);
-    }
+        preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
 
-       /**
+        $ret = $matches[0];
+
+        foreach ($ret as &$match) {
+            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        }
+
+        return implode('-', $ret);
+    }
+    
+    /**
      * Transform a normal HTML into
      * a stripped HTML (no tags attributes
      * except the href in the a tags)
-     *
-     * @param  string $html
-     * @return string
+     * 
+     * @param  string $html 
+     * @return string       
      */
-    public function cleanHTML($html)
+    public static function cleanHTML($html)
     {
-
         $text = preg_replace('~</(p|div|h[0-9])>~', '</$1><br />', $html);
 
-        if(strpos($html, '<div>'))
-        {
-            $text = $this->div2br($text);
-            $text = $this->br2nl($text);
-        }
+        $text = Helper::div2br($text);
 
-        $text = strip_tags($text, '<a><br><b><strike><u><i>');
+        $text = strip_tags($text, '<a><br><b><strike><u><i>'); 
 
-        $text = $this->br2nl($text);
+        $text = Helper::br2nl($text);
 
         // remove tag attributes except <a>
         $text = preg_replace('~<(?!a\s)([a-z][a-z0-9]*)[^>]*?(/?)>~i', '<$1$2>', $text);
@@ -55,30 +56,33 @@ class Helper implements HelperInterface {
 
     /**
      * Convert <br> to \n
-     *
+     * 
      * @param  string $html
-     * @return string
+     * @return string       
      */
-    public function br2nl($html)
+    public static function br2nl($html)
     {
-        return preg_replace('~<br />|<br>~', "\n", $html);
+        return preg_replace('~<\s*br\s*/?>~', "\n", $html);
     }
 
     /**
      * Convert <div> to <br>
-     *
-     * @param  string $html
-     * @return string
+     * 
+     * @param  string $html 
+     * @return string       
      */
-    public function div2br($html)
+    public static function div2br($html)
     {
         return preg_replace('~<div>~', "<br>", $html);
     }
 
-    public function slugify($title, $model = null)
+    public static function slugify($title, $model = null)
     {
-        
-        $slug = $this->aliasOrSlug($title);
+        $seo_st = str_replace(' ', '-', $title);
+        $seo_alm = str_replace('--', '-', $seo_st);
+        $title_seo = str_replace(' ', '', $seo_alm);
+
+        $slug = mb_strtolower($title_seo, 'UTF-8');
 
         if ($model)
         {
@@ -88,20 +92,4 @@ class Helper implements HelperInterface {
 
         return $slug;
     }
-
-    public function aliasOrSlug($title)
-    {
-        $seo_st    = str_replace(' ', '-', $title);
-        $seo_alm   = str_replace('--', '-', $seo_st);
-        $title_seo = str_replace(' ', '', $seo_alm);
-
-        return  mb_strtolower($title_seo, 'UTF-8');
-
-    }
-
-    public function getUniqueId()
-    {
-        return uniqid();
-    }
-
 }

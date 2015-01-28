@@ -1,10 +1,9 @@
 <?php namespace Agency\Cms\Validators;
 
 use Agency\Cms\Exceptions\InvalidPermissionException;
+use Agency\Contracts\Cms\Validators\PermissionValidatorInterface;
 
-use Agency\Validators\Validator;
-
-class PermissionValidator extends Validator implements Contracts\PermissionValidatorInterface {
+class PermissionValidator extends Validator implements PermissionValidatorInterface {
 
     protected $rules = [
         'title'       => 'required|max:255',

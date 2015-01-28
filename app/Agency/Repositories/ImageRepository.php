@@ -5,7 +5,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Repositories\Contracts\ImageRepositoryInterface;
+use Agency\Contracts\Repositories\ImageRepositoryInterface;
 
 
 use DB, File;
@@ -13,47 +13,53 @@ use Agency\Media\Photos\Photo;
 use Agency\Contracts\ImageInterface;
 use Agency\Image;
 
+use Agency\Contracts\HelperInterface;
+
+
 class ImageRepository extends Repository implements ImageRepositoryInterface {
 
-	public function __construct(ImageInterface $image)
+	public function __construct(ImageInterface $image,
+								HelperInterface $helper)
 	{
 		$this->image = $this->model = $image;
+		$this->helper = $helper;
 	}
 
 	public function create( Photo $original,
                             Photo $thumbnail,
                             Photo $small,
-                            Photo $square)
+                            Photo $square,
+                            $description = null)
 	{
-		$unique_id = uniqid();
 
 		$original_image = $this->image->create([
-			'url'    => $original->url,
-			'preset' => $this->image->presetType('original'),
-			'guid'   => $unique_id
+			'original'	=> 	$original->url,
+			'thumbnail'	=>	$thumbnail->url,
+			'small'		=>	$small->url,
+			'square'	=>	$square->url,
+			'description' => $description
 		]);
 
-		$this->image->create([
-			'url'    => $thumbnail->url,
-			'preset' => $this->image->presetType('thumbnail'),
-			'guid'   => $unique_id
-		]);
-
-		$this->image->create([
-			'url'    => $small->url,
-			'preset' => $this->image->presetType('small'),
-			'guid'   => $unique_id
-		]);
-
-
-		$this->image->create([
-			'url'    => $square->url,
-			'preset' => 'square',
-			'guid'   => $unique_id
-		]);
 
 		return $original_image;
 	}
+
+
+  public function update($id,
+                          Photo $original,
+                          Photo $thumbnail,
+                          Photo $small,
+                          Photo $square)
+  {
+    $image = $this->find($id);
+    $image->original = $original->url;
+    $image->thumbnail = $thumbnail->url;
+    $image->small = $small->url;
+    $image->square = $square->url;
+
+    $image->save();
+    return $image;
+  }
 
 	public function getThumbnail($guid)
 	{
@@ -83,6 +89,28 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
     {
     	return $this->image->insert($images_without_original);
     }
+
+    /**
+     * return preset type
+     * @param  string $type
+     * @return string
+     */
+   	public function presetType($type)
+   	{
+   		return $this->image->presetType($type);
+   	}
+
+   	/**
+   	 * return Image instance
+   	 * @param  string $url
+   	 * @param  string $preset
+   	 * @param  string $guid
+   	 * @return Agency\Image
+   	 */
+   	public function newImage($url, $preset, $guid)
+   	{
+   		return new Image(['url' => $url, 'preset' => $preset, 'guid' => $guid]);
+   	}
 
 
 

@@ -117,6 +117,11 @@
 				});
 				toolbar.find('[data-toggle=dropdown]').click(restoreSelection);
 
+				
+				//ACE
+				//ie 9-11
+				var is_ie = !!window.navigator.msPointerEnabled || (!!document.all && !!document.addEventListener);
+
 				toolbar.find('input[type=text][data-' + options.commandRole + ']').on('webkitspeechchange change', function () {
 					var newValue = this.value; /* ugly but prevents fake double-calls due to selection restoration */
 					this.value = '';
@@ -127,12 +132,18 @@
 					}
 					saveSelection();
 				}).on('focus', function () {
+					//if IE return, not needed
+					if(is_ie) return;//ACE
+				
 					var input = $(this);
 					if (!input.data(options.selectionMarker)) {
 						markSelection(input, options.selectionColor);
 						input.focus();
 					}
 				}).on('blur', function () {
+					//if IE return, not needed
+					if(is_ie) return;//ACE
+					
 					var input = $(this);
 					if (input.data(options.selectionMarker)) {
 						markSelection(input, false);

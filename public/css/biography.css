@@ -1,0 +1,47 @@
+.fix-padding {
+    padding:0; 
+    padding-right:3px;
+}
+.fix-btn-padding {
+    padding:0; 
+}
+
+.increase-padding-right {
+    padding-right: 3px;
+}
+
+.increase-padding-top {
+    padding-top: 5px;
+}
+
+.increase-margin-right {
+    margin-right: 10px;
+}
+
+.increase-padding-bottom {
+    padding-bottom: 5px;
+}
+
+#awards_wrapper {
+    padding-bottom: 5px;
+}
+
+.date-width {
+    max-width: 86px;
+}
+
+.label-select-width {
+    min-width: 175px;
+}
+
+.label-select-width-js {
+    min-width: 178px;
+}
+
+.year-width {
+    max-width: 44px;
+}
+
+.award-magin-top {
+    margin-top: -20px;
+}

@@ -1,8 +1,9 @@
 <?php namespace Agency\Validators;
 
 use Agency\Exceptions\InvalidPostException;
+use Agency\Contracts\Validators\PostValidatorInterface;
 
-class PostValidator extends Validator implements Contracts\PostValidatorInterface {
+class PostValidator extends Validator implements PostValidatorInterface {
 
     protected $rules = [
         'title' => 'required|max:255'

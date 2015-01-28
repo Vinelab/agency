@@ -1,26 +1,32 @@
 <?php namespace Agency\Cms;
 
-use Eloquent;
+/**
+ * @author Abed Halawi <abed.halawi@vinelab.com>
+ */
+
+use NeoEloquent;
 
 use Illuminate\Auth\UserInterface;
-use Agency\Cms\Contracts\AdminInterface;
-use Agency\Cms\Contracts\RegistrableInterface;
+use Agency\Contracts\Cms\RegistrableInterface;
+use Vinelab\NeoEloquent\Eloquent\SoftDeletingTrait;
+use Agency\Contracts\Cms\AuthorableInterface;
+use Agency\Contracts\Cms\AdminInterface;
 
-use Agency\Cms\Authority\Contracts\AuthorableInterface;
+class Admin extends NeoEloquent implements  AdminInterface, AuthorableInterface, UserInterface, RegistrableInterface {
 
-class Admin extends Eloquent implements AdminInterface, AuthorableInterface, UserInterface, RegistrableInterface {
+    use SoftDeletingTrait;
 
-    protected $table = 'admins';
-
-    protected $softDelete = true;
+    protected $label = ['Admin', 'Cms'];
 
     protected $fillable = ['name', 'email', 'password'];
 
     protected $hidden = ['password'];
 
+    protected $dates = ['deleted_at'];
+
     public function getAuthIdentifier()
     {
-        return $this->identifier();
+        return $this->getKey();
     }
 
     public function getAuthPassword()
@@ -28,14 +34,9 @@ class Admin extends Eloquent implements AdminInterface, AuthorableInterface, Use
         return $this->password;
     }
 
-    public function identifier()
-    {
-        return $this->id;
-    }
-
     public function privileges()
     {
-        return $this->morphMany('Agency\Cms\Authority\Entities\Privilege', 'resource');
+        return $this->hasMany('Agency\Cms\Auth\Authorization\Entities\Privilege', 'GRANTED');
     }
 
     public function getRegistrationPassword()
@@ -53,18 +54,24 @@ class Admin extends Eloquent implements AdminInterface, AuthorableInterface, Use
         return $this->name;
     }
 
-    public function getCode()
+    // Authorable methods
+    public function getRememberToken()
     {
-        return $this->code;
+        return $this->remember_token;
     }
 
-    public function posts()
+    public function setRememberToken($value)
     {
-        return $this->hasMany("Agency\Post");
+        $this->remember_token = $value;
     }
 
-    public function dbTable()
+    public function getRememberTokenName()
     {
-        return $this->table;
+        return 'remember_token';
+    }
+
+    public function getKey()
+    {
+        return $this->id;
     }
 }

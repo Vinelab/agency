@@ -10,15 +10,13 @@ class TagValidatorTest extends TestCase {
     {
         parent::setUp();
 
-        Artisan::call('migrate');
-
         $this->mValidatorFactory = $this->app->make('Illuminate\Validation\Factory');
         $this->validator = new TagValidator($this->mValidatorFactory);
     }
 
     public function test_tag_validator_binding()
     {
-        $validator = $this->app->make('Agency\Validators\Contracts\TagValidatorInterface');
+        $validator = $this->app->make('Agency\Contracts\Validators\TagValidatorInterface');
         $this->assertInstanceOf('Agency\Validators\TagValidator', $validator);
     }
 
@@ -69,11 +67,12 @@ class TagValidatorTest extends TestCase {
      */
     public function test_fails_with_existing_text()
     {
-        DB::table((new Tag)->dbTable())->insert([
+        DB::table(['Tag'])->insert([
             'text' => 'find-me',
             'created_at' => date(time()),
             'updated_at' => date(time())
         ]);
+
         $this->validator->validate(['text' => 'find-me']);
     }
 }

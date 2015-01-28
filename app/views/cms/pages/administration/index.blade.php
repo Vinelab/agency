@@ -3,10 +3,10 @@
 @section('content')
     <div class="col-xs-12">
 
-        @if ($admin_permissions->has('create'))
+        @if (Auth::hasPermission('create'))
         <div class="row">
             <a href="{{ URL::route('cms.administration.create') }}" class="btn btn-primary">
-                <span class="icon-plus"></span>
+                <span class="ace-icon  fa fa-plus"></span>
                 New Admin
             </a>
         </div>
@@ -21,7 +21,7 @@
 
                     <thead>
                         <tr>
-                            @if ($admin_permissions->has('update'))
+                            @if (Auth::hasPermission('update'))
                             <th></th>
                             @endif
                             <th>Name</th>
@@ -34,11 +34,11 @@
                     <tbody>
                         @foreach ($admins as $admin)
                             <tr>
-                            @if ($admin_permissions->has('update'))
+                            @if (Auth::hasPermission('update'))
                                 <td class="center">
                                     <div class="btn-group">
                                         <a href="{{ URL::route('cms.administration.edit', $admin->id) }}" class="btn btn-xs btn-info">
-                                            <i class="icon-edit"></i>
+                                            <i class="ace-icon  fa fa-edit"></i>
                                             Edit
                                         </a>
                                     </div>
@@ -63,7 +63,7 @@
 @section('scripts')
     @parent
 
-    <script type="text/javascript" src="{{ asset('cms/js/administration.js') }}"></script>
+    <script type="text/javascript" src="{{ Cdn::asset('/cms/js/administration.js') }}"></script>
 @stop
 
 @include('cms.layout.master')

@@ -1,44 +1,36 @@
-<?php  namespace Agency;
+<?php namespace Agency;
 
-/**
-* @author Ibrahim Fleifel <ibrahim@vinelab.com>
-* @author Abed Halawi <abed.halawi@vinelab.com>
-*/
-
-use Eloquent;
+use NeoEloquent;
 use Agency\Contracts\ImageInterface;
 use Agency\Contracts\MediaInterface;
 
-class Image extends Eloquent implements ImageInterface, MediaInterface  {
+class Image extends NeoEloquent implements ImageInterface, MediaInterface  {
 
-	protected $table = 'images';
+    protected $label = 'Image';
 
-	protected $fillable = ['url','preset','guid'];
+    protected $fillable = ['original','thumbnail','small', 'square', 'description'];
 
-	protected $presets = [
-		'original'  => 'original',
-		'thumbnail' => 'thumbnail',
-		'square'    => 'square',
-		'small'     => 'small'
-	];
+    protected $presets = [
+        'original'  => 'original',
+        'thumbnail' => 'thumbnail',
+        'square'    => 'square',
+        'small'     => 'small'
+    ];
 
-    public static function boot()
+
+  /**
+   * get the post that this image belongs to
+   *
+   * @return Illuminate\Database\Eloquent\Collection of Agency\Post
+   */
+  public function posts()
     {
-        parent::boot();
-        Image::deleting(function($image){
-            return $image->where('guid',$image->guid)->delete();
-        });
-
+        return $this->belongsTo('Agency\Post', 'IMAGE');
     }
 
-	/**
-	 * get the post that this image belongs to
-	 *
-	 * @return Illuminate\Database\Eloquent\Collection of Agency\Post
-	 */
-	public function posts()
+    public function students()
     {
-        return $this->morphToMany('Agency\Post');
+        return $this->belongsTo('Starac\Entities\Student', 'IMAGES');
     }
 
     /**
@@ -47,7 +39,7 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
      */
     public function type()
     {
-		return 'image';
+    return 'image';
     }
 
 
@@ -57,24 +49,28 @@ class Image extends Eloquent implements ImageInterface, MediaInterface  {
      */
     public function url()
     {
-		$this->url;
+    $this->url;
     }
 
     public function presetUrl($preset)
     {
         $guid = $this->guid;
         $image = $this->where('guid', '=', $guid)
-			->where('preset', '=', $this->presetType($preset))
-			->first();
+      ->where('preset', '=', $this->presetType($preset))
+      ->first();
 
-        return $image->url;
+        return $image->$preset.'_url';
     }
 
-	public function presetType($preset)
-	{
-		return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
-	}
+    public function presetType($preset)
+    {
+      return isset($this->presets[$preset]) ? $this->presets[$preset] : $this->presets['original'];
+    }
 
-   
+ 
+    public function postCover()
+    {
+        $this->belongsTo('Agency\Post', 'COVER_IMAGE');
+    }
 
 }

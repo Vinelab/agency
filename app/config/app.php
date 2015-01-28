@@ -52,7 +52,7 @@ return array(
 	|
 	*/
 
-	'locale' => 'ar',
+	'locale' => 'en',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -108,9 +108,12 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 
+		'Vinelab\Cdn\CdnServiceProvider',
+		'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
 		'Vinelab\Auth\AuthServiceProvider',
-		'Agency\AgencyServiceProvider',
-		'Agency\Cms\CmsServiceProvider'
+        'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
+		'Vinelab\Auth\AuthServiceProvider',
+		'Agency\Providers\AgencyServiceProvider',
 	),
 
 	/*
@@ -176,6 +179,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+		'Which'			  => 'Agency\Facades\Cms\Which'
+
 
 	),
 

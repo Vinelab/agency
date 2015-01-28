@@ -19,7 +19,7 @@ class VideoValidatorTest extends TestCase {
 
     public function test_video_validator_binding()
     {
-        $validator = $this->app->make('Agency\Validators\Contracts\VideoValidatorInterface');
+        $validator = $this->app->make('Agency\Contracts\Validators\VideoValidatorInterface');
         $this->assertInstanceOf('Agency\Validators\VideoValidator', $validator);
     }
      /**

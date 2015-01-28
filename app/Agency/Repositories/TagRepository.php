@@ -3,7 +3,7 @@
 use DB;
 use Agency\Tag;
 use Agency\Helper;
-use Agency\Repositories\Contracts\TagRepositoryInterface;
+use Agency\Contracts\Repositories\TagRepositoryInterface;
 use Agency\Contracts\HelperInterface;
 
 class TagRepository extends Repository implements TagRepositoryInterface {
@@ -22,11 +22,27 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 		$this->helper = $helper;
 	}
 
-	public function create($text)
+	public function create($text, $profile_id = Null)
 	{
 		$slug = $this->helper->slugify($text, $this->tag);
-		$this->tag = $this->tag->firstOrCreate(compact("text","slug"));
+		$this->tag = $this->tag->firstOrCreate([
+			"text" => $text,
+			"slug" => $slug,
+			"profile_id" => $profile_id
+		]);
 		return $this->tag;
+	}
+
+	public function update($text, $profile_id = Null)
+	{
+		$tag = $this->findBy('profile_id',$profile_id);
+		$slug = $this->helper->slugify($text, $this->tag);
+		return $tag->update([
+			'text' => $text,
+			'slug' => $slug,
+			'profile_id' => $profile_id
+		]);
+
 	}
 
 	public function splitFound($tags)
@@ -34,7 +50,7 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 		// generate slugs
 		$tags = array_map(function($text) {
 			$slug = $this->helper->slugify($text);
-			return compact('text', 'slug');
+			return ['text' => $text, 'slug' => $slug];
 		}, $tags);
 
 		// extract existing tags
@@ -52,16 +68,13 @@ class TagRepository extends Repository implements TagRepositoryInterface {
 
 		// create tag models out of the new ones
 		$new_tags = array_map(function($tag){
-			return new Tag($tag);
+			return $this->tag->create($tag);
 		}, $new_tags);
 
+		$tags_ids = $existing->merge($new_tags);
 
-		$existing = $existing->lists('id');
+		return $tags_ids->lists('id');
 
-		return [
-			'new' => $new_tags,
-			'existing' => $existing
-		];
 	}
 
 }

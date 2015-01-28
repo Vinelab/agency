@@ -4,11 +4,11 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Hash, Str;
+use Hash;
+use Agency\Cms\Admin;
+use Agency\Contracts\Cms\Repositories\AdminRepositoryInterface;
 
-use Agency\Cms\Contracts\AdminInterface;
-
-class AdminRepository extends Repository implements Contracts\AdminRepositoryInterface {
+class AdminRepository extends Repository implements AdminRepositoryInterface {
 
     /**
      * The admin model instance.
@@ -17,7 +17,7 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
      */
     protected $admin;
 
-    public function __construct(AdminInterface $admin)
+    public function __construct(Admin $admin)
     {
         $this->model = $this->admin = $admin;
     }
@@ -37,10 +37,7 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
 
         $admin = $this->admin->create(compact('name', 'email', 'password'));
 
-        if ($admin)
-        {
-            $admin->raw_password = $raw;
-        }
+        $admin->raw_password = $raw;
 
         return $admin;
     }
@@ -68,31 +65,8 @@ class AdminRepository extends Repository implements Contracts\AdminRepositoryInt
      *
      * @return string
      */
-    public function generatePassword()
+    protected function generatePassword()
     {
         return uniqid();
     }
-
-    public function generateCode($email)
-    {
-        $code = Str::random($length = 64);
-        $admin = $this->findBy('email',$email);
-        $admin->code = $code;
-        $admin->save();
-
-        return $admin;
-
-    }
-
-    public function changePassword($id,$new_password)
-    {
-        $admin = $this->find($id);
-        $admin->password = Hash::make($new_password);
-
-        if ($admin->save())
-        {
-            return $admin;
-        }
-    }
-
 }

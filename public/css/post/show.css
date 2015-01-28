@@ -16,7 +16,6 @@
 }
 
 #post-body{
-	text-align:right;
 	font-size: 13pt;
 	margin-top: 35px;
 }
@@ -27,7 +26,7 @@
 
 #title{
 	text-decoration: underline;
-	text-align: right;
+	text-align: left;
 	font-size: 24pt;
 }
 

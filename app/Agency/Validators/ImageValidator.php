@@ -1,8 +1,10 @@
 <?php namespace Agency\Validators;
 
+use Agency\Contracts\Validators\ImageValidatorInterface;
+
 use Agency\Exceptions\InvalidImageException;
 
-class ImageValidator extends Validator implements Contracts\ImageValidatorInterface {
+class ImageValidator extends Validator implements ImageValidatorInterface {
 
     protected $rules = [
     	'url'=>'required|url'

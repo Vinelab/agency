@@ -1,0 +1,32 @@
+.height {
+     min-height: 50px;
+ }
+
+.fix-padding-right {
+    padding-right: 12px;
+}
+
+.image-margin-top {
+    margin-top: 335px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.max-width {
+    max-width: 299px;
+}
+
+.publish-date-margin {
+    margin-right: 20px;
+}
+
+.increase-margin-left {
+    margin-left: 10px;
+}
+
+.fixed-link-width {
+    width: 400px;
+    word-wrap:break-word;
+}

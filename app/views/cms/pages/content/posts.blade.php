@@ -1,11 +1,11 @@
 @section("head")
     @parent
-	{{HTML::style("/css/content/posts.css")}}
+	{{HTML::style(Cdn::asset("/css/content/posts.css"))}}
 
 @stop
 
 @section('content')
-    @if ($admin_permissions->has('create'))
+    @if (Auth::hasPermission('create'))
         <div class="row">
             <a href="{{ URL::route('cms.content.posts.create') }}" class="btn btn-primary">
                 <span class="icon-plus"></span>
@@ -33,7 +33,7 @@
 
 @section('scripts')
     @parent
-        {{HTML::script("/cms/js/content/index.js")}}
+        {{HTML::script(Cdn::asset("/cms/js/content/index.js"))}}
 
         
 @stop

@@ -1,0 +1,9 @@
+.remove-dots {
+    list-style-type: none;
+}
+.remove-dots li {
+    padding-bottom: 10px;
+}
+.choose-photo-width {
+    max-width: 300px;
+}

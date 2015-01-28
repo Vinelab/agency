@@ -1,9 +1,9 @@
 <?php namespace Agency\Cms\Validators;
 
-use Agency\Validators\Validator;
 use Agency\Cms\Exceptions\InvalidRoleException;
+use Agency\Contracts\Cms\Validators\RoleValidatorInterface;
 
-class RoleValidator extends Validator implements Contracts\RoleValidatorInterface {
+class RoleValidator extends Validator implements RoleValidatorInterface {
 
     protected $rules = [
         'title' => 'required|max:255',

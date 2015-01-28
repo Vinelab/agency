@@ -133,8 +133,21 @@
 
         <!--[if !IE]> -->
 
-        <script type="text/javascript">
-            window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+       
+
+        
+
+         @section('scripts')
+            @include('cms.layout.templates.scripts')
+
+            <script type="text/javascript">
+            function show_box(id) {
+             jQuery('.widget-box.visible').removeClass('visible');
+             jQuery('#'+id).addClass('visible');
+            }
+        </script>
+             <script type="text/javascript">
+            window.jQuery || document.write("<script src='{{Cdn::asset('assets/js/jquery-ui.custom.min.js')}}'>"+"<"+"/script>");
         </script>
 
         <!-- <![endif]-->
@@ -146,19 +159,10 @@
 <![endif]-->
 
         <script type="text/javascript">
-            if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+            if("ontouchend" in document) document.write("<script src='{{Cdn::asset('assets/js/jquery-ui.custom.min.js')}}'>"+"<"+"/script>");
         </script>
 
         <!-- inline scripts related to this page -->
-
-        <script type="text/javascript">
-            function show_box(id) {
-             jQuery('.widget-box.visible').removeClass('visible');
-             jQuery('#'+id).addClass('visible');
-            }
-        </script>
-         @section('scripts')
-            @include('cms.layout.templates.scripts')
         @show
     </body>
 </html>

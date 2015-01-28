@@ -69,8 +69,8 @@
               maxlength: "100"
             }
           }, {
-            name: 'parent_id',
-            index: 'parent_id',
+            name: 'parent',
+            index: 'parent.title',
             editable: true,
             width: 25
           }, {

@@ -7,4 +7,5 @@
 	Routes.cms_post_tmp = "{{URL::route('cms.content.posts.photos.store')}}";
 	Routes.cms_post_photos_destroy = "{{URL::route('cms.content.posts.photos.destroy','')}}"
 	Routes.cms_tags = "{{URL::route('cms.content.posts.tags')}}";
+	Routes.photo_location = "{{Config::get('media.location')}}";
 </script>

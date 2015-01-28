@@ -11,7 +11,7 @@ class RoleRepositoryTest extends TestCase {
 
     public function __construct()
     {
-        $this->mock = M::mock('Eloquent');
+        $this->mock = M::mock('NeoEloquent');
     }
 
     public function setUp()
@@ -19,6 +19,12 @@ class RoleRepositoryTest extends TestCase {
         parent::setUp();
         $this->mRole = M::mock('Agency\Cms\Authority\Entities\Role');
         $this->roles = new RoleRepository($this->mRole);
+    }
+
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
     }
 
     public function test_creating_roles()
@@ -38,13 +44,15 @@ class RoleRepositoryTest extends TestCase {
     {
         $id    = 'some-id';
         $ids = '1,2,3,4,5';
+        $this->mRole->shouldReceive('findOrFail')->with($id)->andReturn($this->mRole);
 
-        $this->mRole->shouldReceive('findOrFail')->once()->with($id)->andReturn($this->mRole);
         $this->mRole->shouldReceive('permissions')->once()->andReturn($this->mRole);
+
         $this->mRole->shouldreceive('sync')->once()
             ->with(explode(',', $ids))->andReturn($this->mRole);
 
         $role = $this->roles->updatePermissions($id, $ids);
+
         $this->assertInstanceOf('Agency\Cms\Authority\Entities\Role', $role);
     }
 

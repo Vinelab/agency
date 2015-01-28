@@ -7,6 +7,8 @@ var image_counter=0;
 var deleted_images = [];
 var deleted_videos = [];
 
+var cover_crop_obj;
+
 //array to store images
 var files=[];
 
@@ -20,35 +22,35 @@ var files=[];
 			});
 		});
 
-		$('#datepicker').hide();
+		$('#date-timepicker1').hide();
 
 	    $('#editing').click(function() {
-	        $('#datepicker').hide();
+	        $('#date-timepicker1').hide();
 	    });
 
 	    $('#published').click(function() {
-	        $('#datepicker').hide();
+	        $('#date-timepicker1').hide();
 	    });
 
 	    $('#scheduled').click(function() {
-	        $('#datepicker').show();
+	        $('#date-timepicker1').show();
 	    });
 
 	    if($('#scheduled').is(':checked'))
 	    {
-	        $('#datepicker').show();
+	        $('#date-timepicker1').show();
 	    }
 
 	    function showErrorAlert (reason, detail) {
 	        var msg='';
 
-	        if (reason==='unsupported-file-type') 
-	        { 
-	            msg = "Unsupported format " +detail; 
+	        if (reason==='unsupported-file-type')
+	        {
+	            msg = "Unsupported format " +detail;
 	        } else {
 	            console.log("error uploading file", reason, detail);
 	        }
-	        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' + 
+	        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
 	          '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
 	    }
 
@@ -87,7 +89,7 @@ var files=[];
 						null
 					],
 					speech_button:false,
-					
+
 					'wysiwyg': {
 						hotKeys : {} //disable hotkeys
 					}
@@ -103,9 +105,9 @@ var files=[];
 	            else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
 	        }
 	    });
-	    
+
 	    if ( typeof jQuery.ui !== 'undefined' && /applewebkit/.test(navigator.userAgent.toLowerCase()) ) {
-	        
+
 	        var lastResizableImg = null;
 
 	        function destroyResizable() {
@@ -125,7 +127,7 @@ var files=[];
 	                            aspectRatio: e.target.width / e.target.height,
 	                        });
 	                        target.data('resizable', true);
-	                        
+
 	                        if( lastResizableImg != null ) {//disable previous resizable image
 	                            lastResizableImg.resizable( "destroy" );
 	                            lastResizableImg.removeData('resizable');
@@ -146,7 +148,7 @@ var files=[];
 
 	        enableImageResize();
 	    }
-	
+
 	});
 
 //Add document.ready
@@ -156,6 +158,17 @@ var tag_input = $('#form-field-tags');
 
 var tags="";
 
+
+var cover_photo = {
+    photo: $('#cover_photo'),
+    crop_x: $('#cover_crop_x'),
+    crop_y: $('#cover_crop_y'),
+    crop_width: $('#cover_crop_width'),
+    crop_height: $('#cover_crop_height'),
+    photo_width: $('#cover_photo_width'),
+    photo_height: $('#cover_photo_height')
+}
+
 $.ajax({
 	url: Routes.cms_tags,
 	type: "get",
@@ -164,7 +177,7 @@ $.ajax({
 	success: function (res) {
 		tags = JSON.parse(res.tags);
 
-		if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ) 
+		if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) )
 		{
 			tag_input.tag(
 			  {
@@ -178,9 +191,77 @@ $.ajax({
 			//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
 			tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
 			//$('#form-field-tags').autosize({append: "\n"});
-		}		
+		}
 	}
 });
+
+
+function coverUploadChange()
+{
+
+    var cover = $("#cover").prop('files')[0];
+    form_data = new FormData();
+    form_data.append('images[]', cover);
+
+    var cover_photo_crop = $("#cover-crop");
+    var path = StoreImage(form_data,cover_photo_crop);
+}
+
+function StoreImage(form_data,photo){
+
+    $("#loader-container").show();
+    $.ajax({
+        url: Routes.cms_post_tmp,
+        type: "POST",
+        data: form_data,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            $("#loader-container").hide();
+            path = JSON.parse(res);
+            displayCoverView(path,photo);
+        },
+        error: function(xhr, status, error) {
+            if(xhr.status == 400 || xhr.status == 403 || xhr.status == 408 || xhr.status == 500 || xhr.status == 504)
+            {
+                alert(xhr.statusText);
+            }
+        }
+    });
+}
+
+function displayCoverView(path,photo)
+{
+    if($(photo).attr('id')=="cover-crop")
+    {
+        if(cover_crop_obj!==undefined)
+        {
+            cover_crop_obj.destroy();
+        }
+
+        photo.attr('src',"/"+Routes.photo_location+"/"+path);
+
+
+
+       photo.Jcrop({
+        aspectRatio: 3/2,
+        allowSelect: false,
+        keySupport: false,
+        setSelect: [0, 0, 600, 400],
+        minSize: [155, 245],
+        boxWidth: 900,
+        onChange: function(crop){
+
+        }
+
+    },function(){
+        cover_crop_obj=this;
+    });
+
+    }
+}
+
+
 
 
 function filesUploadChange()
@@ -219,7 +300,11 @@ function displayCropView(temp_images)
 		files.push(temp_images[i]);
 		templateHTML=$('#image_item').html();
 	    template=Handlebars.compile(templateHTML);
-	    compiledHtml=template({data:temp_images[i],index:image_counter+i,url:Routes.cms_post_photos_destroy+"/"+temp_images[i]});
+	    compiledHtml=template({
+	    						data:"/"+Routes.photo_location+"/"+temp_images[i],
+	    						index:image_counter+i,
+	    						url:temp_images[i]
+	    					});
 	    croped_images_ul.append(compiledHtml);
 
 		$("#croped-img-"+(image_counter+i)).Jcrop({
@@ -244,6 +329,10 @@ function submitForm()
 	var section = $("#section").val();
 	var tags=$("#form-field-tags").val();
 
+	croped_images_array = getCropedImagesArray();
+	videos_array = getVideosArray();
+	croped_cover = JSON.stringify(getCoverImage());
+
 	if($('#updating').val()=="1")
 	{
 		var old_tags=$(".tag-value");
@@ -252,8 +341,15 @@ function submitForm()
 		{
 			tags=tags + ", " + (old_tags[i].innerText);
 		}
+
+		if(croped_cover == undefined)
+		{
+			croped_cover = 'croped_cover';
+		}
+
 	}
 
+	var featured = $('#featured').is(":checked");
 
 	var publish_state=$(".publish_state");
 
@@ -264,14 +360,16 @@ function submitForm()
 		}
 	};
 
-	croped_images_array = getCropedImagesArray();
-	videos_array = getVideosArray();
 
-	var publish_date = $("#datepicker").val();
+	console.log(croped_cover);
+
+
+	var publish_date = $("#date-timepicker1").val();
 
 	formdata = new FormData();
 
-	if(title!="")
+
+	if(title!="" && croped_cover != undefined)
 	{
 
 		croped_images_array = JSON.stringify(croped_images_array);
@@ -290,6 +388,13 @@ function submitForm()
 		formdata.append("tags",tags);
 		formdata.append("publish_state",publish_state);
 		formdata.append("publish_date",publish_date);
+		formdata.append("featured",featured);
+
+		cover = $("#cover-crop").attr('src');
+
+		formdata.append("cover", cover);
+		formdata.append("croped_cover",croped_cover);
+
 
 		videos_array = JSON.stringify(videos_array);
 
@@ -311,8 +416,12 @@ function submitForm()
 	}else{
 		if(title=="")
 		{
-			displayErrorMessage('title_error')
-		} else {
+			displayErrorMessage('title_error');
+		} else if (croped_cover == undefined) {
+
+			displayErrorMessage('cover_image_error');
+
+		} else{
 
 			displayErrorMessage('empty_post_msg');
 		}
@@ -333,8 +442,25 @@ function getCropedImagesArray()
 	return croped_images_array;
 }
 
+function getCoverImage()
+{
+
+  	image_to_crop = $("#cover-crop");
+
+  	image_to_crop.Jcrop({
+    onChange: function(coords){
+    	cover_crop_obj = showPreview(image_to_crop, coords);
+    },
+	});
+
+	return cover_crop_obj;
+}
+
+
+
+
 function showPreview(image_to_crop, coords) {
-	
+
 	var croped_image_object = {
 
 		"name":image_to_crop.prop("src"),
@@ -342,10 +468,10 @@ function showPreview(image_to_crop, coords) {
 		crop_y : Math.round(coords.y),
 		crop_width  : Math.round(coords.w),
 		crop_height  : Math.round(coords.h),
-		width : getImageWidth(),
-		height : getImageHeight(),
+		width : $("#cover-crop").width(),
+		height : $("#cover-crop").height(),
 	};
-	
+
 	return croped_image_object;
 }
 
@@ -382,7 +508,7 @@ function addYoutubeVideo()
 	}
 }
 
-function validYT(url) 
+function validYT(url)
 {
 	var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
 	return (url.match(p)) ? RegExp.$1 : false;
@@ -434,7 +560,7 @@ function deleteYt(id,video_id)
 		yt_video_index--;
 	if(video_id!='')
 	{
-		deleted_videos.push(video_id);
+		deleted_videos.push(parseInt(video_id));
 	}
 }
 
@@ -450,16 +576,17 @@ function getVideosArray()
 
 	for (var i = 0; i < videos_title.length; i++) {
 		var video_obj = {
+			"id":getYoutubeId($(videos_url[i]).val()),
 			"title" : $(videos_title[i]).val(),
 			"desc" : $(videos_desc[i]).val(),
 			"src" : $(videos_thumbnail[i]).prop("src"),
-			"url" : "http://youtube.com/embed/"+getYoutubeId($(videos_url).val()),
+			"url" : "http://youtube.com/embed/"+getYoutubeId($(videos_url[i]).val()),
 
 		}
 
-		console.log("http://youtube.com/embed/"+getYoutubeId($(videos_url).val()));
+		console.log("http://youtube.com/embed/"+getYoutubeId($(videos_url[i]).val()));
 
-		videos_array.push(video_obj);	
+		videos_array.push(video_obj);
 	};
 
 	return videos_array;
@@ -517,7 +644,7 @@ function submitNewForm(formdata,section)
 
 function deleteImage(id,element)
 {
-	
+
 	$.ajax({
 		url:Routes.cms_post_photos_destroy,
 		type:"POST",
@@ -536,13 +663,13 @@ function deleteImage(id,element)
 		}
 	});
 
-	 
+
 }
 
 
 function removePhotos(id, post_id)
 {
-   
+
    	deleted_images.push(id);
    	$("#img-"+id).hide();
 
@@ -558,7 +685,7 @@ function removePhotos(id, post_id)
 
 jQuery(function($) {
 	$("#bootbox-options").on(ace.click_event, function() {
-		
+
 	});
 });
 
@@ -568,9 +695,10 @@ jQuery(function($) {
 
 function displayErrorMessage(msg)
 {
+
 	bootbox.dialog({
 		message: "<span class='bigger-110'>"+Lang[msg]+"</span>",
-		buttons: 			
+		buttons:
 		{
 			"default" :
 			 {
@@ -585,7 +713,7 @@ function displayErrorMessage(msg)
 
 function displayLoading()
 {
-	
+
 	$("#loader-container").show();
 }
 
@@ -593,7 +721,7 @@ function deletePost()
 {
 	bootbox.dialog({
 		message: "<span class='bigger-110'>"+Lang['conf_messasge_delete_post']+"</span>",
-		buttons: 			
+		buttons:
 		{
 			"default" :
 			 {

@@ -11,7 +11,7 @@ class VideoRepositoryTest extends TestCase {
 
     public function __construct()
     {
-        $this->mock = M::mock('Eloquent');
+        $this->mock = M::mock('NeoEloquent');
     }
 
     public function setUp()
@@ -22,9 +22,15 @@ class VideoRepositoryTest extends TestCase {
         $this->videos = new VideoRepository($this->mVideo);
     }
 
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
+    }
+
     public function test_videos_provider_bindnig()
     {
-        $videos = $this->app->make('Agency\Repositories\Contracts\VideoRepositoryInterface');
+        $videos = $this->app->make('Agency\Contracts\Repositories\VideoRepositoryInterface');
         $this->assertInstanceOf('Agency\Repositories\VideoRepository', $videos);
     }
 

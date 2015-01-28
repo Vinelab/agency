@@ -44,3 +44,8 @@ class InvalidSectionException extends AgencyException {}
 class InvalidVideoException extends AgencyException {}
 
 class PostNotFoundException extends AgencyException {}
+
+class InvalidRoleException extends AgencyException {}
+
+class InvalidPermissionException extends AgencyException {}
+

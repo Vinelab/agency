@@ -4,15 +4,16 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
- use Str, TestCase, Mockery as M;
+ use Str, TestCase, Mockery as M, Config;
  use Agency\Repositories\PostRepository;
  use Agency\Contracts\HelperInterface;
+
 
 class PostRepositoryTest extends TestCase {
 
     public function __construct()
     {
-        $this->mock = M::mock('Eloquent');
+        $this->mock = M::mock('NeoEloquent');
     }
 
     public function setUp()
@@ -22,15 +23,25 @@ class PostRepositoryTest extends TestCase {
         $this->mPost = M::mock('Agency\Post');
         $this->mImage = M::mock('Agency\Contracts\ImageInterface');
         $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
-        $this->images = M::mock('Agency\Repositories\Contracts\ImageRepositoryInterface');
-        $this->sections = M::mock('Agency\Repositories\Contracts\SectionRepositoryInterface');
+        $this->images = M::mock('Agency\Contracts\Repositories\ImageRepositoryInterface');
+        $this->sections = M::mock('Agency\Contracts\Cms\Repositories\SectionRepositoryInterface');
         $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
-        $this->posts = new PostRepository($this->mPost, $this->images, $this->sections, $this->mImage, $this->mVideo,$this->mHelper);
+        $this->mPaginator = M::mock('Starac\Helper\Contracts\PaginatorInterface');
+
+        $this->posts = new PostRepository(  $this->mPost,
+                                            $this->sections,
+                                            $this->mHelper);
+    }
+
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
     }
 
     public function test_posts_provider_binding()
     {
-        $posts = $this->app->make('Agency\Repositories\Contracts\PostRepositoryInterface');
+        $posts = $this->app->make('Agency\Contracts\Repositories\PostRepositoryInterface');
         $this->assertInstanceOf('Agency\Repositories\PostRepository', $posts);
     }
 
@@ -44,10 +55,9 @@ class PostRepositoryTest extends TestCase {
         $publish_date  = date(time());
         $publish_state = 'scheduled';
 
-        $this->mPost->shouldReceive('create')->once()
+        $this->mPost->shouldReceive('create')
             ->with(compact('title', 'slug', 'body', 'admin_id', 'section_id', 'publish_date', 'publish_state'))
             ->andReturn($this->mPost);
-
         $post = $this->posts->create($title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
         $this->assertInstanceOf('Agency\Post', $post);
     }
@@ -62,17 +72,18 @@ class PostRepositoryTest extends TestCase {
         $section_id    = 10;
         $publish_date  = date(time());
         $publish_state = 'scheduled';
+        $featured = true;
 
-        $this->mPost->shouldReceive('findOrFail')->once()
+        $this->mPost->shouldReceive('findOrFail')
                 ->with($id)->andReturn($this->mPost)
 
-            ->shouldReceive('fill')->once()
-                ->with(compact('title', 'slug', 'body', 'admin_id', 'section_id', 'publish_date', 'publish_state'))
+            ->shouldReceive('fill')
+                ->with(compact('title', 'slug', 'body','featured', 'publish_date', 'publish_state'))
                 ->andReturn($this->mPost)
 
-            ->shouldReceive('save')->once()->withNoArgs()->andReturn(true);
+            ->shouldReceive('save')->withNoArgs()->andReturn(true);
 
-        $post = $this->posts->update($id, $title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
+        $post = $this->posts->update($id, $title, $slug, $body, $featured, $publish_date, $publish_state);
 
         $this->assertInstanceOf('Agency\Post', $post);
     }
@@ -87,18 +98,19 @@ class PostRepositoryTest extends TestCase {
         $section_id    = 10;
         $publish_date  = date(time());
         $publish_state = 'scheduled';
+        $featured = true;
 
-        $this->mPost->shouldReceive('findOrFail')->once()
+        $this->mPost->shouldReceive('findOrFail')
                 ->with($id)->andReturn($this->mPost)
 
-            ->shouldReceive('fill')->once()
-                ->with(compact('title', 'slug', 'body', 'admin_id', 'section_id', 'publish_date', 'publish_state'))
+            ->shouldReceive('fill')
+                ->with(compact('title', 'slug', 'body', 'featured', 'publish_date', 'publish_state'))
                 ->andReturn($this->mPost)
 
-            ->shouldReceive('save')->once()
+            ->shouldReceive('save')
                 ->withNoArgs()->andReturn(false);
 
-        $post = $this->posts->update($id, $title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
+        $post = $this->posts->update($id, $title, $slug, $body, $featured, $publish_date, $publish_state);
 
         $this->assertNull($post);
     }
@@ -108,9 +120,9 @@ class PostRepositoryTest extends TestCase {
         $ids = [1,2,3,4,5];
         $coll = M::mock('Illuminate\Database\Eloquent\Collection');
 
-        $this->mPost->shouldReceive('with')->once()->with('media')->andReturn($this->mPost)
-            ->shouldReceive('whereIn')->once()->with($ids)->andReturn($this->mPost)
-            ->shouldReceive('get')->once()->withNoArgs()->andReturn($coll);
+        $this->mPost->shouldReceive('with')->with('media')->andReturn($this->mPost)
+            ->shouldReceive('whereIn')->with($ids)->andReturn($this->mPost)
+            ->shouldReceive('get')->withNoArgs()->andReturn($coll);
 
         $posts = $this->posts->get($ids);
         $this->assertEquals($coll, $posts);
@@ -120,9 +132,17 @@ class PostRepositoryTest extends TestCase {
     {
         $id = 123;
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($id)
+        $mSection = M::mock('Agency\Section');
+
+        $this->mPost->shouldReceive('findOrFail')->with($id)
                 ->andReturn($this->mPost)
-            ->shouldReceive('delete')->times(2)->withNoArgs()->andReturn(true);
+                ->shouldReceive('section')->andReturn($this->mPost)
+                ->shouldReceive('edge')->andReturn($this->mPost)
+                ->shouldReceive('getAttribute')->andReturn($this->mPost)
+            ->shouldReceive('delete')->withNoArgs()->andReturn(true);
+
+        $this->mPost->section = $mSection;
+
 
         $this->assertTrue($this->posts->remove($id));
     }
@@ -131,11 +151,20 @@ class PostRepositoryTest extends TestCase {
     {
         $slug = 'my-slug-is-a-fug';
 
-        $this->mPost->shouldReceive('findOrFail')->once()
+        $mSection = M::mock('Agency\Section');
+
+
+        $this->mPost->shouldReceive('findOrFail')
                 ->with($slug)->andThrow('Illuminate\Database\Eloquent\ModelNotFoundException')
-            ->shouldReceive('where')->once()->with('slug', $slug)->andReturn($this->mPost)
-            ->shouldReceive('first')->once()->withNoArgs()->andReturn($this->mPost)
-            ->shouldReceive('delete')->once()->withNoArgs()->andReturn(true);
+            ->shouldReceive('where')->with('slug', $slug)->andReturn($this->mPost)
+            ->shouldReceive('first')->withNoArgs()->andReturn($this->mPost)
+            ->shouldReceive('section')->andReturn($this->mPost)
+            ->shouldReceive('edge')->andReturn($this->mPost)
+            ->shouldReceive('getAttribute')->andReturn($this->mPost)
+            ->shouldReceive('delete')->withNoArgs()->andReturn(true);
+
+        $this->mPost->section = $mSection;
+
 
         $this->assertTrue($this->posts->remove($slug));
     }
@@ -145,9 +174,9 @@ class PostRepositoryTest extends TestCase {
         $id = 'sec-id';
         $coll = M::mock('Illuminate\Database\Eloquent\Collection');
 
-        $this->mPost->shouldReceive('where')->once()
+        $this->mPost->shouldReceive('where')
                 ->with('section_id', $id)->andReturn($this->mPost)
-            ->shouldReceive('get')->once()->withNoArgs()
+            ->shouldReceive('get')->withNoArgs()
             ->andReturn($coll);
 
         $posts = $this->posts->forSection($id);
@@ -184,45 +213,70 @@ class PostRepositoryTest extends TestCase {
     {
         $coll = M::mock('Illuminate\Database\Eloquent\Collection');
 
-        $this->mPost->shouldReceive('published')->once()->withNoArgs()
+        $this->mPost->shouldReceive('published')->withNoArgs()
                 ->andReturn($this->mPost)
-            ->shouldReceive('latest')->once()->with('created_at')->andReturn($this->mPost)
-            ->shouldReceive('paginate')->once()->with(M::type('int'))
-            ->shouldReceive('get')->once()->withNoArgs()->andReturn($coll)
-            ->shouldReceive('select')->once()
-                ->with('posts.id as id', 'posts.title as title', 'posts.body as body');
+            ->shouldReceive('latest')->with('created_at')->andReturn($this->mPost)
+            ->shouldReceive('count')->withNoArgs()->andReturn($this->mPost)
+            ->shouldReceive('paginate')->with(Config::get('api.limit'))->andReturn($coll)
+            ->shouldReceive('orderBy')->with('publish_date','desc')->andReturn($this->mPost)
+            ->shouldReceive('get')->withNoArgs()->andReturn($coll);
 
-        $posts = $this->posts->published();
+
+        $coll->shouldReceive('count')->andReturn(2);
+
+
+        $this->mPaginator->shouldReceive('paginate')->with($this->mPost, Config::get('api.limit'), 1)->andReturn($coll);
+
+
+        $this->mPost->shouldReceive('count')->withNoArgs()->andReturn(2);
+
+
+
+        $posts = $this->posts->published()->get();
+
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $posts);
+    }
+
+    public function test_getting_published_paginated_posts_with_no_options()
+    {
+        $coll = M::mock('Illuminate\Database\Eloquent\Collection');
+
+        $this->mPost->shouldReceive('published')->withNoArgs()
+                ->andReturn($this->mPost)
+            ->shouldReceive('latest')->with('created_at')->andReturn($this->mPost)
+            ->shouldReceive('paginate')->with(Config::get('api.limit'))->andReturn($coll)
+            ->shouldReceive('get')->withNoArgs()->andReturn($coll)
+            ->shouldReceive('orderBy')->with('publish_date','desc')->andReturn($this->mPost)
+            ->shouldReceive('select')
+            ->with('posts.id as id', 'posts.title as title', 'posts.body as body');
+
+        $this->mPaginator->shouldReceive('paginate')->with($this->mPost, Config::get('api.limit'), 1)->andReturn($coll);
+
+
+        $this->mPost->shouldReceive('count')->withNoArgs()->andReturn(2);
+        $coll->shouldReceive('count')->andReturn(2);
+
+
+
+        $posts = $this->posts->paginatedPublishedPost();
 
         $this->assertEquals($coll, $posts);
     }
 
     public function test_add_tags()
     {
-        $mTag = M::mock('Agency\Tag');
-        $mTag->id = 20;
+        $id = 20;
 
-        $id=1;
-        $new_tags=[$mTag,$mTag,$mTag];
-        $existing_tags = [15,16];
-        $tags_ids = [20,15,16];
+        $tags_ids = [1,2,3];
 
-        $belongs_to_many =M::mock('Illuminate\Database\Eloquent\Relations\BelongsToMany');
-        $belongs_to_many->shouldReceive('sync')
-                        ->with($tags_ids)->andReturn(true)
-                        ->shouldReceive('saveMany')->once()->with($new_tags)->andReturn([$mTag]);
+        $this->mPost->shouldReceive('findOrFail')->with($id)
+            ->andReturn($this->mPost)
+            ->shouldReceive('tags')->andReturn($this->mPost)
+            ->shouldReceive('attach')->with($tags_ids)->andReturn(true);
 
 
-        $this->mPost->shouldReceive('tags')->once()
-                        ->andReturn($belongs_to_many)
-                    ->shouldReceive('findOrFail')->once()->with($id)
-                        ->andReturn($this->mPost);
-                   
-                  
-                     
-        $added_tags = $this->posts->addTags($id,$new_tags,$existing_tags);
-
-        $this->assertTrue($added_tags);     
+        $added_tags = $this->posts->addTags($id, $tags_ids);
+        $this->assertTrue($added_tags);
     }
 
     public function test_detach_tags()
@@ -230,13 +284,22 @@ class PostRepositoryTest extends TestCase {
         $id = 20;
 
         $belongs_to_many =M::mock('Illuminate\Database\Eloquent\Relations\BelongsToMany');
-        $belongs_to_many->shouldReceive('detach')->once()
+        $belongs_to_many->shouldReceive('detach')
                         ->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($id)
+        $this->mPost->shouldReceive('findOrFail')->with($id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('tags')->once()
-                        ->andReturn($belongs_to_many);
+                    ->shouldReceive('tags')
+                        ->andReturn($belongs_to_many)
+                    ->shouldReceive('getAttribute')->andReturn($this->mPost)
+                    ->shouldReceive('lists')->andReturn($this->mPost);
+
+        $mCollection = M::mock('Illuminate\Database\Eloquent\Collection');
+
+        $this->mPost->tags = $mCollection ;
+
+        $mCollection->shouldReceive('lists')->with("id")->andReturn($mCollection);
+
 
         $detached_tags = $this->posts->detachTags($id);
 
@@ -249,12 +312,12 @@ class PostRepositoryTest extends TestCase {
         $image_id = 1;
 
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
-        $morph_to_many  ->shouldReceive('detach')->once()->with($image_id)
+        $morph_to_many  ->shouldReceive('detach')->with($image_id)
                         ->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('images')->once()
+                    ->shouldReceive('images')
                         ->andReturn($morph_to_many);
 
         $detached_images = $this->posts->detachImages($post_id,$image_id);
@@ -268,12 +331,12 @@ class PostRepositoryTest extends TestCase {
         $images_ids = [1,2,3];
 
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
-        $morph_to_many  ->shouldReceive('detach')->once()->with($images_ids)
+        $morph_to_many  ->shouldReceive('detach')->with($images_ids)
                         ->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('images')->once()
+                    ->shouldReceive('images')
                         ->andReturn($morph_to_many);
 
         $detached_images = $this->posts->detachImages($post_id,$images_ids);
@@ -287,12 +350,12 @@ class PostRepositoryTest extends TestCase {
         $video_id = 1;
 
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
-        $morph_to_many->shouldReceive('detach')->once()->with($video_id)
+        $morph_to_many->shouldReceive('detach')->with($video_id)
                      ->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('videos')->once()
+                    ->shouldReceive('videos')
                         ->andReturn($morph_to_many);
 
         $detached_videos = $this->posts->detachVideos($post_id,$video_id);
@@ -307,12 +370,12 @@ class PostRepositoryTest extends TestCase {
         $videos_ids = [1,2,3];
 
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
-        $morph_to_many->shouldReceive('detach')->once()->with($videos_ids)
+        $morph_to_many->shouldReceive('detach')->with($videos_ids)
                      ->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('videos')->once()
+                    ->shouldReceive('videos')
                         ->andReturn($morph_to_many);
 
         $detached_videos = $this->posts->detachVideos($post_id,$videos_ids);
@@ -330,9 +393,9 @@ class PostRepositoryTest extends TestCase {
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
         $morph_to_many->shouldReceive('saveMany')->with($images)->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('images')->once()
+                    ->shouldReceive('images')
                         ->andReturn($morph_to_many);
 
         $added_images = $this->posts->addImages($post_id,$images);
@@ -350,9 +413,9 @@ class PostRepositoryTest extends TestCase {
         $morph_to_many =M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
         $morph_to_many->shouldReceive('saveMany')->with($images)->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('images')->once()
+                    ->shouldReceive('images')
                         ->andReturn($morph_to_many);
 
         $added_images = $this->posts->addImages($post_id,$images);
@@ -370,9 +433,9 @@ class PostRepositoryTest extends TestCase {
         $morph_to_many = M::mock('Illuminate\Database\Eloquent\Relations\MorphToMany');
         $morph_to_many->shouldReceive('saveMany')->with($videos)->andReturn(true);
 
-        $this->mPost->shouldReceive('findOrFail')->once()->with($post_id)
+        $this->mPost->shouldReceive('findOrFail')->with($post_id)
                         ->andReturn($this->mPost)
-                    ->shouldReceive('videos')->once()
+                    ->shouldReceive('videos')
                         ->andReturn($morph_to_many);
 
         $added_videos = $this->posts->addVideos($post_id,$videos);
@@ -380,11 +443,6 @@ class PostRepositoryTest extends TestCase {
         $this->assertTrue($added_videos);
 
     }
-
-
-
-
-
 
 
 

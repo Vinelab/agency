@@ -15,6 +15,7 @@ class PostMapper{
 		$this->image_mapper = new ImageMapper();
 		$this->video_mapper = new VideoMapper();
 		$this->tag_mapper = new TagMapper();
+		$this->section_mapper = new SectionMapper();
 
 	}
 
@@ -31,6 +32,7 @@ class PostMapper{
 			}
 
 			 return $this->posts_collection;
+
 		} elseif (get_class($posts)=="Agency\Post") {
 
 			return $this->parseAndFill($posts);
@@ -41,10 +43,18 @@ class PostMapper{
 	{
 		$this->post['id'] = $post->id;
 		$this->post['title'] = $post->title;
+		$this->post['body'] = $post->body;
 		$this->post['slug'] = $post->slug;
-		$this->post['images'] = $this->image_mapper->make($post->getAllImages())->toArray();
-		$this->post['videos'] = $this->video_mapper->make($post->getAllVideos())->toArray();
-		$this->post['tags'] = $this->tag_mapper->make($post->tags()->get())->toArray();
+		$this->post['share_url'] = $post->shareUrl();
+		$this->post['featured'] = ($post->featured == "true")? true : false;
+		$this->post['publish_date'] = $post->publish_date;
+		$this->post['cover'] = $this->image_mapper->parseAndFill($post->coverImage);
+		$this->post['images'] = $this->image_mapper->make($post->images)->toArray();
+		$this->post['videos'] = $this->video_mapper->make($post->videos)->toArray();
+		$this->post['tags'] = $this->tag_mapper->make($post->tags)->toArray();
+
+		$this->post['section'] = $this->section_mapper->parseAndFill($post->section);
+
 		return $this->post;
 	}
 

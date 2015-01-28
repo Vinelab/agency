@@ -4,14 +4,14 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Validators\Validator;
 use Agency\Cms\Exceptions\InvalidAdminException;
+use Agency\Contracts\Cms\Validators\AdminValidatorInterface;
 
-class AdminValidator extends Validator implements Contracts\AdminValidatorInterface {
+class AdminValidator extends Validator implements AdminValidatorInterface {
 
     protected $rules = [
         'name' => 'required',
-        'email' => 'required|email|unique:admins'
+        'email' => 'required|email|unique:Admin'
     ];
 
     public function validate($attributes)

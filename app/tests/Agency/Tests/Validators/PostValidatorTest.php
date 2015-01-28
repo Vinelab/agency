@@ -19,7 +19,7 @@ class PostValidatorTest extends TestCase {
 
     public function test_post_validator_binding()
     {
-        $validator = $this->app->make('Agency\Validators\Contracts\PostValidatorInterface');
+        $validator = $this->app->make('Agency\Contracts\Validators\PostValidatorInterface');
         $this->assertInstanceOf('Agency\Validators\PostValidator', $validator);
     }
 

@@ -25,3 +25,8 @@ branches:
 
 services:
     - redis-server
+
+notifications:
+  slack:
+    rooms:
+      - vinelab:XWn6x3YfliIywgTlwwAQsLGs#agency

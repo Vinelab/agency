@@ -4,7 +4,9 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-class Repository implements Contracts\RepositoryInterface {
+use Agency\Contracts\Repositories\RepositoryInterface;
+
+class Repository implements RepositoryInterface {
 
     /**
      * The model instance.
@@ -42,10 +44,23 @@ class Repository implements Contracts\RepositoryInterface {
      * Find a record by its identifier.
      *
      * @param  string $id
+     * @param  array  $relations [optional]
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function find($id)
+    public function find($id, $relations = null)
     {
+        if ($relations && is_array($relations))
+        {
+            $query = $this->model;
+
+            foreach($relations as $relation)
+            {
+                $query->with($relation);
+            }
+
+            return $query->findOrFail($id);
+        }
+
         return $this->model->findOrFail($id);
     }
 
@@ -54,11 +69,12 @@ class Repository implements Contracts\RepositoryInterface {
      *
      * @param  string $attribute
      * @param  string $value
+     * @param  array  $relations [optional]
      * @return Illuminate\Database\Eloquent\Model
      */
     public function findBy($attribute, $value, $relations = null)
     {
-        if ($relations and is_array($relations))
+        if ($relations && is_array($relations))
         {
             $query = $this->model->where($attribute, $value);
 
@@ -108,7 +124,8 @@ class Repository implements Contracts\RepositoryInterface {
      */
     public function remove($key)
     {
-        return $this->model->where($this->model->getKeyName(), $key)->delete();
+        $record = $this->model->where($this->model->getKeyName(), $key)->findOrFail($key);
+        return $record->delete();
     }
 
     /**
