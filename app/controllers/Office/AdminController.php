@@ -4,7 +4,7 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use View, Request, Auth, Input, Lang, Redirect;
+use View, Request, Auth, Input, Lang, Redirect, Session;
 use Agency\Cms\Exceptions\UnauthorizedException;
 use Agency\Cms\Exceptions\InvalidAdminException;
 use Agency\Contracts\Cms\AuthorableInterface;
@@ -278,5 +278,96 @@ class AdminController extends Controller {
 
         return $roles;
     }
+
+     public function changePassword()
+    {
+        return View::make('cms.pages.administration.password');
+    }
+
+    public function updatePassword()
+    {
+        $admin = Auth::user();
+        $credentials = ['email'=>$admin->email,'password'=>Input::get('old_password')];
+        if(Auth::validate($credentials))
+        {
+            if(Input::get('new_password')==Input::get('retype_new_password'))
+            {
+                if(Input::get('new_password')!="")
+                {
+                    $this->admins->changePassword($admin->id,Input::get('new_password'));
+                    Session::flash('success',[Lang::get('resetPassword.password_updated_successfully')]);
+                    Auth::logout();
+                    return Redirect::route('cms.login');
+                } else {
+
+                    Session::flash('errors',[Lang::get('resetPassword.new_password_cannot_be_empty')]);
+                    return Redirect::back()->withInput();
+                }
+
+
+            } else {
+                Session::flash('errors',[Lang::get('resetPassword.password_does_not_match_the_confirm_password')]);
+                return Redirect::back()->withInput();
+            }
+
+        } else {
+            Session::flash('errors',[Lang::get('resetPassword.current_password_error')]);
+            return Redirect::back()->withInput();
+
+        }
+    }
+
+    public function profile()
+    {
+        $admin = Auth::user();
+        return View::make('cms.pages.administration.profile',['admin' => $admin]);
+    }
+
+    public function updateProfile()
+    {
+        try {
+            $admin = Auth::user();
+            $validator = Validator::make(
+            Input::all(),
+            ['email' => 'required|email','name'=>'required']
+            );
+            if($validator->passes())
+            {
+                $this->admins->updateProfile($admin,Input::all());
+                Session::flash('success',[Lang::get('administration.data_update_successfully')]);
+                return Redirect::route('cms.dashboard');
+            }
+        } catch (Exception $e) {
+            Session::flash('errors',[Lang::get('administration.something_went_wrong')]);
+            return Redirect::route('cms.dashboard');
+        }
+    }
+
+
+    public function reset ($id)
+    {
+
+        try {
+            $admin = $this->admins->find($id);
+            $validator = Validator::make(
+            ['email'=>$admin->email],
+            ['email' => 'required|email']
+            );
+            if($validator->passes())
+            {
+                $admin = $this->admins->resetPassword($admin->id);
+
+                $this->notifier->notify($admin);
+
+                Session::flash('success',[Lang::get('administration.reset_password_successfully')]);
+                return Redirect::route('cms.dashboard');
+            }
+
+        } catch (Exception $e) {
+            Session::flash('errors',[Lang::get('administration.something_went_wrong')]);
+            return Redirect::route('cms.dashboard');
+        }
+    }
+
 
 }
