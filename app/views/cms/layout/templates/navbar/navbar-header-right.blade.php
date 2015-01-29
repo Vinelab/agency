@@ -1,16 +1,16 @@
 <div class="navbar-header pull-right" role="navigation">
 	<ul class="nav ace-nav ">
 		<li class="light-blue">
-			<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-				<!-- add the user image here -->
+			<a data-toggle="dropdown" href="#" class="dropdown-toggle" aria-expanded="false">
 				<span class="user-info">
 					<small>{{Lang::get('navbar.welcome')}}</small>
-					<!-- add the username here -->
 					{{ Auth::user()->name }}
 				</span>
-				<i class="icon-caret-down"></i>
+
+				<i class="ace-icon fa fa-caret-down"></i>
 			</a>
-			<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+			<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 				<li>
 					<a href="{{URL::route('cms.dashboard.password')}}">
 						<i class="icon-cog"></i>
