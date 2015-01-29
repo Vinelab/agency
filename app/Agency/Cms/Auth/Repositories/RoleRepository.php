@@ -18,25 +18,9 @@ class RoleRepository extends Repository implements RoleRepositoryInterface {
         $this->model = $this->role = $role;
     }
 
-	/**
-	 * Return the artist's roles.
-	 * @param array $ids
-	 * @return mixed
-	 */
-	public function forArtists($ids = [])
-	{
-		if(empty($ids))
-		{
-			return $this->role->where('for_artists', true)->get();
-		}
-
-		return $this->role->whereIn($ids)->get();
-	}
-
-
-    public function create($title, $alias, $for_artists = false)
+    public function create($title, $alias)
     {
-        return $this->role->create(compact('title', 'alias', 'for_artists'));
+        return $this->role->create(compact('title', 'alias'));
     }
 
     public function createWithPermissions($title, $alias, $permissions)
@@ -44,11 +28,11 @@ class RoleRepository extends Repository implements RoleRepositoryInterface {
         return $this->role->createWith(compact('title', 'alias'), compact('permissions'));
     }
 
-    public function update($id, $title, $alias, $for_artists = false)
+    public function update($id, $title, $alias)
     {
         $role = $this->find($id);
 
-        $role->fill(compact('title', 'alias', 'for_artists'));
+        $role->fill(compact('title', 'alias'));
 
         $role->save();
 
@@ -67,11 +51,7 @@ class RoleRepository extends Repository implements RoleRepositoryInterface {
 
     public function allWithPermissions()
     {
-        return $this->role->with('permissions')->where('for_artists', null)->get();
+        return $this->role->with('permissions')->get();
     }
 
-    public function allWithArtistsPermissions()
-    {
-        return $this->role->with('permissions')->where('for_artists', true)->get();
-    }
 }
