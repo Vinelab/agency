@@ -7,15 +7,13 @@ interface RoleRepositoryInterface {
 	 * @param array $ids
 	 * @return mixed
 	 */
-	public function forArtists($ids = []);
 
-    public function create($title, $alias, $for_artists = false);
+    public function create($title, $alias);
 
-    public function update($id, $title, $alias, $for_artists = false);
+    public function update($id, $title, $alias);
 
     public function updatePermissions($id, $permission_ids);
 
     public function allWithPermissions();
 
-    public function allWithArtistsPermissions();
 }

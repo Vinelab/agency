@@ -19,17 +19,17 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
 
     Route::post('/password/email', [
         'as'   => 'cms.password.email',
-        'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
+        'uses' => 'LoginController@sendMail'
     ]);
 
     Route::get('/password/reset/{code}',[
         'as' => 'cms.password.reset',
-        'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
+        'uses' => 'LoginController@resetPassword'
     ]);
 
     Route::post('/password/reset',[
         'as' => 'cms.password.change',
-        'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
+        'uses' => 'LoginController@changePassword'
     ]);
 
 
@@ -45,22 +45,22 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
 
             Route::get('/profile',[
                 'as' => 'cms.dashboard.profile',
-                'uses' => 'Agency\Cms\Controllers\AdminController@profile'
+                'uses' => 'AdminController@profile'
             ]);
 
             Route::post('/profile',[
                 'as' => 'cms.dashboard.profile.udpate',
-                'uses' => 'Agency\Cms\Controllers\AdminController@updateProfile'
+                'uses' => 'AdminController@updateProfile'
             ]);
 
             Route::get('/password',[
                 'as' => 'cms.dashboard.password',
-                'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
+                'uses' => 'AdminController@changePassword'
             ]);
 
             Route::post('/dashboard/password',[
                 'as' => 'cms.dashboard.password.update',
-                'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
+                'uses' => 'AdminController@updatePassword'
             ]);
         });
 

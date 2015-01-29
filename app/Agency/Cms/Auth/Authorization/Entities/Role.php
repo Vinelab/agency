@@ -8,7 +8,7 @@ class Role extends Entity {
 
     protected $label = ['Role', 'Cms'];
 
-    protected $fillable = ['title', 'alias', 'for_artists'];
+    protected $fillable = ['title', 'alias'];
 
     public function permissions()
     {
