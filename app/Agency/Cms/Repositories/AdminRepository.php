@@ -6,6 +6,7 @@
 
 use Hash;
 use Agency\Cms\Admin;
+use Agency\Helper;
 use Agency\Contracts\Cms\Repositories\AdminRepositoryInterface;
 
 class AdminRepository extends Repository implements AdminRepositoryInterface {
@@ -37,8 +38,6 @@ class AdminRepository extends Repository implements AdminRepositoryInterface {
 
         $admin = $this->admin->create(compact('name', 'email', 'password'));
 
-        $admin->raw_password = $raw;
-
         return $admin;
     }
 
@@ -65,8 +64,30 @@ class AdminRepository extends Repository implements AdminRepositoryInterface {
      *
      * @return string
      */
-    protected function generatePassword()
+    public function generatePassword()
     {
+
         return uniqid();
     }
+
+    public function changePassword($id,$new_password)
+    {
+        $admin = $this->find($id);
+        $admin->password = Hash::make($new_password);
+
+        if ($admin->save())
+        {
+            return $admin;
+        }
+    }
+
+    public function resetPassword($id)
+    {
+        $password = $this->generatePassword();
+        $admin = $this->changePassword($id, $password);
+        $admin->raw_password = $password;
+
+        return $admin;
+    }
+
 }
