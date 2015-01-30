@@ -22,8 +22,15 @@
 		<div class="space-4"></div>
 
 		{{--Body Input--}}
-		{{--@include('cms.pages.post.templates.form.body')--}}
-		{{Editor::display($updating, $edit_post)}}
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		{{HTML::script('/dist/js/mr-uploader.all.min.js')}}
+
+
+		@if($updating)
+			{{Editor::view($edit_post->body)}}
+		@else
+			{{Editor::view()}}
+		@endif
 
 		<div class="space-4"></div>
 

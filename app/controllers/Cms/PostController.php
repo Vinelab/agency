@@ -99,7 +99,8 @@ class PostController extends Controller {
 			if($this->validator->validate(Input::all()))
 			{
 			  	$slug = $this->posts->uniqSlug( Input::get('title') );
-				$body = $this->helper->cleanHtml(Input::get('body'));
+
+				$body = Input::get('body');
 
 				$section = $this->sections->findBy('alias',Input::get('section'));
 
@@ -110,8 +111,9 @@ class PostController extends Controller {
 				$publish_state = $this->filterPublishState(Input::get('publish_state'));
 				$publish_date = Input::get('publish_date');
 				$publish_date = $this->formatDate($publish_date);
-				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state, $related_models);
 
+				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state, $related_models);
+				
 				$this->posts->updateSection($post->id, $section->id);
 
 				$this->cache->forgetByTags(['posts']);
@@ -213,7 +215,7 @@ class PostController extends Controller {
 			if($this->validator->validate(Input::all()))
 			{
 
-				$body = $this->helper->cleanHtml(Input::get('body'));
+				$body = Input::get('body');
 
 				$post = $this->posts->find($id);
 				($post->title == Input::get('title')) ? $slug = $post->slug : $slug = $this->posts->uniqSlug(Input::get('title'));

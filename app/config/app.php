@@ -107,7 +107,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
-
+		'Vinelab\Editor\EditorServiceProvider',
 		'Vinelab\Cdn\CdnServiceProvider',
 		'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
 		'Vinelab\Auth\AuthServiceProvider',
@@ -181,7 +181,6 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Which'			  => 'Agency\Facades\Cms\Which',
 		'Publisher'		  => 'Agency\Facades\Cms\Publisher',
-		'Editor'		  => 'Agency\Facades\Cms\Editor'
 	),
 
 );

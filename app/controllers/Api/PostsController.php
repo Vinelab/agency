@@ -21,7 +21,6 @@ use Agency\Api\Validators\CodeValidator;
 use Exception;
 use Agency\Exceptions\PostNotFoundException;
 
-
 use Agency\Exceptions\InvalidSectionException;
 
 use Paginator, Cache;
@@ -35,6 +34,7 @@ class PostsController extends Controller {
                                 PostRepositoryInterface $post,
                                 ApiInterface $api)
     {
+
         $this->cache = $cache;
         $this->section = $section;
         $this->post = $post;
@@ -45,10 +45,9 @@ class PostsController extends Controller {
     public function index()
     {
 
-        // try {
+        try {
 
             $key='all'.'-'.Input::get('limit').'-'.Input::get('page').'-'.Input::get('tag').'-'.Input::get('category').'-'.Input::get('featured').'-'.Input::get('keyword');
-
             $posts = $this->cache->remember($key, function(){
 
                 $input = Input::all();
@@ -56,7 +55,7 @@ class PostsController extends Controller {
                 $section = $this->getSection();
 
                 $posts = $this->getPosts($section);
-
+                
                 $total = $posts->getTotal();
 
                 $posts = $this->post_mapper->make($posts);
@@ -67,13 +66,12 @@ class PostsController extends Controller {
 
             return $posts;
 
-        // } catch (InvalidCodeException $e) {
-        //     return Response::json(['status'=> 400, 'message'=> Lang::get('messages.invalid_code')]);
-        // }
-        // catch (Exception $e) {
-        //     dd($e->getMessage());
-        //     // return Response::json(['status'=> 400, 'message'=>Lang::get('messages.something_wrong')]);
-        // }
+        } catch (InvalidCodeException $e) {
+            return Response::json(['status'=> 400, 'message'=> Lang::get('messages.invalid_code')]);
+        }
+        catch (Exception $e) {
+            return Response::json(['status'=> 400, 'message'=>Lang::get('messages.something_wrong')]);
+        }
     }
 
 
@@ -164,7 +162,7 @@ class PostsController extends Controller {
             {
                 $section = $sections->first();
             }
-
+            
             if(isset($section->filter_enable) AND ($section->filter_enable == false) )
             {
 
@@ -178,4 +176,5 @@ class PostsController extends Controller {
         }
 
     }
+
 }

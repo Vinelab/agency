@@ -4,6 +4,8 @@ use Agency\Api\PostsCollection;
 
 use Agency\Post;
 
+use Editor;
+
 class PostMapper{
 
 	protected $post;
@@ -41,10 +43,15 @@ class PostMapper{
 
 	public function parseAndFill($post)
 	{
+		$content = Editor::content($post->body);
+		$content = $content->toArray();
+		
 		$this->post['id'] = $post->id;
 		$this->post['title'] = $post->title;
-		$this->post['body'] = $post->body;
-		$this->post['slug'] = $post->slug;
+		$this->post['body'] = (object)[	'text' => $content['text'],
+										'html'=>$content['html'],
+										'embeds' => sizeof($content)>0?$content['embeds']:null
+										];		$this->post['slug'] = $post->slug;
 		$this->post['share_url'] = $post->shareUrl();
 		$this->post['featured'] = ($post->featured == "true")? true : false;
 		$this->post['publish_date'] = $post->publish_date;

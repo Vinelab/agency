@@ -11,7 +11,8 @@
 		"vinelab/neoeloquent":"dev-develop",
 		"everyman/neo4jphp": "dev-master",
 		"guzzlehttp/guzzle" : "~4.0",
-		"vinelab/cdn": "1.*"
+		"vinelab/cdn": "1.*",
+		"vinelab/laravel-editor": "*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.*",

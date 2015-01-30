@@ -325,7 +325,7 @@ var croped_images_array = [];
 function submitForm()
 {
 	var title = $("#title").val();
-	var body = $("#editor").html();
+	var body = $("#vinelab-editor-textarea").val();
 	var section = $("#section").val();
 	var tags=$("#form-field-tags").val();
 
