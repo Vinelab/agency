@@ -32,7 +32,6 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
         'uses' => 'LoginController@changePassword'
     ]);
 
-
     Route::group([ 'before' => 'cms.auth'], function(){
 
 
@@ -127,7 +126,6 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                 'as' => 'cms.content.show',
                 'uses' => 'ContentController@show'
             ]);
-
            
         });
 
@@ -144,10 +142,88 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
             ]
         ]);
 
+
+        Route::group(['prefix'=>'/teams'],function(){
+
+            Route::resource('/', 'TeamController', [
+                'names' => [
+                    'index'   => 'cms.teams',
+                    'create'  => 'cms.teams.create',
+                    'store'   => 'cms.teams.store',
+                    'show'    => 'cms.teams.show',
+                    'edit'    => 'cms.teams.edit',
+                    'update'  => 'cms.teams.update',
+                    'destroy' => 'cms.teams.destroy'
+                ]
+            ]);
+
+            Route::get('/{id}',[
+                'as' => 'cms.teams.show',
+                'uses' => 'TeamController@show'
+            ]);
+
+            Route::get('/{id}/edit',[
+                'as' => 'cms.teams.edit',
+                'uses' => 'TeamController@edit'
+            ]);
+
+            Route::put('/{id}',[
+                'as' => 'cms.teams.update',
+                'uses' => 'TeamController@update'
+            ]);
+
+            Route::delete('/{id}',[
+                'as' => 'cms.teams.destroy',
+                'uses' => 'TeamController@destroy'
+            ]);
+
+
+            Route::any("/photos",[
+                "as" => "cms.teams.photos.store",
+                "uses" => "TeamController@storePhoto"
+            ]);
+
+
+            Route::post("/photos/delete",[
+                "as" => "cms.teams.photos.destroy",
+                "uses" => "TeamController@destroyPhoto"
+            ]);
+        });
+
+
+        Route::group(['prefix'=>'/users'],function(){
+
+            Route::resource('/', 'UsersController', [
+                'names' => [
+                    'index'   => 'cms.users',
+                    'create'  => 'cms.users.create',
+                    'store'   => 'cms.users.store',
+                    'show'    => 'cms.users.show',
+                    'edit'    => 'cms.users.edit',
+                    'update'  => 'cms.users.update',
+                    'destroy' => 'cms.users.destroy'
+                ]
+            ]);
+
+
+            Route::any("/photos",[
+                "as" => "cms.users.photos.store",
+                "uses" => "UsersController@storePhoto"
+            ]);
+
+
+            Route::post("/photos/delete",[
+                "as" => "cms.users.photos.destroy",
+                "uses" => "UsersController@destroyPhoto"
+            ]);
+        });
+
+
+
         Route::get('/audience', [
                 'as' => 'cms.audience',
                 'uses' => 'DashboardController@index'
-            ]);
+        ]);
 
         Route::group(['prefix' => 'configuration'], function() {
 
@@ -202,7 +278,6 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                 ]
             ]);
         });
-
     });
 });
 
