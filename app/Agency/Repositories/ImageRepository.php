@@ -45,6 +45,32 @@ class ImageRepository extends Repository implements ImageRepositoryInterface {
 	}
 
 
+
+  /**
+     * create with the URI's
+     *
+     * @param string $original
+     * @param string $thumbnail
+     * @param string $small
+     * @param string $square
+     *
+     * @return mixed
+     */
+    public function createWithUri(
+        $original,
+        $thumbnail,
+        $small,
+        $square
+    ) {
+        return $this->image->create([
+            'original'  => $original,
+            'thumbnail' => $thumbnail,
+            'small'     => $small,
+            'square'    => $square
+        ]);
+    }
+
+
   public function update($id,
                           Photo $original,
                           Photo $thumbnail,
