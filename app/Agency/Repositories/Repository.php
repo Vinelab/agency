@@ -38,6 +38,8 @@ class Repository implements Contracts\RepositoryInterface {
         return $this->model->all();
     }
 
+
+
     /**
      * Find a record by its identifier.
      *
@@ -84,6 +86,16 @@ class Repository implements Contracts\RepositoryInterface {
     public function fill($attributes)
     {
         return $this->model->fill($attributes);
+    }
+
+
+    public function findByIdOrSlug($id_or_slug)
+    {
+        try {
+            return $this->find($id_or_slug);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->findBy('slug',$id_or_slug);
+        }
     }
 
     /**
