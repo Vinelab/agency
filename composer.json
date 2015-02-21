@@ -12,7 +12,9 @@
 		"everyman/neo4jphp": "dev-master",
 		"guzzlehttp/guzzle" : "~4.0",
 		"vinelab/cdn": "1.*",
-		"vinelab/laravel-editor": "*"
+		"vinelab/laravel-editor": "*",
+		"vinelab/api-manager": "*"
+
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.*",
@@ -20,7 +22,8 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Agency": "app/"
+			"Agency": "app/",
+			"Xfactor":"app/"
 		},
 		"classmap": [
 			"app/commands",

@@ -114,6 +114,9 @@ return array(
         'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
 		'Vinelab\Auth\AuthServiceProvider',
 		'Agency\Providers\AgencyServiceProvider',
+		'Xfactor\Providers\XfactorServiceProvider',
+		'Vinelab\Api\ApiServiceProvider'
+
 	),
 
 	/*
