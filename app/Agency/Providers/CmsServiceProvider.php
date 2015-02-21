@@ -66,6 +66,7 @@ class CmsServiceProvider extends ServiceProvider {
 
         $this->app->singleton('which', 'Agency\Support\Which\Which');
         $this->app->singleton('publisher', 'Agency\Support\Publisher\Publisher');
+        $this->app->singleton('helper', 'Agency\Support\Helper');
 
 
     }
