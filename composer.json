@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"vinelab/social-auth": "dev-master",
+		"vinelab/social-auth": "3.1.0",
 		"intervention/image": "1.6.*",
 		"aws/aws-sdk-php": "2.*",
 		"vinelab/neoeloquent":"dev-develop",
