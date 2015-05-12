@@ -5,7 +5,7 @@
  */
 
 use TestCase;
-use Agency\Cms\Validators\RoleValidator;
+use AblaFahita\Cms\Validators\RoleValidator;
 
 class RoleValidatorTest extends TestCase {
 
@@ -19,8 +19,8 @@ class RoleValidatorTest extends TestCase {
 
     public function test_role_validator_binding()
     {
-        $validator = $this->app->make('Agency\Contracts\Cms\Validators\RoleValidatorInterface');
-        $this->assertInstanceOf('Agency\Cms\Validators\RoleValidator', $validator);
+        $validator = $this->app->make('AblaFahita\Contracts\Cms\Validators\RoleValidatorInterface');
+        $this->assertInstanceOf('AblaFahita\Cms\Validators\RoleValidator', $validator);
     }
 
     public function test_passing_role_validation()

@@ -5,16 +5,17 @@
  */
 
 use NeoEloquent;
-
-use Illuminate\Auth\UserInterface;
-use Agency\Contracts\Cms\RegistrableInterface;
-use Vinelab\NeoEloquent\Eloquent\SoftDeletingTrait;
-use Agency\Contracts\Cms\AuthorableInterface;
+use Illuminate\Auth\Authenticatable;
 use Agency\Contracts\Cms\AdminInterface;
+use Vinelab\NeoEloquent\Eloquent\SoftDeletes;
+use Agency\Contracts\Cms\RegistrableInterface;
+use Agency\Contracts\Cms\AuthorableInterface;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class Admin extends NeoEloquent implements  AdminInterface, AuthorableInterface, UserInterface, RegistrableInterface {
+class Admin extends NeoEloquent implements  AdminInterface, AuthorableInterface, AuthenticatableContract, RegistrableInterface {
 
-    use SoftDeletingTrait;
+    use SoftDeletes;
+    use Authenticatable;
 
     protected $label = ['Admin', 'Cms'];
 
