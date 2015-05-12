@@ -18,10 +18,9 @@
                             <div class="center">
                                 <h1>
                                     <i class="icon-leaf green"></i>
-                                    <span class="red">Agency</span>
-                                    <span class="white">CMS</span>
+                                    <span class="red">{{Lang::get('posts/form.agency_cms')}}</span>
+                                    <small class="blue">&copy; {{date('Y')}}</small>
                                 </h1>
-                                <h4 class="blue">&copy;{{date('Y')}} Vinelab</h4>
                             </div>
 
                             <div class="space-6"></div>
@@ -104,7 +103,7 @@
                                                     </label>
 
                                                     <div class="clearfix">
-                                                        
+
                                                         {{ Form::submit(Lang::get('login.send_me'),['class'=> 'width-35 pull-right btn btn-sm btn-danger']) }}
 
                                                     </div>
@@ -133,9 +132,9 @@
 
         <!--[if !IE]> -->
 
-       
 
-        
+
+
 
          @section('scripts')
             @include('cms.layout.templates.scripts')
