@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+
 use Agency\Cms\Admin;
 use Agency\Cms\Section;
 use Agency\Cms\Auth\Authorization\Entities\Role;
@@ -32,6 +35,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('CmsSectionsSeeder');
 		$this->call('RoleAndPermissionsSeeder');
 		$this->call('AdminSeeder');
+		$this->call('CmsDatabaseSeeder');
 	}
 
 }
@@ -50,15 +54,15 @@ class CmsSectionsSeeder extends Seeder {
 				'is_roleable'=> false
 			],
 			[
-				'title'      => 'Content',
-				'alias'      => 'content',
-				'icon'       => 'rss',
+				'title'      => 'Administration',
+				'alias'      => 'administration',
+				'icon'       => 'list',
 				'is_fertile' => true,
 				'is_roleable'=> true
 			],
 			[
-				'title'      => 'Administration',
-				'alias'      => 'administration',
+				'title'      => 'Content',
+				'alias'      => 'content',
 				'icon'       => 'list',
 				'is_fertile' => true,
 				'is_roleable'=> true
@@ -151,20 +155,47 @@ class AdminSeeder extends Seeder {
 
 	public function run()
 	{
-		require app_path().'/launch/cms.boot.php';
+		require base_path().'/launch/cms.boot.php';
 
-		// Create Ibrahim Fleifel's admin account
-		$ibrahim = Admin::create([
+		// Create admin account
+		$admin = Admin::create([
 			'name'     => 'Mr. Admin',
 			'email'    => 'admin@vinelab.com',
 			'password' => Hash::make('meh')
 		]);
 
-		// Grant Abed privileges
+		// Grant Admin privileges
 		$sections = Section::all();
 
-		Auth::authorize($ibrahim)->admin($sections);
+		Auth::authorize($admin)->admin($sections);
 	}
 }
 
+
+
+
+
+
+
+
+class CmsDatabaseSeeder extends Seeder {
+
+	public function run()
+	{
+		$sections = [
+			[
+				'title'      => 'News',
+				'alias'      => 'news',
+				'icon'       => 'file-text',
+				'is_fertile' => true,
+				'is_roleable'=> true
+			]
+		];
+
+		foreach ($sections as $section)
+		{
+			Section::create($section);
+		}
+	}
+}
 
