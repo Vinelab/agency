@@ -36,7 +36,6 @@ class AppServiceProvider extends ServiceProvider {
 		$this->app->register('Agency\Providers\AgencyServiceProvider');
 		$this->app->register('Agency\Providers\AuthServiceProvider');
 		$this->app->register('Agency\Providers\CmsServiceProvider');
-		// $this->app->register('Agency\Providers\AblaFahitaServiceProvider');
 	}
 
 }
