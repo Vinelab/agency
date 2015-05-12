@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('CmsSectionsSeeder');
 		$this->call('RoleAndPermissionsSeeder');
 		$this->call('AdminSeeder');
-		$this->call('CmsDatabaseSeeder');
+
 	}
 
 }
@@ -172,30 +172,4 @@ class AdminSeeder extends Seeder {
 }
 
 
-
-
-
-
-
-
-class CmsDatabaseSeeder extends Seeder {
-
-	public function run()
-	{
-		$sections = [
-			[
-				'title'      => 'News',
-				'alias'      => 'news',
-				'icon'       => 'file-text',
-				'is_fertile' => true,
-				'is_roleable'=> true
-			]
-		];
-
-		foreach ($sections as $section)
-		{
-			Section::create($section);
-		}
-	}
-}
 
