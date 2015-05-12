@@ -117,7 +117,13 @@ class Guard extends IlluminateGuard implements AuthInterface {
             $resource = Which::section();
         }
 
-        $permissions = $this->permissionsForUser($this->user(), $resource, $for_artists);
+        // we will initially use an empty permissions collection, if there's a user logged in
+        // it will be filled with horror... I mean permissions.
+        $permissions = new PermissionsCollection();
+
+        if ($user = $this->user()) {
+            $permissions = $this->permissionsForUser($user, $resource, $for_artists);
+        }
 
         // Set the permissions for this Guard instance so that we
         // skip fetching them again when needed.
@@ -135,7 +141,7 @@ class Guard extends IlluminateGuard implements AuthInterface {
     {
         $sections = $this->getSectionsRepository()->all();
 
-        return $this->access($this->user(), $sections)->resources;
+        return (new Access($this->user(), $sections))->resources;
     }
 
     /**

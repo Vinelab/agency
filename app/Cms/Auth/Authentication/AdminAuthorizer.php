@@ -35,7 +35,7 @@ class AdminAuthorizer implements AdminAuthorizerInterface {
      */
 
     public function __construct(
-        AgencySectionRepositoryInterface $Agency) 
+        AgencySectionRepositoryInterface $Agency)
     {
         $this->Agency_sections = $Agency;
     }
