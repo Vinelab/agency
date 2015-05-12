@@ -1,4 +1,4 @@
-<?php namespace Agency\Contracts\Api; 
+<?php namespace Agency\Contracts\Api;
 
 interface CodeManagerInterface {
 
