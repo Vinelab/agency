@@ -2,6 +2,7 @@
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
+ * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
 use NeoEloquent;
@@ -64,6 +65,15 @@ class Section extends NeoEloquent implements PrivilegableInterface {
         return $this->hasMany('Agency\Post','POST');
     }
 
+    public function news()
+    {
+        return $this->hasMany('Agency\News','NEWS');
+    }
+
+    public function episodes()
+    {
+        return $this->hasMany('Agency\Episode','EPISODE');
+    }
 
 
 }
