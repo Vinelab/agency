@@ -1,4 +1,4 @@
-<?php namespace Agency\Api\Mappers;
+<?php namespace Agency\Mappers;
 
 use Agency\Api\SectionsCollection;
 

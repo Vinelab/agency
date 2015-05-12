@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>

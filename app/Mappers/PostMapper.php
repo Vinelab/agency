@@ -1,4 +1,4 @@
-<?php namespace Agency\Api\Mappers;
+<?php namespace Agency\Mappers;
 
 use Agency\Api\PostsCollection;
 
@@ -23,7 +23,7 @@ class PostMapper{
 	{
 		if (get_class($posts)=="Illuminate\Support\Collection"
 			or get_class($posts)=="Illuminate\Database\Eloquent\Collection"
-			or get_class($posts)== "Illuminate\Pagination\Paginator")
+			or get_class($posts)== "Illuminate\Pagination\LengthAwarePaginator")
 		{
 			$this->posts_collection = new PostsCollection();
 
