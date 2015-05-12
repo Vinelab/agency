@@ -1,66 +1,66 @@
 <?php
 
-Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
+
+Route::group(['middleware' => 'csrf'], function() {
 
     Route::get('/', [
             'as'   => 'cms.login',
-            'uses' => 'LoginController@index'
+            'uses' => 'Cms\LoginController@index'
         ]);
 
     Route::post('/login', [
             'as'   => 'cms.login.attempt',
-            'uses' => 'LoginController@login'
+            'uses' => 'Cms\LoginController@login'
         ]);
 
     Route::get('/logout', [
             'as'   => 'cms.logout',
-            'uses' => 'LoginController@logout'
+            'uses' => 'Cms\LoginController@logout'
         ]);
 
     Route::post('/password/email', [
         'as'   => 'cms.password.email',
-        'uses' => 'Agency\Cms\Controllers\LoginController@sendMail'
+        'uses' => 'Cms\LoginController@sendMail'
     ]);
 
     Route::get('/password/reset/{code}',[
         'as' => 'cms.password.reset',
-        'uses' => 'Agency\Cms\Controllers\LoginController@resetPassword'
+        'uses' => 'Cms\LoginController@resetPassword'
     ]);
 
     Route::post('/password/reset',[
         'as' => 'cms.password.change',
-        'uses' => 'Agency\Cms\Controllers\LoginController@changePassword'
+        'uses' => 'Cms\LoginController@changePassword'
     ]);
 
 
-    Route::group([ 'before' => 'cms.auth'], function(){
-
+    Route::group([ 'middleware' => 'cms.auth'], function(){
 
         Route::group(['prefix' => '/dashboard'], function(){
 
             Route::get('/', [
                 'as' => 'cms.dashboard',
-                'uses' => 'DashboardController@index'
+                'uses' => 'Cms\DashboardController@index'
             ]);
 
             Route::get('/profile',[
                 'as' => 'cms.dashboard.profile',
-                'uses' => 'Agency\Cms\Controllers\AdminController@profile'
+                'uses' => 'Cms\AdminController@profile'
             ]);
 
             Route::post('/profile',[
                 'as' => 'cms.dashboard.profile.udpate',
-                'uses' => 'Agency\Cms\Controllers\AdminController@updateProfile'
+                'uses' => 'Cms\AdminController@updateProfile'
             ]);
 
             Route::get('/password',[
                 'as' => 'cms.dashboard.password',
-                'uses' => 'Agency\Cms\Controllers\AdminController@changePassword'
+                'uses' => 'Cms\AdminController@changePassword'
             ]);
 
             Route::post('/dashboard/password',[
                 'as' => 'cms.dashboard.password.update',
-                'uses' => 'Agency\Cms\Controllers\AdminController@updatePassword'
+                'uses' => 'Cms\AdminController@updatePassword'
             ]);
         });
 
@@ -68,17 +68,17 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
 
             Route::get('/',[
                 'as' => 'cms.content',
-                'uses' => 'ContentController@index'
+                'uses' => 'Cms\ContentController@index'
             ]);
 
             Route::post('/search', [
                 'as' => 'cms.content.search',
-                'uses' => 'SearchController@index'
+                'uses' => 'Cms\SearchController@index'
             ]);
-            
+
             Route::group(['prefix'=>'/posts'],function(){
 
-                Route::resource('/tags', 'TagController',
+                Route::resource('/tags', 'Cms\TagController',
                 [
                     'names' => [
                     'index'   => 'cms.content.posts.tags',
@@ -91,26 +91,26 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                 'except' => ['show']
                 ]);
 
-                
 
-                Route::post("/photos",[
-                    "as" => "cms.content.posts.photos.store",
-                    "uses" => "MediaController@store"
+
+                Route::post('/photos',[
+                    'as' => 'cms.content.posts.photos.store',
+                    'uses' => 'Cms\MediaController@store'
                 ]);
 
-                Route::post("/photos/delete",[
-                    "as" => "cms.content.posts.photos.destroy",
-                    "uses" => "MediaController@destroy"
+                Route::post('/photos/delete',[
+                    'as' => 'cms.content.posts.photos.destroy',
+                    'uses' => 'Cms\MediaController@destroy'
                 ]);
 
-                Route::post("/{id}",[
+                Route::post('/{id}',[
                     'as' => 'cms.content.posts.update',
-                    'uses' => 'PostController@update'
+                    'uses' => 'Cms\PostController@update'
                 ]);
 
             });
 
-            Route::resource('/posts', 'PostController',
+            Route::resource('/posts', 'Cms\PostController',
                 [
                     'names' => [
                         'index'   => 'cms.content.posts',
@@ -125,13 +125,13 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
 
             Route::get('/{id}',[
                 'as' => 'cms.content.show',
-                'uses' => 'ContentController@show'
+                'uses' => 'Cms\ContentController@show'
             ]);
 
-           
+
         });
 
-        Route::resource('/administration', 'AdminController',
+        Route::resource('/administration', 'Cms\AdminController',
         [
             'names' => [
                 'index'   => 'cms.administration',
@@ -144,19 +144,14 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
             ]
         ]);
 
-        Route::get('/audience', [
-                'as' => 'cms.audience',
-                'uses' => 'DashboardController@index'
-            ]);
-
         Route::group(['prefix' => 'configuration'], function() {
 
             Route::get('', [
                 'as' => 'cms.configuration',
-                'uses' => 'ConfigurationController@index'
+                'uses' => 'Cms\ConfigurationController@index'
             ]);
 
-            Route::resource('sections', 'SectionController',
+            Route::resource('sections', 'Cms\SectionController',
                 [
                     'names' => [
                         'index'   => 'cms.configuration.sections',
@@ -168,7 +163,7 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                     ]
                 ]);
 
-            Route::resource('roles', 'RoleController',
+            Route::resource('roles', 'Cms\RoleController',
                 [
                     'names' => [
                         'index'   => 'cms.configuration.roles',
@@ -180,7 +175,7 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                     ]
                 ]);
 
-            Route::resource('permissions', 'PermissionController',
+            Route::resource('permissions', 'Cms\PermissionController',
                 [
                     'names' => [
                         'index'   => 'cms.configuration.permissions',
@@ -192,7 +187,7 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
                     ]
                 ]);
 
-            Route::resource('applications', 'ApplicationController',
+            Route::resource('applications', 'Cms\ApplicationController',
                 [
                     'names' => [
                         'index'   => 'cms.configuration.applications',
@@ -203,9 +198,34 @@ Route::group(['namespace' => 'Agency\Cms\Controllers'], function(){
             ]);
         });
 
-    });
-});
 
-Route::get('/client', function (){
-    return View::make('client');
+        // get all photos "paginated" using AJAX to select from (while selecting from existing photos)
+        Route::get('/photos',           ['as' => 'cms.photos',          'uses' => 'Cms\PhotoController@index']);
+        Route::post('/photos',          ['as' => 'cms.photos.store',    'uses' => 'Cms\PhotoController@upload']);
+
+        /**
+         * required route by the `laravel-editor` package to listen to the embedded `mr-uploader`included with the package
+         * similar to `/photos` with a different response
+         **/
+        Route::post('/upload',          ['as' => 'cms.embedded.photos.store',    'uses' => 'Cms\PhotoController@embedUpload']);
+
+    });
+
+    Route::get('/client', function (){
+        return View::make('client');
+    });
+
+    /**
+     * email template tester
+     */
+    Route::any('/email-tester', function(){
+        return View::make("emails.contact.gawab-contact")
+            ->with('name', 'Ibrahim Fleifel')
+            ->with('phone', '0627626889')
+            ->with('country', 'France')
+            ->with('email', 'ibrahim@vinelab.com')
+            ->with('message_body', "this is the message body here\nAnd this is another line.");
+    });
+
+
 });
