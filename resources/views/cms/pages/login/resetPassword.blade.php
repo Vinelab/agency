@@ -18,7 +18,7 @@
                             <div class="center">
                                 <h1>
                                     <i class="icon-leaf green"></i>
-                                    <span class="red">Agency</span>
+                                    <span class="red">Abla Fahita</span>
                                     <span class="white">CMS</span>
                                 </h1>
                                 <h4 class="blue">&copy;{{date('Y')}} Vinelab</h4>
@@ -64,7 +64,7 @@
 
 
                 <div class="clearfix">
-                    
+
                     {{ Form::submit('Send Me',['class'=> 'width-35 pull-right btn btn-sm btn-danger']) }}
 
                 </div>
@@ -107,7 +107,7 @@
             function show_box(id) {
              jQuery('.widget-box.visible').removeClass('visible');
              jQuery('#'+id).addClass('visible');
-            }       
+            }
         </script>
         @section('scripts')
             @include('cms.layout.templates.scripts')

@@ -5,7 +5,7 @@
  */
 
 use TestCase, Mockery as M;
-use Agency\Cms\Repositories\RoleRepository;
+use AblaFahita\Cms\Repositories\RoleRepository;
 
 class RoleRepositoryTest extends TestCase {
 
@@ -17,7 +17,7 @@ class RoleRepositoryTest extends TestCase {
     public function setUp()
     {
         parent::setUp();
-        $this->mRole = M::mock('Agency\Cms\Authority\Entities\Role');
+        $this->mRole = M::mock('AblaFahita\Cms\Authority\Entities\Role');
         $this->roles = new RoleRepository($this->mRole);
     }
 
@@ -37,7 +37,7 @@ class RoleRepositoryTest extends TestCase {
 
         $role = $this->roles->create($title, $alias);
 
-        $this->assertInstanceOf('Agency\Cms\Authority\Entities\Role', $role);
+        $this->assertInstanceOf('AblaFahita\Cms\Authority\Entities\Role', $role);
     }
 
     public function test_updating_role_permissions()
@@ -53,7 +53,7 @@ class RoleRepositoryTest extends TestCase {
 
         $role = $this->roles->updatePermissions($id, $ids);
 
-        $this->assertInstanceOf('Agency\Cms\Authority\Entities\Role', $role);
+        $this->assertInstanceOf('AblaFahita\Cms\Authority\Entities\Role', $role);
     }
 
     public function test_fetching_with_permissions()
