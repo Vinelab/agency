@@ -4,9 +4,28 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
+use Auth;
+use Config;
 use Illuminate\Support\ServiceProvider;
+use Agency\Cms\Auth\Guard;
+use Agency\Cms\Auth\UserProvider;
+use Illuminate\Foundation\Application;
 
 class AgencyServiceProvider extends ServiceProvider {
+
+    public function boot()
+    {
+        Config::set('auth.driver', 'agency.management');
+        Config::set('auth.model', 'Agency\Cms\Admin');
+
+        Auth::extend('agency.management', function(Application $app)
+        {
+            $provider = new UserProvider($app->make('Illuminate\Contracts\Hashing\Hasher'), Config::get('auth.model'));
+
+            return new Guard($provider, $app->make('Illuminate\Session\Store'));
+        });
+
+    }
 
     public function register()
     {
@@ -41,7 +60,7 @@ class AgencyServiceProvider extends ServiceProvider {
             'Agency\Repositories\ApplicationRepository');
 
         $this->app->bind(
-            'Agency\Contracts\ApplicationInterface', 
+            'Agency\Contracts\ApplicationInterface',
             'Agency\Api\Application');
 
         $this->app->bind(
@@ -49,7 +68,7 @@ class AgencyServiceProvider extends ServiceProvider {
             'Agency\Repositories\CodeRepository');
 
         $this->app->bind(
-            'Agency\Contracts\CodeInterface', 
+            'Agency\Contracts\CodeInterface',
             'Agency\Api\Code');
 
         $this->app->bind(
@@ -114,7 +133,10 @@ class AgencyServiceProvider extends ServiceProvider {
                 return new \Agency\Validators\TagValidator($this->app->make('validator'));
             });
 
-
+        $this->app->bind(
+            'Agency\Repositories\Contracts\VideoRepositoryInterface',
+            'Agency\Repositories\VideoRepository'
+        );
 
     }
 }

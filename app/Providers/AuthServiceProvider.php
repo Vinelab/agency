@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider {
         $this->app->bind(
             'Agency\Contracts\Cms\AdminInterface',
             'Agency\Cms\Admin');
-    
+
 
     }
 }
