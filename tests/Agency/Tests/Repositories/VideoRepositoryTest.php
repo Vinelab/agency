@@ -5,7 +5,7 @@
  */
 
 use TestCase, Mockery as M;
-use Agency\Repositories\VideoRepository;
+use AblaFahita\Repositories\VideoRepository;
 
 class VideoRepositoryTest extends TestCase {
 
@@ -18,7 +18,7 @@ class VideoRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mVideo = M::mock('Agency\Video');
+        $this->mVideo = M::mock('AblaFahita\Video');
         $this->videos = new VideoRepository($this->mVideo);
     }
 
@@ -30,8 +30,8 @@ class VideoRepositoryTest extends TestCase {
 
     public function test_videos_provider_bindnig()
     {
-        $videos = $this->app->make('Agency\Contracts\Repositories\VideoRepositoryInterface');
-        $this->assertInstanceOf('Agency\Repositories\VideoRepository', $videos);
+        $videos = $this->app->make('AblaFahita\Contracts\Repositories\VideoRepositoryInterface');
+        $this->assertInstanceOf('AblaFahita\Repositories\VideoRepository', $videos);
     }
 
     public function test_creating_video()
@@ -46,7 +46,7 @@ class VideoRepositoryTest extends TestCase {
             ->andReturn($this->mVideo);
 
         $video = $this->videos->create($title, $url, $description, $thumbnail);
-        $this->assertInstanceOf('Agency\Video', $video);
+        $this->assertInstanceOf('AblaFahita\Video', $video);
     }
 
     public function test_extracting_youtube_video_id()

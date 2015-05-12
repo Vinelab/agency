@@ -1,8 +1,8 @@
 <?php namespace Agency\Tests\Validators;
 
-use Agency\Tag;
+use AblaFahita\Tag;
 use DB, Artisan, TestCase;
-use Agency\Validators\TagValidator;
+use AblaFahita\Validators\TagValidator;
 
 class TagValidatorTest extends TestCase {
 
@@ -16,8 +16,8 @@ class TagValidatorTest extends TestCase {
 
     public function test_tag_validator_binding()
     {
-        $validator = $this->app->make('Agency\Contracts\Validators\TagValidatorInterface');
-        $this->assertInstanceOf('Agency\Validators\TagValidator', $validator);
+        $validator = $this->app->make('AblaFahita\Contracts\Validators\TagValidatorInterface');
+        $this->assertInstanceOf('AblaFahita\Validators\TagValidator', $validator);
     }
 
     public function test_passing_tag_validation()

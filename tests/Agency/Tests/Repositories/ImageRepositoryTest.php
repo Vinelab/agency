@@ -6,7 +6,7 @@
 
 use TestCase, Mockery as M;
 
-use Agency\Repositories\ImageRepository;
+use AblaFahita\Repositories\ImageRepository;
 
 class ImageRepositoryTest extends TestCase {
 
@@ -14,8 +14,8 @@ class ImageRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mImage = M::mock('Agency\Contracts\ImageInterface');
-        $this->mHelper = M::Mock('Agency\Contracts\HelperInterface');
+        $this->mImage = M::mock('AblaFahita\Contracts\ImageInterface');
+        $this->mHelper = M::Mock('AblaFahita\Contracts\HelperInterface');
         $this->images = new ImageRepository($this->mImage,$this->mHelper);
         $this->mHelper->shouldReceive('getUniqueId')->andReturn('12345');
     }
@@ -28,11 +28,11 @@ class ImageRepositoryTest extends TestCase {
 
     public function test_bindings()
     {
-        $image = $this->app->make('Agency\Contracts\ImageInterface');
-        $this->assertInstanceOf('Agency\Image', $image);
+        $image = $this->app->make('AblaFahita\Contracts\ImageInterface');
+        $this->assertInstanceOf('AblaFahita\Image', $image);
 
-        $images = $this->app->make('Agency\Contracts\Repositories\ImageRepositoryInterface');
-        $this->assertInstanceOf('Agency\Repositories\ImageRepository', $images);
+        $images = $this->app->make('AblaFahita\Contracts\Repositories\ImageRepositoryInterface');
+        $this->assertInstanceOf('AblaFahita\Repositories\ImageRepository', $images);
     }
 
     public function test_creating_image()
@@ -43,16 +43,16 @@ class ImageRepositoryTest extends TestCase {
         $this->mImage->shouldReceive('presetType')->with('small')->andReturn('small');
 
 
-        $original  = M::mock('Agency\Media\Photos\Photo');
+        $original  = M::mock('AblaFahita\Media\Photos\Photo');
         $original->url = 'http://placekitten.com/1024/768';
 
-        $thumbnail = M::mock('Agency\Media\Photos\Photo');
+        $thumbnail = M::mock('AblaFahita\Media\Photos\Photo');
         $thumbnail->url = 'http://placekitten.com/300/200';
 
-        $small = M::mock('Agency\Media\Photos\Photo');
+        $small = M::mock('AblaFahita\Media\Photos\Photo');
         $small->url = 'http://pacekitten.com/320/128';
 
-        $square = M::mock('Agency\Media\Photos\Photo');
+        $square = M::mock('AblaFahita\Media\Photos\Photo');
         $square->url = 'http://plackitten.com/200/200';
 
 
@@ -65,7 +65,7 @@ class ImageRepositoryTest extends TestCase {
 
 
         $original_image = $this->images->create($original, $thumbnail, $small, $square);
-        $this->assertInstanceOf('Agency\Contracts\ImageInterface', $original_image);
+        $this->assertInstanceOf('AblaFahita\Contracts\ImageInterface', $original_image);
     }
 
     public function test_getting_thumbnail()
@@ -77,12 +77,12 @@ class ImageRepositoryTest extends TestCase {
         $this->mImage->shouldReceive('where')->with('preset', '=', 'thumbnail')->andReturn($this->mImage);
         $this->mImage->shouldReceive('first')->andReturn($this->mImage);
 
-        $this->assertInstanceOf('Agency\Contracts\ImageInterface', $this->images->getThumbnail($guid));
+        $this->assertInstanceOf('AblaFahita\Contracts\ImageInterface', $this->images->getThumbnail($guid));
     }
 
     public function test_store()
     {
-        $mPhoto = M::mock('Agency\Media\Photos\Photo');
+        $mPhoto = M::mock('AblaFahita\Media\Photos\Photo');
 
 
 
