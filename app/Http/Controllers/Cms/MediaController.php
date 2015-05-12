@@ -1,16 +1,17 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 use Agency\Media\Photos\Contracts\StoreInterface;
 
 use Input, Response,File;
 
-class MediaController extends \Controller {
+use Agency\Http\Controllers\Cms\Controller;
+
+class MediaController extends Controller {
 
     public function __construct(StoreInterface $temp)
     {
         $this->temp = $temp;
     }
-	
 
     public function store()
     {
@@ -30,16 +31,12 @@ class MediaController extends \Controller {
      */
     public function destroy()
     {
-
-
         try {
             $result = File::delete(public_path()."/tmp/".Input::get('image'));
 
             return Response::json(["result"=>$result]);
-            
-
         } catch (Exception $e) {
-            
+
             return Response::json(['message'=>$e->getMessage()]);
         }
     }
