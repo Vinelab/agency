@@ -25,14 +25,14 @@ class Helper {
 
         return implode('-', $ret);
     }
-    
+
     /**
      * Transform a normal HTML into
      * a stripped HTML (no tags attributes
      * except the href in the a tags)
-     * 
-     * @param  string $html 
-     * @return string       
+     *
+     * @param  string $html
+     * @return string
      */
     public static function cleanHTML($html)
     {
@@ -40,7 +40,7 @@ class Helper {
 
         $text = Helper::div2br($text);
 
-        $text = strip_tags($text, '<a><br><b><strike><u><i>'); 
+        $text = strip_tags($text, '<a><br><b><strike><u><i>');
 
         $text = Helper::br2nl($text);
 
@@ -56,9 +56,9 @@ class Helper {
 
     /**
      * Convert <br> to \n
-     * 
+     *
      * @param  string $html
-     * @return string       
+     * @return string
      */
     public static function br2nl($html)
     {
@@ -67,9 +67,9 @@ class Helper {
 
     /**
      * Convert <div> to <br>
-     * 
-     * @param  string $html 
-     * @return string       
+     *
+     * @param  string $html
+     * @return string
      */
     public static function div2br($html)
     {
