@@ -2,3 +2,5 @@
 .env
 composer.lock
 /public/cms/images/uploads/
+/public/assets/
+/public/vendor
