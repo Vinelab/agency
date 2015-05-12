@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
@@ -71,12 +71,10 @@ class ContentController extends Controller {
 				} else {
 
 						$posts="";
-
 						if($section->posts->count()>0)
 						{
 							$posts = $this->sections->getRelatedPosts($section->id);
 						}
-
 						return View::make("cms.pages.content.posts",[
 							"posts" => $posts,
 						]);
@@ -85,16 +83,16 @@ class ContentController extends Controller {
 
 		} catch (Exception $e) {
 			return Response::json(["message"=>$e->getMessage()]);
-		}	
+		}
 	}
 }
 
 
 
 
-	
-	
-	
+
+
+
 
 
 

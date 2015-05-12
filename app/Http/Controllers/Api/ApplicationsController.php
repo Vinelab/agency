@@ -1,6 +1,6 @@
-<?php namespace Agency\Api\Controllers;
+<?php namespace Agency\Http\Controllers\Api;
 
-use Agency\Cms\Controllers\Controller;
+use Agency\Http\Controllers\Cms\Controller;
 
 use Agency\Api\Repositories\Contracts\ApplicationRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;
@@ -52,7 +52,7 @@ class ApplicationsController extends Controller {
 			}
 		}
 
-		
+
 	}
 
 	public function destroy($id)

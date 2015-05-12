@@ -1,4 +1,4 @@
-<?php namespace Agency\Api\Controllers;
+<?php namespace Agency\Http\Controllers\Api;
 
 
 use Agency\Contracts\Repositories\ApplicationRepositoryInterface;
@@ -9,8 +9,9 @@ use Agency\Api\Validators\Contracts\EncryptorValidatorInterface;
 use Agency\Api\Validators\CodeValidator;
 use Agency\Contracts\Api\CodeManagerInterface;
 
+use Agency\Http\Controllers\Controller;
 
-use Str,Response,Input, Controller, Config, Lang;
+use Str,Response,Input, Config, Lang;
 use Carbon\Carbon;
 
 class CodesController extends Controller {
@@ -60,9 +61,9 @@ class CodesController extends Controller {
 				if($this->validator->validate($input))
 				{
 
-					$duration = Carbon::now('Asia/Beirut')->addDays(2)->timestamp;
+					$duration = Carbon::now(config('app.timezone'))->addDays(2)->timestamp;
 
-					$duration_in_seconds = $duration - Carbon::now('Asia/Beirut')->timestamp;
+					$duration_in_seconds = $duration - Carbon::now(config('app.timezone'))->timestamp;
 
 					$this->manager->store($code, $application->id, $duration_in_seconds);
 					$code = $this->code->create($application->id,$code,true);

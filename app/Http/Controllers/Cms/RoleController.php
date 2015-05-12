@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 use Input, Response, Redirect, Lang;
 use Agency\Cms\Exceptions\UnauthorizedException;

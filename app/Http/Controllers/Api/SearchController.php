@@ -1,13 +1,13 @@
-<?php namespace Agency\Api\Controllers;
+<?php namespace Agency\Http\Controllers\Api;
 
 
 
-use Input, Response, File, DB, Lang, Controller;
+use Input, Response, File, DB, Lang;
 use Agency\Contracts\Repositories\PostRepositoryInterface;
 use Agency\Api\Mappers\PostMapper;
 use Agency\Contracts\Api\ApiInterface;
 use Agency\Cache\PostCacheManager;
-
+use Agency\Http\Controllers\Controller;
 
 
 class SearchController extends Controller {
@@ -60,9 +60,9 @@ class SearchController extends Controller {
 
             if(! is_null($nearest_scheduled_post))
             {
-                $nearest_scheduled_posts_date = new Carbon($nearest_scheduled_post->publish_date,'Asia/Beirut');
+                $nearest_scheduled_posts_date = new Carbon($nearest_scheduled_post->publish_date,config('app.timezone'));
 
-                $time_difference = $nearest_scheduled_posts_date->diffInMinutes(Carbon::now('Asia/Beirut'))+1;
+                $time_difference = $nearest_scheduled_posts_date->diffInMinutes(Carbon::now(config('app.timezone')))+1;
 
                 if($time_difference > 0)
                 {

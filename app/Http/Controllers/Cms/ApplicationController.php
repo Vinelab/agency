@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 use Agency\Contracts\Repositories\ApplicationRepositoryInterface;
 use Agency\Repositories\Contracts\SectionRepositoryInterface;

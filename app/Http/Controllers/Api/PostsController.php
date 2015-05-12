@@ -1,4 +1,4 @@
-<?php namespace Agency\Api\Controllers;
+<?php namespace Agency\Http\Controllers\Api;
 
 use Agency\Contracts\Repositories\PostRepositoryInterface;
 use Agency\Contracts\Cms\Repositories\SectionRepositoryInterface;
@@ -7,7 +7,9 @@ use Agency\Contracts\Repositories\CodeRepositoryInterface;
 
 use Agency\Cache\PostCacheManager;
 
-use Input, Response, File, DB, Lang, Controller;
+use Agency\Http\Controllers\Controller;
+
+use Input, Response, File, DB, Lang;
 
 use Agency\Api\Exceptions\InvalidCodeException;
 use Agency\Post;
@@ -15,7 +17,7 @@ use Agency\Cms\Section;
 
 use Agency\Contracts\Api\ApiInterface;
 
-use Agency\Api\Mappers\PostMapper;
+use Agency\Mappers\PostMapper;
 use Agency\Api\PostsCollection;
 use Agency\Api\Validators\CodeValidator;
 use Exception;
@@ -48,24 +50,19 @@ class PostsController extends Controller {
         // try {
 
             $key='all'.'-'.Input::get('limit').'-'.Input::get('page').'-'.Input::get('tag').'-'.Input::get('category').'-'.Input::get('featured').'-'.Input::get('keyword');
-
-            $posts = $this->cache->remember($key, function(){
+            // $posts = $this->cache->remember($key, function(){
 
                 $input = Input::all();
-
                 $section = $this->getSection();
 
                 $posts = $this->getPosts($section);
-
-                $total = $posts->getTotal();
-
+                $total = $posts->total();
                 $posts = $this->post_mapper->make($posts);
-
                 return $this->api->respond($posts, $total, Input::get('page'));
 
-            },['posts'],$this->getNearestPostDuration($key));
+            // },['posts'],$this->getNearestPostDuration($key));
 
-            return $posts;
+            // return $posts;
 
         // } catch (InvalidCodeException $e) {
         //     return Response::json(['status'=> 400, 'message'=> Lang::get('messages.invalid_code')]);
@@ -112,9 +109,9 @@ class PostsController extends Controller {
 
             if(! is_null($nearest_scheduled_post))
             {
-                $nearest_scheduled_posts_date = new Carbon($nearest_scheduled_post->publish_date,'Asia/Beirut');
+                $nearest_scheduled_posts_date = new Carbon($nearest_scheduled_post->publish_date,config('app.timezone'));
 
-                $time_difference = $nearest_scheduled_posts_date->diffInMinutes(Carbon::now('Asia/Beirut'))+1;
+                $time_difference = $nearest_scheduled_posts_date->diffInMinutes(Carbon::now(config('app.timezone')))+1;
 
                 if($time_difference > 0)
                 {

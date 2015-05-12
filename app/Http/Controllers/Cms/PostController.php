@@ -1,4 +1,4 @@
-<?php namespace Agency\Cms\Controllers;
+<?php namespace Agency\Http\Controllers\Cms;
 
 use Agency\Validators\SectionValidator;
 use Agency\Cms\Exceptions\UnauthorizedException;
@@ -37,7 +37,7 @@ class PostController extends Controller {
 	 *
 	 * @return Response
 	 */
-	
+
 
     public function __construct(PostValidatorInterface $validator,
     							PostRepositoryInterface $post,
@@ -57,12 +57,12 @@ class PostController extends Controller {
 		$this->tags = $tag;
 		$this->manager = $manager;
 		$this->filter_response = $filter_response;
-		$this->cache = $cache;         
+		$this->cache = $cache;
     }
 
 	public function index()
 	{
-		
+
 	}
 
 	/**
@@ -79,7 +79,7 @@ class PostController extends Controller {
 			$edit_post=null;
 
 			$contents=Which::children();
-			
+
 			return View::make("cms.pages.post.create",compact("edit_post",'contents'));
 		}
 
