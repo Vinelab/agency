@@ -1,17 +1,5 @@
 <!-- basic scripts -->
-<!--[if !IE]> -->
-<script src="{{Cdn::asset('/assets/js/jquery.min.js')}}">
 
-<script type="text/javascript">
-	window.jQuery || document.write("<script src='{{Cdn::asset('/assets/js/jquery.min.js')}}'>"+"<"+"/script>");
-</script>
-<!-- <![endif]-->
-
-<!--[if IE]>
-<script type="text/javascript">
- window.jQuery || document.write("<script src='{{Cdn::asset('/assets/js/jquery1x.min.js')}}>"+"<"+"/script>");
-</script>
-<![endif]-->
 
 <script type="text/javascript">
 	if("ontouchend" in document) document.write("<script src='{{Cdn::asset('/assets/js/jquery.mobile.custom.min.js')}}>"+"<"+"/script>");
@@ -41,3 +29,24 @@
 
 <script src="{{ Cdn::asset('/assets/js/jqGrid/jquery.jqGrid.min.js') }}"></script>
 <script src="{{ Cdn::asset('/assets/js/jqGrid/i18n/grid.locale-en.js') }}"></script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '158507434339024',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="//platform.instagram.com/en_US/embeds.js"></script>
