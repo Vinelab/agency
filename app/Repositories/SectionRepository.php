@@ -107,7 +107,7 @@ class SectionRepository extends Repository implements Contracts\SectionRepositor
             //     $section = $this->section->find($section->parent_id);
             //     array_push($parent_sections, $section);
             // } while($section->parent_id != $content_section->id);
-            
+
             array_push($parent_sections,$section);
 
             while($section->parent_id != $content_section->id)

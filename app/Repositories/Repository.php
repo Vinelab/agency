@@ -68,10 +68,10 @@ class Repository implements Contracts\RepositoryInterface {
                 $query->with($relation);
             }
 
-            return $query->first();
+            return $query->firstOrFail();
         }
 
-        return $this->model->where($attribute, $value)->first();
+        return $this->model->where($attribute, $value)->firstOrFail();
     }
 
     /**
@@ -110,6 +110,22 @@ class Repository implements Contracts\RepositoryInterface {
     public function remove($key)
     {
         return $this->model->where($this->model->getKeyName(), $key)->delete();
+    }
+
+    /**
+     * determine if the $identifier is an ID or a Slug
+     *
+     * @param $identifier
+     *
+     * @return string
+     */
+    public function isIdOrSlug($identifier)
+    {
+        if(is_numeric($identifier)){
+            return 'id';
+        }else{
+            return 'slug';
+        }
     }
 
     /**
