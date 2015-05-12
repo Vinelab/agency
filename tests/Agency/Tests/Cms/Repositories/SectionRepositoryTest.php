@@ -5,7 +5,7 @@
  */
 
  use TestCase, Mockery as M;
- use Agency\Cms\Repositories\SectionRepository;
+ use AblaFahita\Cms\Repositories\SectionRepository;
 
  class SectionRepositoryTest extends TestCase {
 
@@ -13,7 +13,7 @@
     {
         parent::setUp();
 
-        $this->mSection = M::mock('Agency\Cms\Section');
+        $this->mSection = M::mock('AblaFahita\Cms\Section');
         $this->sections = new SectionRepository($this->mSection);
     }
 
@@ -25,8 +25,8 @@
 
     public function test_bindings()
     {
-        $sections = $this->app->make('Agency\Contracts\Cms\Repositories\SectionRepositoryInterface');
-        $this->assertInstanceOf('Agency\Cms\Repositories\SectionRepository', $sections);
+        $sections = $this->app->make('AblaFahita\Contracts\Cms\Repositories\SectionRepositoryInterface');
+        $this->assertInstanceOf('AblaFahita\Cms\Repositories\SectionRepository', $sections);
     }
 
     public function test_creating_section()
@@ -42,7 +42,7 @@
             ->andReturn($this->mSection);
 
         $section = $this->sections->create($title, $alias, $icon, $is_fertile, $is_roleable);
-        $this->assertInstanceOf('Agency\Cms\Section', $section);
+        $this->assertInstanceOf('AblaFahita\Cms\Section', $section);
     }
 
     public function test_updating_section()
@@ -63,7 +63,7 @@
         $this->mSection->shouldReceive('save');
 
         $section = $this->sections->update($id, $title, $alias, $icon, $is_fertile, $is_roleable);
-        $this->assertInstanceOf('Agency\Cms\Section', $section);
+        $this->assertInstanceOf('AblaFahita\Cms\Section', $section);
     }
 
     public function test_fetching_roleable_sections()
