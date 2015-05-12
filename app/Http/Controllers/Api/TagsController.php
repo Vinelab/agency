@@ -1,9 +1,10 @@
-<?php namespace Agency\Api\Controllers;
+<?php namespace Agency\Http\Controllers\Api;
 
 use Agency\Repositories\Contracts\TagRepositoryInterface;
 use Agency\Api\Repositories\Contracts\CodeRepositoryInterface;
+use Agency\Http\Controllers\Controller;
 
-use Input, Response, File, DB, Lang, Controller;
+use Input, Response, File, DB, Lang;
 
 use Agency\Section;
 
