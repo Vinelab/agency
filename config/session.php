@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -16,7 +16,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'file',
+	'driver' => env('SESSION_DRIVER', 'file'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -29,9 +29,22 @@ return array(
 	|
 	*/
 
-	'lifetime' => 120,
+	'lifetime' => 20160, // 2 weeks
 
 	'expire_on_close' => false,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Session Encryption
+	|--------------------------------------------------------------------------
+	|
+	| This option allows you to easily specify that all of your session data
+	| should be encrypted before it is stored. All encryption will be run
+	| automatically by Laravel and you can use the Session like normal.
+	|
+	*/
+
+	'encrypt' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,7 +57,7 @@ return array(
 	|
 	*/
 
-	'files' => storage_path().'/sessions',
+	'files' => storage_path().'/framework/sessions',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -83,7 +96,7 @@ return array(
 	|
 	*/
 
-	'lottery' => array(2, 100),
+	'lottery' => [2, 100],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -137,4 +150,4 @@ return array(
 
 	'secure' => false,
 
-);
+];
