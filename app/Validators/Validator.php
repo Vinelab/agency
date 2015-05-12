@@ -32,9 +32,13 @@ abstract class Validator implements Contracts\ValidatorInterface {
         $this->validator = $validator;
     }
 
-    public function validation($attributes)
+    public function validation($attributes, $rules = [])
     {
-        return $this->validator->make($attributes, $this->rules);
+        if (empty($rules)) {
+            $rules = $this->rules;
+        }
+
+        return $this->validator->make($attributes, $rules);
     }
 
     abstract function validate($attributes);

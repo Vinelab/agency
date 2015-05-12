@@ -21,7 +21,7 @@ class VideoValidator extends Validator implements VideoValidatorInterface {
             (/embed/([^&]+))?           # URI with video id as capture group 1
             ~x';
             return (boolean) preg_match($pattern, $value, $matches);
-            
+
         });
 
         $validation = $this->validation($attributes);
