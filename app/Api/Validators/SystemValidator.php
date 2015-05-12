@@ -29,9 +29,11 @@ abstract class SystemValidator implements SystemValidatorInterface {
         $this->validator = $validator;
     }
 
-    public function validation($attributes)
+    public function validation($attributes, $rules = null)
     {
-        return $this->validator->make($attributes, $this->rules);
+        $rules = $rules ?: $this->rules;
+
+        return $this->validator->make($attributes, $rules);
     }
 
     abstract function validate($attributes);
