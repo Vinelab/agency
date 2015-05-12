@@ -19,6 +19,21 @@ interface ImageRepositoryInterface {
 							Photo $small,
 							Photo $square);
 
+    /**
+     * @param $original
+     * @param $thumbnail
+     * @param $small
+     * @param $square
+     *
+     * @return mixed
+     */
+    public function createWithUri(
+        $original,
+        $thumbnail,
+        $small,
+        $square
+    );
+
 	public function getThumbnail($guid);
 
 	public function getByGuid($guid);
@@ -26,30 +41,33 @@ interface ImageRepositoryInterface {
     public function remove($images_id);
     /**
      * it takes an array of attributes and return an array of their model
-     * @param  array $response 
+     * @param  array $response
      * @return array  Agency\Image
      */
-    public function store($response);	
+    public function store($response);
 
 
      /**
-     * return preset type 
-     * @param  string $type 
-     * @return string 
+     * return preset type
+     * @param  string $type
+     * @return string
      */
    	public function presetType($type);
 
    	/**
    	 * return Image instance
-   	 * @param  string $url    
-   	 * @param  string $preset 
-   	 * @param  string $guid   
-   	 * @return Agency\Image        
+   	 * @param  string $url
+   	 * @param  string $preset
+   	 * @param  string $guid
+   	 * @return Agency\Image
    	 */
    	public function newImage($url, $preset, $guid);
-   	
 
-
-
+	/**
+	 * @param $int
+	 *
+	 * @return mixed
+     */
+    public function paginate($int);
 
 }

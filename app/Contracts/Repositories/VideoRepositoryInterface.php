@@ -29,6 +29,6 @@ interface VideoRepositoryInterface {
 	 */
 	public function extractYoutubeId($url);
 
-	
+
 
 }

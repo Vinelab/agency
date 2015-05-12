@@ -71,4 +71,52 @@ interface HelperInterface {
      * @return string
      */
     public function formatDate($date);
+
+    /**
+     * return the state.
+     *
+     * @param  array $state
+     * @return String                 editing, published, scheduled.
+     */
+    public function pluckState($state);
+
+    /**
+     * Make sure the admin has the right to set the publishing state to what is claimed
+     * and no invalid values goes through.
+     *
+     * @param  string|array $state
+     * @return string
+     */
+    public function filterPublishState($state);
+
+    /**
+     * @param      $date
+     * @param bool $instance
+     *
+     * @return mixed
+     */
+    public static function formatDateUsingCarbon($date, $instance = false, $timezone = 'UTC', $to_utc = true);
+
+    /**
+     * concatenate the $title with $date to prepare the input to be passed to the slugify
+     *
+     * @param $title
+     * @param $date
+     */
+    public function concatTitleAndDate($title, $date);
+
+    /**
+     * @param $slug_former
+     * @param $date
+     *
+     * @return mixed
+     */
+    public function concatSlugFormerAndDate($slug_former, $date);
+
+    /**
+     * @param $slug_former
+     *
+     * @return mixed
+     */
+    public function concatSlugFormerWithRandomNumber($slug_former);
 }
