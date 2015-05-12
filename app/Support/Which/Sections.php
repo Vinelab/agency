@@ -22,7 +22,7 @@ class Sections {
      */
     private $current_section;
 
-    public function __construct(SectionRepo $sections) 
+    public function __construct(SectionRepo $sections)
     {
         $this->sections = $sections;
     }
@@ -48,21 +48,24 @@ class Sections {
         return $section;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function currentCategory()
     {
         // We don't want to go through anything if there's no category
         if ( ! Input::has('category') || ! Input::get('category')) return null;
 
-        $title = Input::get('category');
+        $alias = Input::get('category');
 
-        // First we check whether this category has already been fetched and cached
-        // so that we return it directly.
-        $existing = $this->getCurrentCategory($title);
+        $section = $this->sections->findByAlias($alias);
 
-        if ( ! is_null($existing)) return $existing;
+        // Cache the current section so that whenever someone asks for it we return
+        // it right away without requesting it again.
+        $this->setCurrentCategory($section);
 
-        return $this->getCurrentCategory($title);
-   }
+        return $this->getCurrentCategory();
+    }
 
     /**
      * Returns the current section's alias
@@ -98,6 +101,15 @@ class Sections {
     {
         $this->current_section = $section;
     }
+    /**
+     * Set the current category property.
+     *
+     * @return void
+     */
+    protected function setCurrentCategory($category)
+    {
+        $this->current_category = $category;
+    }
 
     /**
      * Getter for the @property $current_section.
@@ -109,8 +121,19 @@ class Sections {
         return $this->current_section;
     }
 
+    /**
+     * Getter for the @property $current_category.
+     *
+     * @return \Illuminate\Database\Eloquent\Model | null
+     */
+    public function getCurrentCategory()
+    {
+        return $this->current_category;
+    }
+
+
     public function children()
     {
-        return $this->sections->infertile();   
+        return $this->sections->infertile();
     }
 }
