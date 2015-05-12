@@ -11,12 +11,12 @@ use Carbon\Carbon;
 
 use DB, Cache;
 
-use Vinelab\NeoEloquent\Eloquent\SoftDeletingTrait;
+use Vinelab\NeoEloquent\Eloquent\SoftDeletes;
 
 
 class Post extends NeoEloquent  {
 
-    use SoftDeletingTrait;
+    use SoftDeletes;
 
     protected $label = ['Post'];
 
@@ -32,7 +32,7 @@ class Post extends NeoEloquent  {
     public function scopePublished($query)
     {
 
-        $passed_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','<=',Carbon::now('Asia/Beirut')->toDateTimeString())->get();
+        $passed_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','<=',Carbon::now(config('app.timezone'))->toDateTimeString())->get();
 
         foreach ($passed_scheduled_posts as $post) {
             $post->update([
@@ -46,7 +46,7 @@ class Post extends NeoEloquent  {
 
     public function nearestScheduledPost()
     {
-        $waiting_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','>',Carbon::now('Asia/Beirut')->toDateTimeString())->get();
+        $waiting_scheduled_posts = $this->where('publish_state','=', 'scheduled')->where('publish_date','>',Carbon::now(config('app.timezone'))->toDateTimeString())->get();
 
          if($waiting_scheduled_posts->count() > 0)
         {
