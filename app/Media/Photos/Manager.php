@@ -100,6 +100,14 @@ class Manager implements Contracts\ManagerInterface {
         return $this->uploadPhotos($resized, $directory);
     }
 
+    /**
+     * @param \Agency\Media\Photos\UploadedPhoto $original
+     * @param                                        $small_dimensions
+     * @param                                        $thumb_dimensions
+     * @param                                        $square_dimensions
+     *
+     * @return array
+     */
     public function resize(UploadedPhoto $original, $small_dimensions, $thumb_dimensions, $square_dimensions)
     {
         /**
@@ -107,6 +115,9 @@ class Manager implements Contracts\ManagerInterface {
          */
         // store the resized stuff here
         $resized = [];
+
+        // trash: hold all the file paths that needs to be removed from filesystem (unliked)
+        $trash = [];
 
         // extract photo data
         $file           = $original->file();
@@ -126,6 +137,9 @@ class Manager implements Contracts\ManagerInterface {
 
         $original_photo = $this->editor->makePhoto($file_path);
         $original_photo->name = $file_name;
+
+        $original_path = $this->editor->cache($original_photo);
+        $trash[] = $original_path;
 
         // set original photo
         $resized['original'] = [
@@ -149,6 +163,9 @@ class Manager implements Contracts\ManagerInterface {
         // generate the small photo
         $small_name = $this->nameFile($name, $file_extention, 'small', true);
         $small = $this->editor->scale($file_path, $small_width, $small_height);
+        $small_path = $this->editor->cache($small);
+        $trash[] = $small_path;
+
         // set the edited file's name
         $small->name = $file_name;
 
@@ -157,24 +174,28 @@ class Manager implements Contracts\ManagerInterface {
             'name' => $small_name,
             'mime' => $mime
         ];
-
         // crop photo according to the cropping dimensions
         // to get a 3/2 aspect ratio
         $cropped = $this->editor->crop($file_path, $crop_width, $crop_height, $crop_x, $crop_y);
 
         // cache the generated crop
         $cropped_path = $this->editor->cache($cropped);
+        $trash[] = $cropped_path;
 
         // generate thumbnail
         $thumb_name = $this->nameFile($name, $file_extention, 'thumb', true);
-        $thumb  = $this->editor->resize($cropped_path,
-                                        $thumb_dimensions['width'],
-                                        $thumb_dimensions['height']);
+        $thumb  = $this->editor->resize(
+            $cropped_path,
+            $thumb_dimensions['width'],
+            $thumb_dimensions['height']
+        );
+
         // set the edited file's name
         $thumb->name = $file_name;
 
         // cache the generated thumbnail
         $thumb_path = $this->editor->cache($thumb);
+        $trash[] = $thumb_path;
 
         // set thumbnail photo
         $resized['thumbnail'] = [
@@ -182,14 +203,18 @@ class Manager implements Contracts\ManagerInterface {
             'file' => $thumb,
             'mime' => $mime
         ];
-
         // generate square
         $square_name = $this->nameFile($name, $file_extention, 'sq', true);
-        $square = $this->editor->crop($thumb_path,
-                                    $square_dimensions['width'],
-                                    $square_dimensions['height'],
-                                    $crop_x = 50);
+        $square = $this->editor->crop(
+            $thumb_path,
+            $square_dimensions['width'],
+            $square_dimensions['height'],
+            $crop_x = 50
+        );
         $square->name = $file_name;
+
+        $square_path = $this->editor->cache($square);
+        $trash[] = $square_path;
 
         $resized['square'] = [
             'name' => $square_name,
@@ -198,8 +223,9 @@ class Manager implements Contracts\ManagerInterface {
         ];
 
         // remove cached files
-        @unlink($cropped_path);
-        @unlink($thumb_path);
+        array_map(function($path) {
+            @unlink($path);
+        }, $trash);
 
         return $resized;
     }

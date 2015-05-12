@@ -1,7 +1,7 @@
 <?php namespace Agency\Media\Photos;
 
-use Intervention\Image\Image;
-
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Image as InterventionImage;
 use Agency\Media\Photos\Exceptions\InvalidPhotoInstanceException;
 
 class InterventionPhotoEditor implements Contracts\PhotoEditorInterface {
@@ -50,7 +50,9 @@ class InterventionPhotoEditor implements Contracts\PhotoEditorInterface {
      */
     public function scale($file, $width, $height)
     {
-        return Image::make($file)->resize($width, $height, true, false);
+        return Image::make($file)->resize($width, $height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
     }
 
     /**
@@ -80,10 +82,11 @@ class InterventionPhotoEditor implements Contracts\PhotoEditorInterface {
      */
     public function cache($photo)
     {
-        if ( ! $photo instanceof Image)
+
+        if ( ! $photo instanceof InterventionImage)
         {
             throw new InvalidPhotoInstanceException(
-                'expected Intervention\Image\Image got ' . get_class($photo)
+                'expected ( Intervention\Image\Image)  got  ( ' . get_class($photo) . ' ).'
             );
         }
 
@@ -101,6 +104,6 @@ class InterventionPhotoEditor implements Contracts\PhotoEditorInterface {
      */
     public function cachePath($filename)
     {
-        return storage_path() . '/cache/' . $filename;
+        return storage_path() . '/framework/cache/' . $filename;
     }
 }

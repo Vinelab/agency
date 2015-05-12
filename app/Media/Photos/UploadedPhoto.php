@@ -48,7 +48,7 @@ class UploadedPhoto implements Contracts\UploadedPhotoInterface {
         {
             $validator = new Validator(App::make('validator'));
         }
-        
+
         return new static($file, $meta, $validator);
     }
 

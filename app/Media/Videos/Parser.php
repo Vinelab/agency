@@ -13,8 +13,7 @@ class Parser implements Contracts\ParserInterface {
 	{
         $video_validator = $this->video_validator;
 		return array_map(function($video) use($video_validator){
-            if($video_validator->validate(["url"=>$video->url]))
-            {
+            if($video_validator->validate(["url"=>$video->url])){
                 return new Video([
                     'url'=>$video->url,
                     'title'=>$video->title,

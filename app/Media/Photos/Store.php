@@ -28,5 +28,5 @@ class Store implements StoreInterface {
 		$base = public_path()."/".$this->location;
 		unlink($base.$file);
 	}
-	
+
 }
