@@ -1,0 +1,48 @@
+.form-horizontal .form-group {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.remove-photo{
+    color: red;
+    position: absolute;
+    top: 0px;
+    padding: 3px 6px;
+}
+.photos-wrapper{
+    position: relative
+}
+.injected-photos img{
+    width: 250px;
+    height: 140px;
+}
+.control-label{
+    font-size: 22px;
+    padding-right: 12px;
+    color: #438eb9;
+}
+.thumbnail{
+    background-color: #F2F2F2;
+    border: none;
+}
+
+.time-picker{
+    width: 300px;
+}
+
+.margin-right-zero{
+    margin-right: 0 !important;
+}
+
+.tabpanel-wrapper{
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+.tabpanel-wrapper li a{
+    color: #438eb9;
+    font-size: 18px;
+}
+.tabpanel-wrapper li{
+    float: right;
+}
