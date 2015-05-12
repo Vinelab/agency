@@ -5,7 +5,7 @@ use Agency\Api\Code;
 use Agency\Cms\Repositories\Repository;
 
 class CodeRepository extends Repository implements CodeRepositoryInterface {
-	
+
 	/**
 	 * The code instance
 	 * @var Code
@@ -19,10 +19,10 @@ class CodeRepository extends Repository implements CodeRepositoryInterface {
 
 	/**
 	 * Create a new Code.
-	 * @param  Integer $application_id 
-	 * @param  String $code           
-	 * @param  Boolean $valid          
-	 * @return Code                
+	 * @param  Integer $application_id
+	 * @param  String $code
+	 * @param  Boolean $valid
+	 * @return Code
 	 */
 	public function create($application_id, $code, $valid)
 	{
