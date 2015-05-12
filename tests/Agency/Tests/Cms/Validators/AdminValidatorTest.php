@@ -4,9 +4,9 @@
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
-use Agency\Cms\Admin;
+use AblaFahita\Cms\Admin;
 use DB, Artisan, TestCase, Mockery as M;
-use Agency\Cms\Validators\AdminValidator;
+use AblaFahita\Cms\Validators\AdminValidator;
 
 class AdminValidatorTest extends TestCase {
 
@@ -20,8 +20,8 @@ class AdminValidatorTest extends TestCase {
 
     public function test_admin_validator_provider_binding()
     {
-        $validator = $this->app->make('Agency\Contracts\Cms\Validators\AdminValidatorInterface');
-        $this->assertInstanceOf('Agency\Cms\Validators\AdminValidator', $validator);
+        $validator = $this->app->make('AblaFahita\Contracts\Cms\Validators\AdminValidatorInterface');
+        $this->assertInstanceOf('AblaFahita\Cms\Validators\AdminValidator', $validator);
     }
 
     public function test_passing_validation()
