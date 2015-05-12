@@ -1,14 +1,3 @@
-/bootstrap/compiled.php
 /vendor
-/public/tmp
-composer.phar
-.env.local.php
-.env.php
-.DS_Store
-Thumbs.db
-
-app/config/local/aws.php
-
+.env
 composer.lock
-
-app/config/local/database.php
