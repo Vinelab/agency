@@ -4,6 +4,8 @@
 
 @stop
 
+
+
 @section('content')
     @if (Auth::hasPermission('create'))
         <div class="row">
@@ -22,9 +24,10 @@
 				@include('cms.pages.content.templates.post')
 			@endforeach
 
-            {{$posts->links()}}
+            {{$posts->render()}}
 
 		@endif
+
 
 
 		</ol>

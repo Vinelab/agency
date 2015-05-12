@@ -14,7 +14,7 @@
 				@include('cms.pages.content.templates.post')
 			@endforeach
 
-            {{$posts->links()}}
+            {{$posts->render()}}
 
 		@endif
 

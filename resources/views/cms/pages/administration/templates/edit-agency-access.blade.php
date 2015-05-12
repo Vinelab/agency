@@ -2,7 +2,7 @@
     <div class="widget-box widget-color-blue">
 
         <div class="widget-header widget-title">
-            <h4 class="lighter">Agency</h4>
+            <h4 class="lighter">{{Lang::get('posts/form.agency_cms')}}</h4>
         </div>
 
         <div class="widget-body">

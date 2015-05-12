@@ -12,7 +12,7 @@
             <img src="{{$post->thumbnailURL()}}">
         </a>
 
-
+  
 
         {{HTML::link(URL::route('cms.content.posts.show',$post->slug),$post->title,['class'=>'post-title'])}}
 
