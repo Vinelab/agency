@@ -5,9 +5,9 @@
  */
 
 use TestCase, Mockery as M;
-use AblaFahita\Tag;
-use AblaFahita\Repositories\TagRepository;
-use AblaFahita\Contracts\HelperInterface;
+use Agency\Tag;
+use Agency\Repositories\TagRepository;
+use Agency\Contracts\HelperInterface;
 
 class TagRepositoryTest extends TestCase {
 
@@ -20,8 +20,8 @@ class TagRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mTag = M::mock('AblaFahita\Tag');
-        $this->mHelper = M::mock('AblaFahita\Contracts\HelperInterface');
+        $this->mTag = M::mock('Agency\Tag');
+        $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
         $this->tags = new TagRepository($this->mTag,$this->mHelper);
     }
 
@@ -33,8 +33,8 @@ class TagRepositoryTest extends TestCase {
 
     public function test_tag_provider_bindings()
     {
-        $tags = $this->app->make('AblaFahita\Contracts\Repositories\TagRepositoryInterface');
-        $this->assertInstanceOf('AblaFahita\Repositories\TagRepository', $tags);
+        $tags = $this->app->make('Agency\Contracts\Repositories\TagRepositoryInterface');
+        $this->assertInstanceOf('Agency\Repositories\TagRepository', $tags);
     }
 
     public function test_creating_tag()
@@ -50,7 +50,7 @@ class TagRepositoryTest extends TestCase {
 
         $tag = $this->tags->create($text);
 
-        $this->assertInstanceOf('AblaFahita\Tag', $tag);
+        $this->assertInstanceOf('Agency\Tag', $tag);
     }
 
     public function test_creating_multiple_tags()

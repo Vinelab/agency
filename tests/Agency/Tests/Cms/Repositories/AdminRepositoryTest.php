@@ -6,7 +6,7 @@
 
 use TestCase, Mockery as M;
 
-use AblaFahita\Cms\Repositories\AdminRepository;
+use Agency\Cms\Repositories\AdminRepository;
 
 class AdminRepositoryTest extends TestCase {
 
@@ -16,8 +16,8 @@ class AdminRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mAdmin = M::mock('AblaFahita\Contracts\Cms\AdminInterface');
-        $this->admin = $this->app->make('AblaFahita\Cms\Admin');
+        $this->mAdmin = M::mock('Agency\Contracts\Cms\AdminInterface');
+        $this->admin = $this->app->make('Agency\Cms\Admin');
 
         $this->admins = new AdminRepository($this->admin);
     }
@@ -32,13 +32,13 @@ class AdminRepositoryTest extends TestCase {
 
     public function test_admin_provider_bindings()
     {
-        $admin_repo = $this->app->make('AblaFahita\Contracts\Cms\Repositories\AdminRepositoryInterface');
+        $admin_repo = $this->app->make('Agency\Contracts\Cms\Repositories\AdminRepositoryInterface');
 
-        $this->assertInstanceOf('AblaFahita\Cms\Repositories\AdminRepository', $admin_repo);
+        $this->assertInstanceOf('Agency\Cms\Repositories\AdminRepository', $admin_repo);
 
-        $admin = $this->app->make('AblaFahita\Contracts\Cms\AdminInterface');
+        $admin = $this->app->make('Agency\Contracts\Cms\AdminInterface');
 
-        $this->assertInstanceOf('AblaFahita\Cms\Admin', $admin);
+        $this->assertInstanceOf('Agency\Cms\Admin', $admin);
     }
 
     public function test_creating_admin()
@@ -51,7 +51,7 @@ class AdminRepositoryTest extends TestCase {
 
         $admin = $this->admins->create($name, $email);
 
-        $this->assertInstanceOf('AblaFahita\Cms\Admin', $admin);
+        $this->assertInstanceOf('Agency\Cms\Admin', $admin);
         $this->assertObjectNotHasAttribute('password', $admin);
         $this->assertNotNull($admin->raw_password);
     }

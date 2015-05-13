@@ -5,8 +5,8 @@
  */
 
  use Str, TestCase, Mockery as M, Config;
- use AblaFahita\Repositories\PostRepository;
- use AblaFahita\Contracts\HelperInterface;
+ use Agency\Repositories\PostRepository;
+ use Agency\Contracts\HelperInterface;
 
 
 class PostRepositoryTest extends TestCase {
@@ -20,12 +20,12 @@ class PostRepositoryTest extends TestCase {
     {
         parent::setUp();
 
-        $this->mPost = M::mock('AblaFahita\Post');
-        $this->mImage = M::mock('AblaFahita\Contracts\ImageInterface');
-        $this->mVideo = M::mock('AblaFahita\Contracts\VideoInterface');
-        $this->images = M::mock('AblaFahita\Contracts\Repositories\ImageRepositoryInterface');
-        $this->sections = M::mock('AblaFahita\Contracts\Cms\Repositories\SectionRepositoryInterface');
-        $this->mHelper = M::mock('AblaFahita\Contracts\HelperInterface');
+        $this->mPost = M::mock('Agency\Post');
+        $this->mImage = M::mock('Agency\Contracts\ImageInterface');
+        $this->mVideo = M::mock('Agency\Contracts\VideoInterface');
+        $this->images = M::mock('Agency\Contracts\Repositories\ImageRepositoryInterface');
+        $this->sections = M::mock('Agency\Contracts\Cms\Repositories\SectionRepositoryInterface');
+        $this->mHelper = M::mock('Agency\Contracts\HelperInterface');
         $this->mPaginator = M::mock('Starac\Helper\Contracts\PaginatorInterface');
 
         $this->posts = new PostRepository(  $this->mPost,
@@ -41,8 +41,8 @@ class PostRepositoryTest extends TestCase {
 
     public function test_posts_provider_binding()
     {
-        $posts = $this->app->make('AblaFahita\Contracts\Repositories\PostRepositoryInterface');
-        $this->assertInstanceOf('AblaFahita\Repositories\PostRepository', $posts);
+        $posts = $this->app->make('Agency\Contracts\Repositories\PostRepositoryInterface');
+        $this->assertInstanceOf('Agency\Repositories\PostRepository', $posts);
     }
 
     public function test_creating_post()
@@ -59,7 +59,7 @@ class PostRepositoryTest extends TestCase {
             ->with(compact('title', 'slug', 'body', 'admin_id', 'section_id', 'publish_date', 'publish_state'))
             ->andReturn($this->mPost);
         $post = $this->posts->create($title, $slug, $body, $admin_id, $section_id, $publish_date, $publish_state);
-        $this->assertInstanceOf('AblaFahita\Post', $post);
+        $this->assertInstanceOf('Agency\Post', $post);
     }
 
     public function test_updating_post()
@@ -85,7 +85,7 @@ class PostRepositoryTest extends TestCase {
 
         $post = $this->posts->update($id, $title, $slug, $body, $featured, $publish_date, $publish_state);
 
-        $this->assertInstanceOf('AblaFahita\Post', $post);
+        $this->assertInstanceOf('Agency\Post', $post);
     }
 
     public function test_returns_null_when_not_updated()
@@ -132,7 +132,7 @@ class PostRepositoryTest extends TestCase {
     {
         $id = 123;
 
-        $mSection = M::mock('AblaFahita\Section');
+        $mSection = M::mock('Agency\Section');
 
         $this->mPost->shouldReceive('findOrFail')->with($id)
                 ->andReturn($this->mPost)
@@ -151,16 +151,17 @@ class PostRepositoryTest extends TestCase {
     {
         $slug = 'my-slug-is-a-fug';
 
-        $mSection = M::mock('AblaFahita\Section');
+        $mSection = M::mock('Agency\Section');
 
 
-        $this->mPost->shouldReceive('findOrFail')
+        $this->mPost->shouldReceive('firstOrFail')
                 ->with($slug)->andThrow('Illuminate\Database\Eloquent\ModelNotFoundException')
             ->shouldReceive('where')->with('slug', $slug)->andReturn($this->mPost)
             ->shouldReceive('first')->withNoArgs()->andReturn($this->mPost)
             ->shouldReceive('section')->andReturn($this->mPost)
             ->shouldReceive('edge')->andReturn($this->mPost)
             ->shouldReceive('getAttribute')->andReturn($this->mPost)
+            ->shouldReceive('findOrFail')->with($slug)->andReturn($this->mPost)
             ->shouldReceive('delete')->withNoArgs()->andReturn(true);
 
         $this->mPost->section = $mSection;

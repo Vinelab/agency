@@ -4,11 +4,11 @@
  * @author Ibrahim Fleifel <ibrahim@vinelab.com>
  */
 
-use AblaFahita\Cms\Authority\Entities\Permission;
+use Agency\Cms\Authority\Entities\Permission;
 
 use DB, Artisan, TestCase, Mockery as M;
 
-use AblaFahita\Cms\Validators\PermissionValidator;
+use Agency\Cms\Validators\PermissionValidator;
 
 
 class PermissionValidatorTest extends TestCase {
@@ -23,8 +23,8 @@ class PermissionValidatorTest extends TestCase {
 
 	public function test_permission_validator_provider_binding()
 	{
-		$validator = $this->app->make('AblaFahita\Contracts\Cms\Validators\PermissionValidatorInterface');
-		$this->assertInstanceOf('AblaFahita\Cms\Validators\PermissionValidator', $validator);
+		$validator = $this->app->make('Agency\Contracts\Cms\Validators\PermissionValidatorInterface');
+		$this->assertInstanceOf('Agency\Cms\Validators\PermissionValidator', $validator);
 
 	}
 

@@ -5,7 +5,7 @@
  */
 
 use TestCase, Mockery as M;
-use AblaFahita\Validators\ImageValidator;
+use Agency\Validators\ImageValidator;
 
 class ImageValidatorTest extends TestCase {
 
@@ -19,8 +19,8 @@ class ImageValidatorTest extends TestCase {
 
     public function test_image_provider_binding()
     {
-        $validator = $this->app->make('AblaFahita\Contracts\Validators\ImageValidatorInterface');
-        $this->assertInstanceOf('AblaFahita\Validators\ImageValidator', $validator);
+        $validator = $this->app->make('Agency\Contracts\Validators\ImageValidatorInterface');
+        $this->assertInstanceOf('Agency\Validators\ImageValidator', $validator);
     }
 
     public function test_passing_validation()

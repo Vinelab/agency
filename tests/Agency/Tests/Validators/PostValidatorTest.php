@@ -5,7 +5,7 @@
  */
 
 use TestCase, Mockery as M;
-use AblaFahita\Validators\PostValidator;
+use Agency\Validators\PostValidator;
 
 class PostValidatorTest extends TestCase {
 
@@ -19,8 +19,8 @@ class PostValidatorTest extends TestCase {
 
     public function test_post_validator_binding()
     {
-        $validator = $this->app->make('AblaFahita\Contracts\Validators\PostValidatorInterface');
-        $this->assertInstanceOf('AblaFahita\Validators\PostValidator', $validator);
+        $validator = $this->app->make('Agency\Contracts\Validators\PostValidatorInterface');
+        $this->assertInstanceOf('Agency\Validators\PostValidator', $validator);
     }
 
     public function test_passes_post_validation()
