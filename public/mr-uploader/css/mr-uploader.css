@@ -1,0 +1,163 @@
+/*! MrUploader - v0.1.0 - 2015-03-18
+* http://github.com/vinelab/mr-uploader
+* Copyright (c) 2015 Vinelab; Licensed MIT */
+.mr-uploader-fullscreen-mode {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    position: fixed;
+    overflow: scroll;
+    font-family: Arial;
+    border: 0!important;
+    padding: 15px 30px 15px;
+    color: #272727;
+    background: #FAFAFB!important;
+}
+
+.mr-uploader-fullscreen-close {
+    float:left;
+    font-size: 28px;
+    cursor: pointer;
+    font-color: #ededed;
+    text-decoration: none;
+}
+
+#mr-uploader-file-input {
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+#mr-uploader-images {
+    min-height: 200px;
+}
+
+#mr-uploader-images .jcrop-holder {
+    text-align: : center;
+    margin: 0 auto;
+}
+
+.mr-uploader-preview {
+    position: relative;
+    float: left;
+    font-size: 30px;
+    margin-left: 10px;
+    overflow: hidden;
+    background-color: transparent;
+    box-shadow: 0px 0px 5px 1px #888;
+    -moz-box-shadow: inset 0px 0px 5px 1px #888;
+    -webkit-box-shadow: inset 0px 0px 5px 1px #888;
+}
+
+.mr-uploader-ar-landscape {
+    width: 300px;
+    height: 200px;
+}
+
+.mr-uploader-ar-portrait {
+    width: 200px;
+    height: 300px;
+}
+
+.mr-uploader-ar-square {
+    width: 200px;
+    height: 200px;
+}
+
+.mr-uploader-preview-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    text-align: center;
+    text-decoration: bold;
+    color: green;
+    vertical-align: middle;
+    line-height: 200px;
+    text-decoration: bold;
+    background-color: #ededed;
+}
+
+.mr-uploader-preview .error {
+    color: red;
+    font-size: 22px;
+}
+
+.mr-uploader-spinner {
+    margin: 0 auto;
+    width: 70px;
+    text-align: center;
+}
+
+.mr-uploader-spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #333;
+
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: bouncedelay 0.8s infinite ease-in-out;
+    animation: bouncedelay 0.8s infinite ease-in-out;
+    /* Prevent first frame from flickering when animation starts */
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.mr-uploader-spinner-bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.mr-uploader-spinner-bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0.0) }
+    40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+    0%, 80%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    } 40% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+    }
+}
+
+.mr-uploader-ratio-options {
+    margin: 30px 0px 30px 0px;
+}
+
+.jcrop-holder{direction:ltr;text-align:left;}
+.jcrop-vline,.jcrop-hline{background:#FFF url(Jcrop.gif);font-size:0;position:absolute;}
+.jcrop-vline{height:100%;width:1px!important;}
+.jcrop-vline.right{right:0;}
+.jcrop-hline{height:1px!important;width:100%;}
+.jcrop-hline.bottom{bottom:0;}
+.jcrop-tracker{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;height:100%;width:100%;}
+.jcrop-handle{background-color:#333;border:1px #EEE solid;font-size:1px;height:7px;width:7px;}
+.jcrop-handle.ord-n{left:50%;margin-left:-4px;margin-top:-4px;top:0;}
+.jcrop-handle.ord-s{bottom:0;left:50%;margin-bottom:-4px;margin-left:-4px;}
+.jcrop-handle.ord-e{margin-right:-4px;margin-top:-4px;right:0;top:50%;}
+.jcrop-handle.ord-w{left:0;margin-left:-4px;margin-top:-4px;top:50%;}
+.jcrop-handle.ord-nw{left:0;margin-left:-4px;margin-top:-4px;top:0;}
+.jcrop-handle.ord-ne{margin-right:-4px;margin-top:-4px;right:0;top:0;}
+.jcrop-handle.ord-se{bottom:0;margin-bottom:-4px;margin-right:-4px;right:0;}
+.jcrop-handle.ord-sw{bottom:0;left:0;margin-bottom:-4px;margin-left:-4px;}
+.jcrop-dragbar.ord-n,.jcrop-dragbar.ord-s{height:7px;width:100%;}
+.jcrop-dragbar.ord-e,.jcrop-dragbar.ord-w{height:100%;width:7px;}
+.jcrop-dragbar.ord-n{margin-top:-4px;}
+.jcrop-dragbar.ord-s{bottom:0;margin-bottom:-4px;}
+.jcrop-dragbar.ord-e{margin-right:-4px;right:0;}
+.jcrop-dragbar.ord-w{margin-left:-4px;}
+.jcrop-light .jcrop-vline,.jcrop-light .jcrop-hline{background:#FFF;filter:alpha(opacity=70)!important;opacity:.70!important;}
+.jcrop-light .jcrop-handle{-moz-border-radius:3px;-webkit-border-radius:3px;background-color:#000;border-color:#FFF;border-radius:3px;}
+.jcrop-dark .jcrop-vline,.jcrop-dark .jcrop-hline{background:#000;filter:alpha(opacity=70)!important;opacity:.7!important;}
+.jcrop-dark .jcrop-handle{-moz-border-radius:3px;-webkit-border-radius:3px;background-color:#FFF;border-color:#000;border-radius:3px;}
+.solid-line .jcrop-vline,.solid-line .jcrop-hline{background:#FFF;}
+.jcrop-holder img,img.jcrop-preview{max-width:none;}
