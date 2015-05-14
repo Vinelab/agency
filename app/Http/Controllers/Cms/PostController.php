@@ -23,6 +23,10 @@ use Which;
 use Config;
 use Agency\Cms\Tag;
 
+use Agency\Contracts\PhotosServiceInterface;
+use Vinelab\Editor\Facade\Editor;
+
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Agency\Contracts\HelperInterface;
 use Agency\Cache\PostCacheManager;
@@ -47,7 +51,8 @@ class PostController extends Controller {
     							TagRepositoryInterface $tag,
     							ManagerInterface $manager,
     							FilterResponseInterface $filter_response,
-    							PostCacheManager $cache)
+    							PostCacheManager $cache,
+    							PhotosServiceInterface $photos_service)
     {
 		$this->validator = $validator;
 		$this->posts = $post;
@@ -58,6 +63,7 @@ class PostController extends Controller {
 		$this->manager = $manager;
 		$this->filter_response = $filter_response;
 		$this->cache = $cache;
+		$this->photos_service = $photos_service;
     }
 
 	public function index()
@@ -99,7 +105,8 @@ class PostController extends Controller {
 			if($this->validator->validate(Input::all()))
 			{
 			  	$slug = $this->posts->uniqSlug( Input::get('title') );
-				$body = $this->helper->cleanHtml(Input::get('body'));
+
+				$body = Input::get(Editor::input());
 
 				$section = $this->sections->findBy('alias',Input::get('section'));
 
@@ -112,11 +119,11 @@ class PostController extends Controller {
 				$publish_date = $this->formatDate($publish_date);
 				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state, $related_models);
 
-				$this->posts->updateSection($post->id, $section->id);
+				// $this->posts->updateSection($post->id, $section->id);
 
 				$this->cache->forgetByTags(['posts']);
 
-				return Response::json($post);
+				return Redirect::route('cms.content.show',$section->alias);
 
 			} else {
 				return Response::json(['status'=>400,"message"=>$this->validator->messages()]);
@@ -189,7 +196,7 @@ class PostController extends Controller {
 
 				$contents=Which::children();
 
-				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'images'=>$images, 'videos'=>$videos]);
+				return View::make("cms.pages.post.edit",["edit_post"=>$post,'contents'=>$contents,'tags'=>$tags,'images'=>$images, 'videos'=>$videos,'updating'=>true]);
 
 			} catch (Exception $e) {
 				return Response::json(['message'=>$e->getMessage()]);
@@ -383,69 +390,33 @@ class PostController extends Controller {
 		}
 
 
-		$photos = new UploadedPhotosCollection;
 
 		// upload images
-		if(Input::has('croped_images_array'))
+		if(Input::has('photos'))
 		{
+	        // this input "photos" holds photos URL's
+	            foreach (Input::get('photos') as $photo) {
+	                // read the photo URL's and convert it to photo model
+	                $related_models['images'][] = $this->photos_service->create($photo);
+	            }
 
-		 	$crop_sizes = json_decode(Input::get('croped_images_array'));
-
-
-		 	if(Input::has('images'))
-		 	{
-		 		$images = Input::get('images');
-
-		 		foreach ($images as $key => $image) {
-
-		 			$image = new UploadedFile(public_path()."/".Config::get("media.location")."/".$image, $image);
-					$crop_size = get_object_vars($crop_sizes[$key]);
-
-				 	$photo = UploadedPhoto::make($image, $crop_size)->validate();
-        			$photos->push($photo);
-				}
-
-				$response = $this->manager->upload($photos,'artists/webs');
-
-
-				$response = $response->toArray();
-
-				$images = $this->filter_response->make($response);
-
-				$related_models['images'] = $images['originals'];
-		 	}
+	        // this input "photos" holds photos URL's
+	        if (Input::has('existing_photos')) {
+	            foreach ($this->photos->find(Input::get('existing_photos')) as $photo) {
+	                // read the photo URL's and convert it to photo model
+	                $related_models['images'][] = $photo;
+	            }
+	        }
+			 
 		}
 
-		$photos = new UploadedPhotosCollection;
 
 
 		if(Input::has('cover'))
 		{
-			$cover_crop_size = json_decode(Input::get('croped_cover'));
-			if(! is_null($cover_crop_size))
-			{
-				$cover = Input::get('cover');
-				$cover = new UploadedFile(public_path().$cover, $cover);
-				$cover_crop_size = get_object_vars($cover_crop_size);
-
-			 	$cover = UploadedPhoto::make($cover, $cover_crop_size)->validate();
-				$photos->push($cover);
-
-				$response = $this->manager->upload($photos,'artists/webs');
-				$response = $response->toArray();
-				$images = $this->filter_response->make($response);
-				$related_models['coverImage'] = $images['originals'];
-			}
+			$related_models['coverImage']= $this->photos_service->create(Input::get('cover'));
 		}
 
-		$videos = json_decode(Input::get('videos'));
-
-		if(sizeof($videos)>0)
-		{
-			$videos = $this->parser_interface->make($videos);
-
-			$related_models['videos'] = $videos;
-		}
 
 		return $related_models;
 
