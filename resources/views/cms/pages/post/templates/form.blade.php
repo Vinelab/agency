@@ -1,6 +1,18 @@
-<?php
- $updating = isset($edit_post);
-?>
+{{-- check if updating or creating--}}
+<?php $updating = isset($updating) ? $updating : false; ?>
+
+{{-- errors display section --}}
+@include('cms.pages.templates.errors')
+
+
+{{-- create and update form --}}
+{{ Form::open([
+	'url' => ($updating) ? URL::route('cms.content.posts.update', $edit_post->slug) : URL::route('cms.content.posts.store'),
+    'class' => 'form-horizontal',
+    'id' => 'post-form',
+    'role' => 'form' ]) }}
+
+
 	<div class='form-horizontal'>
 		<div class="form-group">
 			<div class="col-sm-9">
@@ -48,18 +60,12 @@
     <div class="space-4"></div><br>
 
 	{{--Add cover photo --}}
-
+ 
 	@include('cms.pages.post.templates.form.cover')
 
 	{{--Add Images --}}
 
 	@include('cms.pages.post.templates.form.images')
-
-    <div class="space-12"></div>
-
-	{{--display videos--}}
-
-	@include('cms.pages.post.templates.form.videos')
 
     <div class="space-12"></div>
 
@@ -70,6 +76,20 @@
 	<div class="space-12"></div>
 
 	@include('cms.pages.post.templates.form.controls')
+
+
+
+	 {{-- submit button --}}
+    <div class="form-group">
+        <div class="col-xs-12">
+            <button class="btn btn-app btn-success btn-sm no-radius" id="posts-submit-btn">
+                <i class="ace-icon fa fa-floppy-o bigger-200"></i>
+                {{Lang::get("posts/form.submit")}}
+            </button>
+        </div>
+    </div>
+
+    <div class="alert alert-warning hidden" role="alert"></div>
 
 	<div id="loader-container">
 		<img id="img-loader" src="{{Cdn::asset('/cms/images/server.gif')}}">
@@ -136,3 +156,4 @@
 	@stop
 
 
+{{ Form::close() }}

@@ -19,10 +19,10 @@
 {{-- here is where the cover photo gets displayed --}}
 <div class="form-group">
     <div id="cover_holder_display">
-        @if($updating && ! is_null($model->coverPhoto) || Input::old('cover'))
+        @if($updating && ! is_null($model->coverImage) || Input::old('cover'))
             <div class='col-xs-3 col-md-3 col-lg-3'>
                 <a class='thumbnail'>
-                    <img src='{{ Input::old('cover') ? Input::old('cover')['thumbnail'] : $model->coverPhoto->thumbnail}}'>
+                    <img src='{{ Input::old('cover') ? Input::old('cover')['thumbnail'] : $model->coverImage->thumbnail}}'>
                 </a>
             </div>
         @endif
