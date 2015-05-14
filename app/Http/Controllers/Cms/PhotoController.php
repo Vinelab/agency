@@ -9,7 +9,6 @@ use App;
 use Auth;
 use Clockwork;
 use Config;
-use Agency\Contracts\NewsRepositoryInterface;
 use Agency\Contracts\PhotosServiceInterface;
 use Agency\Contracts\Repositories\ImageRepositoryInterface as PhotoRepositoryInterface;
 use Agency\Services\Uploader\Uploader;
@@ -28,34 +27,27 @@ class PhotoController extends Controller
     protected $photos;
 
     /**
-     * @var \Fahita\Contracts\PhotosServiceInterface
+     * @var \Agency\Contracts\PhotosServiceInterface
      */
     protected $photos_service;
 
     /**
-     * @var \Fahita\Contracts\NewsRepositoryInterface
-     */
-    protected $news;
-
-    /**
-     * @var \Fahita\Services\Uploader\Uploader
+     * @var \Agency\Services\Uploader\Uploader
      */
     protected $uploader;
 
     /**
-     * @param \Fahita\Contracts\PhotosServiceInterface                $photos_service
+     * @param \Agency\Contracts\PhotosServiceInterface                $photos_service
      * @param \Agency\Contracts\Repositories\ImageRepositoryInterface $photos
-     * @param \Fahita\Contracts\NewsRepositoryInterface               $news
-     * @param \Fahita\Services\Uploader\Uploader                      $uploader
+     * @param \Agency\Contracts\NewsRepositoryInterface               $news
+     * @param \Agency\Services\Uploader\Uploader                      $uploader
      */
     public function __construct(
         PhotosServiceInterface $photos_service,
         PhotoRepositoryInterface $photos,
-        NewsRepositoryInterface $news,
         Uploader $uploader
     ) {
         $this->photos_service = $photos_service;
-        $this->news = $news;
         $this->photos = $photos;
         $this->uploader = $uploader;
     }
