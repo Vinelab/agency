@@ -5,6 +5,7 @@ return [
     'title'         =>  'Title',
     'content'       =>  'Content',
     'add_images'   	=>  'Images',
+    'add_new_photo' =>  'add new photo',
     'add_videos'    =>  'Videos',
     'add_photo'     =>  'Add Photo',
     'add_yt_btn'	=>	'Add',
@@ -31,6 +32,8 @@ return [
     'preview' => 'Preview',
     'featured' => 'Featured',
     'cover_photo' => 'Cover Photo',
-    'status' => 'Status'
+    'status' => 'Status',
+    'choose_from_existing_photos' => 'choose from existing photos',
+    'choose_photos ' => 'choose photos',
 
 ];
