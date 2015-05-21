@@ -20,7 +20,7 @@ class Post extends NeoEloquent  {
 
     protected $label = ['Post'];
 
-    protected $fillable=['title','body','admin_id','section_id', 'featured','publish_date','publish_state','slug'];
+    protected $fillable=['title','body','admin_id','section_id', 'featured','publish_date','publish_state','slug','share_url'];
 
     protected $dates = ['deleted_at', 'created_at', 'updated_at'];
 
