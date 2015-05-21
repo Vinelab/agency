@@ -29,6 +29,7 @@ use Agency\Exceptions\InvalidSectionException;
 use Paginator, Cache;
 
 use Carbon\Carbon;
+use Api;
 
 class PostsController extends Controller {
 
@@ -47,30 +48,29 @@ class PostsController extends Controller {
     public function index()
     {
 
-        // try {
+        try {
 
             $key='all'.'-'.Input::get('limit').'-'.Input::get('page').'-'.Input::get('tag').'-'.Input::get('category').'-'.Input::get('featured').'-'.Input::get('keyword');
-            // $posts = $this->cache->remember($key, function(){
+            $posts = $this->cache->remember($key, function(){
 
                 $input = Input::all();
                 $section = $this->getSection();
 
                 $posts = $this->getPosts($section);
-                $total = $posts->total();
-                $posts = $this->post_mapper->make($posts);
-                return $this->api->respond($posts, $total, Input::get('page'));
+                // $total = $posts->total();
+                return Api::respond('PostMapper',$posts);
+                // return $this->api->respond($posts, $total, Input::get('page'));
 
-            // },['posts'],$this->getNearestPostDuration($key));
+            },['posts'],$this->getNearestPostDuration($key));
 
-            // return $posts;
+            return $posts;
 
-        // } catch (InvalidCodeException $e) {
-        //     return Response::json(['status'=> 400, 'message'=> Lang::get('messages.invalid_code')]);
-        // }
-        // catch (Exception $e) {
-        //     dd($e->getMessage());
-        //     // return Response::json(['status'=> 400, 'message'=>Lang::get('messages.something_wrong')]);
-        // }
+        } catch (InvalidCodeException $e) {
+            return Response::json(['status'=> 400, 'message'=> Lang::get('messages.invalid_code')]);
+        }
+        catch (Exception $e) {
+            return Response::json(['status'=> 400, 'message'=>Lang::get('messages.something_wrong')]);
+        }
     }
 
 
@@ -80,8 +80,7 @@ class PostsController extends Controller {
         {
             $post = $this->cache->remember($idOrSlug, function() use ($idOrSlug){
                 $post =  $this->post->findByIdOrSlug($idOrSlug);
-                $post = $this->post_mapper->make($post);
-                return $this->api->respond($post,1,1);
+                return Api::respond('PostMapper',$post);
             },['posts']);
 
             return $post;
