@@ -32,7 +32,7 @@ use Agency\Contracts\HelperInterface;
 use Agency\Cache\PostCacheManager;
 
 
-use View,Input,App,Session,Auth,Response,Redirect;
+use View,Input,App,Session,Auth,Response,Redirect,Lang;
 
 class PostController extends Controller {
 
@@ -78,7 +78,6 @@ class PostController extends Controller {
 	 */
 	public function create()
 	{
-
 		if(Auth::hasPermission('create'))
 		{
 
@@ -114,12 +113,17 @@ class PostController extends Controller {
 
 				$related_models['section'] = $section;
 
+				$share_url = $this->share_url($slug);
+
+		        if(is_null($share_url)){
+		            $this->set_share_url_warning(Lang::get('posts/form.share_url_warning_update'));
+		        }
+
 				$publish_state = $this->filterPublishState(Input::get('publish_state'));
 				$publish_date = Input::get('publish_date');
 				$publish_date = $this->formatDate($publish_date);
-				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state, $related_models);
 
-				// $this->posts->updateSection($post->id, $section->id);
+				$post = $this->posts->createWith(Input::get('title'), $slug, $body,  Input::get('featured') ,$publish_date, $publish_state,$share_url, $related_models);
 
 				$this->cache->forgetByTags(['posts']);
 
@@ -237,6 +241,13 @@ class PostController extends Controller {
 					$publish_date = $this->formatDate($publish_date);
 				}
 
+				$share_url = $this->share_url($slug);
+
+		        if(is_null($share_url)){
+		            $this->set_share_url_warning(Lang::get('posts/form.share_url_warning_update'));
+		        }
+
+
 				if ($section)
 				{
 
@@ -246,7 +257,8 @@ class PostController extends Controller {
 												$body,
 												Input::get('featured'),
 												$publish_date,
-												$publish_state);
+												$publish_state,
+												$share_url);
 
 
 					if ($updated)
@@ -442,6 +454,29 @@ class PostController extends Controller {
 			return $tags;
 		}
 	}
+
+
+	 /**
+     * build the share URL
+     *
+     * @param $slug
+     *
+     * @return mixed|null
+     */
+    private function share_url($slug)
+    {
+        return $this->helper->generateShortShareUrl(new Post(), $slug);
+    }
+
+    /**
+     * set a waning message in a session for the next request
+     *
+     * @param $msg
+     */
+    private function set_share_url_warning($msg)
+    {
+        Session::flash('warning', $msg);
+    }
 
 
 }
