@@ -35,5 +35,6 @@ return [
     'status' => 'Status',
     'choose_from_existing_photos' => 'choose from existing photos',
     'choose_photos ' => 'choose photos',
+    'body' => 'body'
 
 ];
