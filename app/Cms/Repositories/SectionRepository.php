@@ -126,7 +126,7 @@ class SectionRepository extends Repository implements SectionRepositoryInterface
     public function getRelatedPosts($id)
     {
         $section = $this->find($id);
-
+        return $section->posts()->orderBy('publish_date','desc')->get();
         return $section->posts()->orderBy('publish_date','desc')->paginate(Config::get('posts.number_per_page'));
     }
 
