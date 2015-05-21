@@ -24,8 +24,8 @@
 				@include('cms.pages.content.templates.post')
 			@endforeach
 
-            {{$posts->render()}}
-
+{{--             {{$posts->render()}}
+ --}}
 		@endif
 
 
