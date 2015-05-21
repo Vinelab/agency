@@ -25,7 +25,7 @@ interface PostRepositoryInterface {
 	 * @param  array $relations
 	 * @return \Agency\Post
 	 */
-	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $relations= []);
+	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $share_url,$relations= []);
 
 	/**
 	 * update a post's info
@@ -40,7 +40,7 @@ interface PostRepositoryInterface {
 	 * @param DateTime $publish_date
 	 * @param string $publish_state values must be specified at the model level and mapped to an enum
 	 */
-	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state);
+	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state, $share_url);
 
 	/**
 	 * get a collection of posts
