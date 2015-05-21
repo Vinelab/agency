@@ -1,10 +1,17 @@
 <?php namespace Agency\Mappers;
 
 use Agency\Api\PostsCollection;
+use Vinelab\Api\MappableTrait;
+
 
 use Agency\Post;
+use \Editor;
+
 
 class PostMapper{
+
+	use MappableTrait;
+
 
 	protected $post;
 
@@ -55,6 +62,23 @@ class PostMapper{
 
 		$this->post['section'] = $this->section_mapper->parseAndFill($post->section);
 
+		return $this->post;
+	}
+
+	public function map(Post $post)
+	{
+		$this->post['id'] = $post->id;
+		$this->post['title'] = $post->title;
+		$this->post['body'] = Editor::json($post->body);
+		$this->post['slug'] = $post->slug;
+		$this->post['share_url'] = $post->shareUrl();
+		$this->post['featured'] = ($post->featured == "true")? true : false;
+		$this->post['publish_date'] = $post->publish_date;
+		$this->post['cover'] = $this->image_mapper->parseAndFill($post->coverImage);
+		$this->post['images'] = $this->image_mapper->make($post->images)->toArray();
+		$this->post['videos'] = $this->video_mapper->make($post->videos)->toArray();
+		$this->post['tags'] = $this->tag_mapper->make($post->tags)->toArray();
+		$this->post['section'] = $this->section_mapper->parseAndFill($post->section);
 		return $this->post;
 	}
 
