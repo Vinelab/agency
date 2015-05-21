@@ -10,7 +10,7 @@ return [
     | Enter the mappers base namespace
     |
     */
-    'mappers' => 'AblaFahita\Mappers\\',
+    'mappers' => 'Agency\Mappers\\',
 
     /*
     |--------------------------------------------------------------------------
