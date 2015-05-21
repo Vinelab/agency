@@ -59,7 +59,7 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 	}
 
 
-	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $relations = [])
+	public function createWith($title, $slug, $body, $featured, $publish_date, $publish_state, $share_url, $relations = [])
 	{
 		return $this->post->createWith([
 			'title'         => $title,
@@ -67,11 +67,12 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			'body'          => $body,
 			'featured'      => $featured,
 			'publish_date'  => $publish_date,
-			'publish_state' => $publish_state
+			'publish_state' => $publish_state,
+			'share_url' => $share_url
 		], $relations);
 	}
 
-	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state)
+	public function update($id, $title, $slug, $body, $featured, $publish_date, $publish_state, $share_url)
 	{
 		$post = $this->find($id);
 		$post->fill([
@@ -80,7 +81,8 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 			'body'          => $body,
 			'featured'      => $featured,
 			'publish_date'  => $publish_date,
-			'publish_state' => $publish_state
+			'publish_state' => $publish_state,
+			'share_url' => $share_url
 		]);
 
 		if ($post->save())
@@ -171,8 +173,8 @@ class PostRepository extends Repository implements PostRepositoryInterface {
 
 		$limit = (isset($input['limit']) and ! empty($input['limit'])) ? $input['limit'] : Config::get('api.limit');
 		$limit = $this->checkLimit($limit);
-
-        return  $posts->paginate($limit);
+		return $posts->get();
+        // return  $posts->paginate($limit);
 
 	}
 
