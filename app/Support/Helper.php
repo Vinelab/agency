@@ -5,6 +5,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use Illuminate\Support\Facades\Config;
+use Shorten;
 use Agency\Contracts\HelperInterface;
 use Auth;
 use Carbon\Carbon;
@@ -347,6 +349,72 @@ class Helper implements HelperInterface
         }
         // when no more numbers in the string replace all the `-` with space
         return str_replace('-', ' ', $slug);
+    }
+
+
+     /**
+     * generate a shared url then shorten it
+     *
+     * @param      $model
+     * @param      $slug
+     *
+     * @param null $domain
+     *
+     * @return string
+     */
+    public static function generateShortShareUrl($model, $slug = null, $domain = null)
+    {
+        $share_url = self::generateShareUrl($model, $slug, $domain);
+        return self::shoretnize($share_url);
+    }
+
+
+    /**
+     * generate the long share url for posts
+     *
+     * @param      $model  the content entity to identify the type of the content (empty entity)
+     * @param      $slug   the slug
+     * @param null $domain set your domain or the default app domain will be used
+     *
+     * @return string
+     */
+    public static function generateShareUrl($model, $slug = null, $domain = null)
+    {
+
+        $name = strtolower(str_replace('Agency\\', '', get_class($model)));
+
+        
+
+        $composed_domain = (!is_null($domain) ? $domain : Config::get('app.url')) . '/' . $name;
+
+        if (is_null($slug)) {
+            $slug = $model->slug;
+        }
+
+        return $composed_domain . '/' . $slug;
+    }
+
+
+
+
+
+    /**
+     * call the third party package to short the url
+     *
+     * @param $url
+     *
+     * @return mixed
+     */
+    public static function shoretnize($url)
+    {
+        try {
+            $share_url = Shorten::url($url);
+        } catch(\Vinelab\UrlShortener\Exceptions\Exception $e) {
+            // this error might be thrown when trying to shorten a `localhost` domain
+            $share_url = null;
+        }
+
+        return $share_url;
     }
 
 
