@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'locale' => 'ar',
+	'locale' => 'en',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -160,6 +160,8 @@ return [
 		'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
         'Vinelab\Youtube\YoutubeServiceProvider',
         'Vinelab\Editor\EditorServiceProvider',
+        'Vinelab\UrlShortener\UrlShortenerServiceProvider'
+
 	],
 
 	/*
