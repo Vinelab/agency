@@ -160,8 +160,8 @@ class AdminSeeder extends Seeder {
 		// Create admin account
 		$admin = Admin::create([
 			'name'     => 'Mr. Admin',
-			'email'    => 'admin@vinelab.com',
-			'password' => Hash::make('meh')
+			'email'    => 'admin@admin.com',
+			'password' => Hash::make('admin')
 		]);
 
 		// Grant Admin privileges
