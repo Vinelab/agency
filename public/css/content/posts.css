@@ -59,4 +59,9 @@
 	margin: 20px!important;
 }
 
-
+.listing-img{
+    width: 150px;
+}
+.lead{
+    font-size: 13px;
+}

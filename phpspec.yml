@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Agency
+        psr4_prefix: Agency
+        src_path: app
